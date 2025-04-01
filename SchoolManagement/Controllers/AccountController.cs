@@ -78,8 +78,8 @@ namespace SchoolManagement.Controllers
         {
             return View();
         }
-        [HttpPost]
 
+        [HttpPost] 
         public async Task<IActionResult> Login(LoginVM model)
         {
             if (ModelState.IsValid)
@@ -92,25 +92,6 @@ namespace SchoolManagement.Controllers
             }
             return View(model);
         }
-
-
-
-
-
-        //     public async Task<IdentityResult> AddUser(AppUser user, List<string> role)
-        //{
-        //    var result = await _userManager.CreateAsync(user, user.Password);
-        //    if (result.Succeeded && role != null && role.Any())
-        //        await _userManager.AddToRolesAsync(user, role).ConfigureAwait(false);
-        //    return result;
-        //}
-
-
-
-
-
-
-
     }
 
 }
