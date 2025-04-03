@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SchoolManagement.Models.Standard>
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class Name</th>
+            <th>Duration</th>
+            <th>Fee Amount</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Section</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.classname</td>
+                <td>@item.classduration</td>
+                <td>@item.feeamount</td>
+                <td>@item.classstartdate.ToShortDateString()</td>
+                <td>@item.classenddate.ToShortDateString()</td>
+                <td>@item.sectionofclass</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.standardid" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.standardid" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Standardadd")" class="btn btn-success">Add New Standard</a>

@@ -282,20 +282,19 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("paidfee")
                         .HasColumnType("int");
 
-                    b.Property<int>("standardId")
+                    b.Property<int>("standardid")
                         .HasColumnType("int");
 
                     b.Property<string>("statusoffee")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("studentid")
-                        .HasColumnType("int");
-
                     b.Property<int>("totalfeeclass")
                         .HasColumnType("int");
 
                     b.HasKey("feeid");
+
+                    b.HasIndex("standardid");
 
                     b.ToTable("feestructures");
                 });
@@ -371,14 +370,9 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("studentid")
-                        .HasColumnType("int");
-
                     b.HasKey("sessionid");
 
                     b.HasIndex("standardid");
-
-                    b.HasIndex("studentid");
 
                     b.ToTable("sessionclass");
                 });
@@ -391,34 +385,26 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("standardid"));
 
-                    b.Property<decimal>("amountDue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("amountPaid")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("classduration")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("classendsession")
+                    b.Property<DateTime>("classenddate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("classname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("classstartsession")
+                    b.Property<DateTime>("classstartdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("feeid")
+                    b.Property<int>("feeamount")
                         .HasColumnType("int");
 
-                    b.Property<int>("sessionid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("studentid")
-                        .HasColumnType("int");
+                    b.Property<string>("sectionofclass")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("standardid");
 
@@ -482,11 +468,16 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("pin_code")
                         .HasColumnType("int");
 
+                    b.Property<int>("standardid")
+                        .HasColumnType("int");
+
                     b.Property<string>("state")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("studentid");
+
+                    b.HasIndex("standardid");
 
                     b.ToTable("students");
                 });
@@ -542,6 +533,17 @@ namespace SchoolManagement.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SchoolManagement.Models.Feestructure", b =>
+                {
+                    b.HasOne("SchoolManagement.Models.Standard", "standard")
+                        .WithMany()
+                        .HasForeignKey("standardid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("standard");
+                });
+
             modelBuilder.Entity("SchoolManagement.Models.Parent", b =>
                 {
                     b.HasOne("SchoolManagement.Models.Student", "students")
@@ -561,15 +563,18 @@ namespace SchoolManagement.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SchoolManagement.Models.Student", "students")
+                    b.Navigation("standards");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Models.Student", b =>
+                {
+                    b.HasOne("SchoolManagement.Models.Standard", "Standard")
                         .WithMany()
-                        .HasForeignKey("studentid")
+                        .HasForeignKey("standardid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("standards");
-
-                    b.Navigation("students");
+                    b.Navigation("Standard");
                 });
 #pragma warning restore 612, 618
         }

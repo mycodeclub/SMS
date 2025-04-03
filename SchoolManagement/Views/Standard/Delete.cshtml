@@ -1,0 +1,25 @@
+﻿@model SchoolManagement.Models.Standard
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<h2>@ViewData["Title"]</h2>
+
+<h3>Are you sure you want to delete this item?</h3>
+
+<div>
+    <h4>@Model.classname</h4>
+    <p>Class Duration: @Model.classduration</p>
+    <p>Fee Amount: @Model.feeamount</p>
+    <p>Class Start Date: @Model.classstartdate</p>
+    <p>Class End Date: @Model.classenddate</p>
+    <p>Section of Class: @Model.sectionofclass</p>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="@Url.Action("Detail")" class="btn btn-secondary">Cancel</a>
+}
+

@@ -1,0 +1,48 @@
+﻿@model SchoolManagement.Models.Standard
+@{
+    ViewData["Title"] = "Edit";
+}
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.classname)
+        @Html.EditorFor(model => model.classname)
+        @Html.ValidationMessageFor(model => model.classname)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.classduration)
+        @Html.EditorFor(model => model.classduration)
+        @Html.ValidationMessageFor(model => model.classduration)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.feeamount)
+        @Html.EditorFor(model => model.feeamount)
+        @Html.ValidationMessageFor(model => model.feeamount)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.classstartdate)
+        @Html.EditorFor(model => model.classstartdate)
+        @Html.ValidationMessageFor(model => model.classstartdate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.classenddate)
+        @Html.EditorFor(model => model.classenddate)
+        @Html.ValidationMessageFor(model => model.classenddate)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.sectionofclass)
+        @Html.EditorFor(model => model.sectionofclass)
+        @Html.ValidationMessageFor(model => model.sectionofclass)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+}

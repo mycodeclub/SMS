@@ -59,29 +59,6 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "feestructures",
-                columns: table => new
-                {
-                    feeid = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    classfeeofmonthly = table.Column<int>(type: "int", nullable: false),
-                    totalfeeclass = table.Column<int>(type: "int", nullable: false),
-                    discountfee = table.Column<int>(type: "int", nullable: false),
-                    feeafterdiscount = table.Column<int>(type: "int", nullable: false),
-                    feebeforediscount = table.Column<int>(type: "int", nullable: false),
-                    paidfee = table.Column<int>(type: "int", nullable: false),
-                    duefee = table.Column<int>(type: "int", nullable: false),
-                    datesubmissionoffee = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    statusoffee = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    studentid = table.Column<int>(type: "int", nullable: false),
-                    standardId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_feestructures", x => x.feeid);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "standards",
                 columns: table => new
                 {
@@ -89,43 +66,14 @@ namespace SchoolManagement.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     classname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     classduration = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    amountDue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    amountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    classstartsession = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    classendsession = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sessionid = table.Column<int>(type: "int", nullable: false),
-                    studentid = table.Column<int>(type: "int", nullable: false),
-                    feeid = table.Column<int>(type: "int", nullable: false)
+                    feeamount = table.Column<int>(type: "int", nullable: false),
+                    classstartdate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    classenddate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    sectionofclass = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_standards", x => x.standardid);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "students",
-                columns: table => new
-                {
-                    studentid = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    emailaddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    dob = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    fathername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    mothername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    classname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    city = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    state = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    pin_code = table.Column<int>(type: "int", nullable: false),
-                    dateofenroll = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_students", x => x.studentid);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,6 +183,90 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "feestructures",
+                columns: table => new
+                {
+                    feeid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    classfeeofmonthly = table.Column<int>(type: "int", nullable: false),
+                    totalfeeclass = table.Column<int>(type: "int", nullable: false),
+                    discountfee = table.Column<int>(type: "int", nullable: false),
+                    feeafterdiscount = table.Column<int>(type: "int", nullable: false),
+                    feebeforediscount = table.Column<int>(type: "int", nullable: false),
+                    paidfee = table.Column<int>(type: "int", nullable: false),
+                    duefee = table.Column<int>(type: "int", nullable: false),
+                    datesubmissionoffee = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    statusoffee = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    standardid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_feestructures", x => x.feeid);
+                    table.ForeignKey(
+                        name: "FK_feestructures_standards_standardid",
+                        column: x => x.standardid,
+                        principalTable: "standards",
+                        principalColumn: "standardid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "sessionclass",
+                columns: table => new
+                {
+                    sessionid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    sessionstart = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    sessionend = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    sessiontype = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    statusofsession = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    standardid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sessionclass", x => x.sessionid);
+                    table.ForeignKey(
+                        name: "FK_sessionclass_standards_standardid",
+                        column: x => x.standardid,
+                        principalTable: "standards",
+                        principalColumn: "standardid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "students",
+                columns: table => new
+                {
+                    studentid = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    fullname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    emailaddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    dob = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    fathername = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    mothername = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    classname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    city = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    state = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    pin_code = table.Column<int>(type: "int", nullable: false),
+                    dateofenroll = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    standardid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_students", x => x.studentid);
+                    table.ForeignKey(
+                        name: "FK_students_standards_standardid",
+                        column: x => x.standardid,
+                        principalTable: "standards",
+                        principalColumn: "standardid",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Parents",
                 columns: table => new
                 {
@@ -255,36 +287,6 @@ namespace SchoolManagement.Migrations
                     table.ForeignKey(
                         name: "FK_Parents_students_studentId",
                         column: x => x.studentId,
-                        principalTable: "students",
-                        principalColumn: "studentid",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "sessionclass",
-                columns: table => new
-                {
-                    sessionid = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    sessionstart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sessionend = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sessiontype = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    statusofsession = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    studentid = table.Column<int>(type: "int", nullable: false),
-                    standardid = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_sessionclass", x => x.sessionid);
-                    table.ForeignKey(
-                        name: "FK_sessionclass_standards_standardid",
-                        column: x => x.standardid,
-                        principalTable: "standards",
-                        principalColumn: "standardid",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_sessionclass_students_studentid",
-                        column: x => x.studentid,
                         principalTable: "students",
                         principalColumn: "studentid",
                         onDelete: ReferentialAction.Cascade);
@@ -330,6 +332,11 @@ namespace SchoolManagement.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_feestructures_standardid",
+                table: "feestructures",
+                column: "standardid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Parents_studentId",
                 table: "Parents",
                 column: "studentId");
@@ -340,9 +347,9 @@ namespace SchoolManagement.Migrations
                 column: "standardid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_sessionclass_studentid",
-                table: "sessionclass",
-                column: "studentid");
+                name: "IX_students_standardid",
+                table: "students",
+                column: "standardid");
         }
 
         /// <inheritdoc />
@@ -379,10 +386,10 @@ namespace SchoolManagement.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "standards");
+                name: "students");
 
             migrationBuilder.DropTable(
-                name: "students");
+                name: "standards");
         }
     }
 }

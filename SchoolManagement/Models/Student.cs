@@ -38,9 +38,10 @@ namespace SchoolManagement.Models
         public DateTime dateofenroll { get; set; }
 
 
-       
+        //foreign key
 
-      
+        public int standardid { get; set; }
+        public Standard Standard { get; set; }
 
     }
 }

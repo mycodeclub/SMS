@@ -5,29 +5,20 @@ namespace SchoolManagement.Models
     public class Standard
     {
         [Key]
-        public int standardid { get; set; }
+         public int standardid { get; set; }
 
-        public string classname { get; set; }
+         public string classname { get; set; }
 
-        public string classduration { get; set; }
+         public string classduration { get; set; }
 
-        public decimal amountDue { get; set; }
-        public decimal amountPaid { get; set; }
+         public int  feeamount { get; set; }
+         public DateTime classstartdate { get; set; }
 
-        public DateTime classstartsession { get; set; }
+         public DateTime classenddate { get; set; }
 
-        public DateTime classendsession { get; set; }
-
+        public string sectionofclass { get; set; }
 
         //foreign key concept
-
-
-        public int sessionid { get; set; }
-
-        public int studentid { get; set; }
-
-        public int feeid { get; set; }
-
 
 
     }

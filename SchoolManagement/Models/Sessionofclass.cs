@@ -19,8 +19,7 @@ namespace SchoolManagement.Models
 
         //foreign key
 
-        public int studentid { get; set; }
-        public Student students { get; set; }
+      
 
         public int standardid { get; set; }
         public Standard standards { get; set; }
