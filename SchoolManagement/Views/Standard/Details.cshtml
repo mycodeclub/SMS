@@ -1,14 +1,13 @@
 ﻿@model IEnumerable<SchoolManagement.Models.Standard>
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Details";
 }
-
-<h2>@ViewData["Title"]</h2>
 
 <table class="table">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Class Name</th>
             <th>Duration</th>
             <th>Fee Amount</th>
@@ -22,6 +21,7 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>@item.standardid</td>
                 <td>@item.classname</td>
                 <td>@item.classduration</td>
                 <td>@item.feeamount</td>
@@ -36,5 +36,4 @@
         }
     </tbody>
 </table>
-
 <a href="@Url.Action("Standardadd")" class="btn btn-success">Add New Standard</a>

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
 
@@ -32,10 +33,30 @@ namespace SchoolManagement.Controllers
         }
 
 
-        public IActionResult Contact()
+        public IActionResult Contact() //create
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Contact(Contact c)
+        {
+            if (ModelState.IsValid)
+            {
+                // Save to the database
+                _dbContext.Add(c);
+                _dbContext.SaveChanges();
+
+                // Set success message in TempData
+                TempData["SuccessMessage"] = "Contact created successfully!";
+                return View(c);
+            }
+
+            // If something went wrong, set an error message
+            TempData["ErrorMessage"] = "There was an issue creating the standard.";
+            return View(c);
+
+        }
+
 
         public IActionResult Facility()
         {
@@ -58,8 +79,6 @@ namespace SchoolManagement.Controllers
         {
             return View();
         }
-
-
 
 
 

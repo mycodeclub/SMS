@@ -1,48 +1,182 @@
 ﻿@model SchoolManagement.Models.Standard
+
 @{
-    ViewData["Title"] = "Edit";
+    Layout = null;
 }
-<h2>@ViewData["Title"]</h2>
+<style>
+    /* Reset default browser styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    /* Apply a background color to the whole body */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f6f9;
+        color: #333;
+        line-height: 1.6;
+    }
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.classname)
-        @Html.EditorFor(model => model.classname)
-        @Html.ValidationMessageFor(model => model.classname)
+    /* Center the form in the page */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    /* Style for the form container */
+    .form-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
+
+    /* Style for the form title */
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #3e4a59;
+    }
+
+    /* Style for form groups */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+
+            .form-group select:focus,
+            .form-group input:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+
+    /* Style for the submit button */
+    .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        font-size: 18px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    /* Style for the back link */
+    .back-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h4 class="form-title">Add Standard / Class</h4>
+            <!-- Using the ASP.NET form and model binding -->
+            <form asp-action="Edit" method="post">
+                <div class="form-group">
+                    <label asp-for="classname">Class Name</label>
+                    <select asp-for="classname" class="form-control">
+                        <option value="">-- Select Section --</option>
+                        <option value="1 Class">1 Class</option>
+                        <option value="2 Class">2 Class</option>
+                        <option value="3 Class">3 Class</option>
+                        <option value="4 Class">4 Class</option>
+                        <option value="5 Class">5 Class</option>
+                        <option value="6 Class">6 Class</option>
+                        <option value="7 Class">7 Class</option>
+                        <option value="8 Class">8 Class</option>
+                        <option value="9 Class">9 Class</option>
+                        <option value="10 Class">10 Class</option>
+                        <option value="11 Class">11 Class</option>
+                        <option value="12 Class">12 Class</option>
+
+                    </select>
+                    <span asp-validation-for="classname" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="classduration">Class Duration (Month)</label>
+                    <input asp-for="classduration" class="form-control" placeholder="Enter Duration" />
+                    <span asp-validation-for="classduration" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="feeamount">Fee Amount</label>
+                    <input asp-for="feeamount" class="form-control" placeholder="Enter Fee" />
+                    <span asp-validation-for="feeamount" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="classstartdate">Class Start Date</label>
+                    <input asp-for="classstartdate" type="date" class="form-control" />
+                    <span asp-validation-for="classstartdate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="classenddate">Class End Date</label>
+                    <input asp-for="classenddate" type="date" class="form-control" />
+                    <span asp-validation-for="classenddate" class="text-danger"></span>
+                </div>
+
+                <!-- Dropdown for section of the class -->
+                <div class="form-group">
+                    <label asp-for="sectionofclass">Section of Class</label>
+                    <select asp-for="sectionofclass" class="form-control">
+                        <option value="">-- Select Section --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                    <span asp-validation-for="sectionofclass" class="text-danger"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Edit</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.classduration)
-        @Html.EditorFor(model => model.classduration)
-        @Html.ValidationMessageFor(model => model.classduration)
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.feeamount)
-        @Html.EditorFor(model => model.feeamount)
-        @Html.ValidationMessageFor(model => model.feeamount)
-    </div>
+    </body>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.classstartdate)
-        @Html.EditorFor(model => model.classstartdate)
-        @Html.ValidationMessageFor(model => model.classstartdate)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.classenddate)
-        @Html.EditorFor(model => model.classenddate)
-        @Html.ValidationMessageFor(model => model.classenddate)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.sectionofclass)
-        @Html.EditorFor(model => model.sectionofclass)
-        @Html.ValidationMessageFor(model => model.sectionofclass)
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-}

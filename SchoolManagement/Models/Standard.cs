@@ -18,7 +18,7 @@ namespace SchoolManagement.Models
 
         public string sectionofclass { get; set; }
 
-        //foreign key concept
+
 
 
     }

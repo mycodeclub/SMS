@@ -35,6 +35,7 @@ namespace SchoolManagement.Data
         public DbSet<Feestructure> feestructures {  get; set; }     //feestructure
 
         public DbSet<Parent>Parents { get; set; }     // parent
+        public DbSet<SchoolManagement.Models.Contact> Contact { get; set; } = default!;
 
 
 
