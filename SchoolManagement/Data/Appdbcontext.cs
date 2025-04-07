@@ -19,6 +19,7 @@ namespace SchoolManagement.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.SeedRoles();
+            modelBuilder.SeedSession();
             modelBuilder.SeedStandard();
             modelBuilder.SeedCountry();
             modelBuilder.SeedState();
