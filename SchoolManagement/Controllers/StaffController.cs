@@ -19,7 +19,7 @@ namespace SchoolManagement.Controllers
 
         public async Task<IActionResult> ContactDetail()
         {
-            return View(await _context.standards.ToListAsync());
+            return View(await _context.Standards.ToListAsync());
         }
 
     }

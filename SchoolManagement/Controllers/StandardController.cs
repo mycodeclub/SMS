@@ -44,13 +44,13 @@ namespace SchoolManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Details()
         {
-            return View(await _context.standards.ToListAsync());
+            return View(await _context.Standards.ToListAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> Details(int standardid)
         {
-            var standard = await _context.standards.FindAsync(standardid);
+            var standard = await _context.Standards.FindAsync(standardid);
             if (standard == null)
             {
                 return NotFound();

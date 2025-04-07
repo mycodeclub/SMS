@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BpstEducation.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Address;
+using SchoolManagement.Models.User;
 using System;
 
 namespace SchoolManagement.Data
@@ -14,36 +17,26 @@ namespace SchoolManagement.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             base.OnModelCreating(modelBuilder);
-
-            
-
+            modelBuilder.SeedRoles();
+            modelBuilder.SeedStandard();
+            modelBuilder.SeedCountry();
+            modelBuilder.SeedState();
+            modelBuilder.SeedCities();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
         }
-
-        public DbSet<AppUser> appUsers { get; set; }
-       
-
-        public DbSet<Student> students { get; set; }       // student
-        public DbSet<Standard> standards { get; set; }      //class/standards
-        public DbSet<Sessionofclass> sessionclass { get; set; }  //session
-        public DbSet<Feestructure> feestructures {  get; set; }     //feestructure
-
-        public DbSet<Parent>Parents { get; set; }     // parent
-        public DbSet<SchoolManagement.Models.Contact> Contact { get; set; } = default!;
-
-
-
-
-
-       //foreign key concept in below
-     
-
-
-    }
+        public DbSet<SessionYear> SessionYears { get; set; }  //session 
+        public DbSet<Student> Students { get; set; }       // student
+        public DbSet<ParentOrGeneral> Parents { get; set; }     // parent
+        public DbSet<Standard> Standards { get; set; }      //class/standards
+        public DbSet<StudentFee> StudentFees { get; set; }     //feestructure
+        public DbSet<Country> Countrys { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+     }
 }

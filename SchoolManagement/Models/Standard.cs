@@ -5,21 +5,17 @@ namespace SchoolManagement.Models
     public class Standard
     {
         [Key]
-         public int standardid { get; set; }
+        public int UniqueId { get; set; }
 
-         public string classname { get; set; }
-
-         public string classduration { get; set; }
-
-         public int  feeamount { get; set; }
-         public DateTime classstartdate { get; set; }
-
-         public DateTime classenddate { get; set; }
-
-        public string sectionofclass { get; set; }
+        public string StandardName { get; set; } = string.Empty;
 
 
+        public int FeeAmountPerMonth { get; set; }
 
+        /// <summary>
+        /// The number of months in a billing cycle.
+        /// </summary>
+        public int BillingCycle { get; set; }
 
     }
 }
