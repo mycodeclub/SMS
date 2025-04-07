@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Account\**" />
     <Compile Remove="wwwroot\.vs\**" />
-    <Content Remove="Views\Account\**" />
     <Content Remove="wwwroot\.vs\**" />
-    <EmbeddedResource Remove="Views\Account\**" />
     <EmbeddedResource Remove="wwwroot\.vs\**" />
-    <None Remove="Views\Account\**" />
     <None Remove="wwwroot\.vs\**" />
   </ItemGroup>
 
@@ -31,6 +27,10 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\UiTemplate\ScannerUI\font\.DS_Store" />
   </ItemGroup>
 
 </Project>

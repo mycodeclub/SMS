@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Data;
-using SchoolManagement.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Security.Claims;
 
 namespace SchoolManagement.Controllers
 {
@@ -13,14 +13,16 @@ namespace SchoolManagement.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly Appdbcontext _context;
-
-       
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, Appdbcontext context)
+        private readonly AppDbContext _context;
+        private readonly IEventOrganizer _eventService;
+        //var userEmail = User.Identity.Name;
+        //var dbUser = _context.Users.SingleOrDefault(u => u.Email == userEmail);
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context, IEventOrganizer eventOrganizerService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _eventService = eventOrganizerService;
         }
 
 
@@ -46,7 +48,8 @@ namespace SchoolManagement.Controllers
                     appUser.UserName = appUser.Email;
                     await RegisterOrg(appUser);
                     await _signInManager.SignInAsync(appUser, isPersistent: false).ConfigureAwait(false);
-                    return RedirectToAction("Index", "Home");
+                    //   return RedirectToAction("Index", "Home", new { Areas = "EventOrganizer" });
+                    return RedirectToAction("Index", "Home", new { Area = "EventOrganizer" });
                 }
             }
             catch (Exception ex)
@@ -77,17 +80,18 @@ namespace SchoolManagement.Controllers
                     var user = await _userManager.FindByNameAsync(model.LoginName);
                     var role = await _userManager.GetRolesAsync(user);
 
-                    
+                    var org = _context.EventOrganizers.Where(o => o.OrganizerUserId.ToString().Equals(user.Id)).FirstOrDefaultAsync();
+                    if (org != null)
+                         _eventService.SetLoggedInEventOrgSession(await org);
                     if (role.Contains("SuperAdmin"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "SuperAdmin" });
 
-                    else if (role.Contains("Staff"))
-                        return RedirectToAction("Dashboard", "Home", new { Area = "Staff" });
+                    else if (role.Contains("EventOrganizer"))
+                        return RedirectToAction("Dashboard", "Home", new { Area = "EventOrganizer" });
 
-                   
+                    else if (role.Contains("Scanner"))
+                        return RedirectToAction("Dashboard", "Home", new { Area = "Scanner" });
 
-                     
-                    
                 }
                 else { ModelState.AddModelError("", "Invalid Email Id or Password"); }
             }
@@ -102,6 +106,20 @@ namespace SchoolManagement.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //[HttpGet]
+        //public JsonResult GetCitiesByStateId(int Id)
+        //{
+        //    var states = _context.Cities.Where(c => c.StateId.Equals(Id)).OrderBy(c => c.Name);
+        //    return Json(new SelectList(states, "UniqueId", "Name"));
+        //}
+
+        // ----------------------------------------------------------------------
+
+
+        /// <summary>
+        /// Aditional access ... 
+        /// </summary>
+        /// <returns></returns>
 
         public async Task<IActionResult> CreateMasterUser()
         {
@@ -111,15 +129,14 @@ namespace SchoolManagement.Controllers
                 AppUser appUser = new AppUser()
                 {
                     UserName = "admin@bpst.com",
-                    Email= "admin@bpst.com",
                     Password = "Admin@20",
                     ConfirmPassword = "Admin@20",
                     PhoneNumber = "9999999999",
                 };
 
-                var result = await RegisterOrg(appUser);
+               var result =  await RegisterOrg(appUser);
 
-                if (result.Succeeded)
+                 if (result.Succeeded)
                 {
                     var userRoles = _context.Roles.ToList();
                     foreach (var role in userRoles)
@@ -147,8 +164,9 @@ namespace SchoolManagement.Controllers
             var result = await AutoAdminLogin();
             if (result)
             {
+                return RedirectToAction("Index", "Home", new { Area = "EventOrganizer" });
                 return RedirectToAction("Index", "Home", new { Area = "SuperAdmin" });
-                return RedirectToAction("Index", "Home", new { Area = "Staff" });
+                return RedirectToAction("Index", "Home", new { Area = "Scanner" });
             }
             else { return RedirectToAction("CreateMasterUser"); }
         }
@@ -156,23 +174,35 @@ namespace SchoolManagement.Controllers
 
         private async Task<bool> AutoAdminLogin()
         {
-            var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
+             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
+
+             var result = await _signInManager.PasswordSignInAsync("ankit2@bpst.com", "ankit2@bpst.com", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
 
 
         private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {
-            //    appUser.UserName = appUser.Email;
+            appUser.UserName = appUser.Email;
             var result = await _userManager.CreateAsync(appUser, appUser.Password);
             if (result.Succeeded)
             {
-
-
+                var organizer = new Organizer()
+                {
+                    Email = appUser.Email,
+                    Phone1 = appUser.PhoneNumber,
+                    OrganizationName = appUser.OrganizationName,
+                    OrganizerUserId = Guid.Parse(appUser.Id),
+                    CreatedDate = DateTime.UtcNow,
+                    LogoImageName = "default.jpeg",
+                    ProfileImageName = "default.jpg"
+                };
+                _context.EventOrganizers.Add(organizer);
                 await _context.SaveChangesAsync();
+                appUser.OrganizerUniqueIdFk = organizer.UniqueId;
                 await _context.SaveChangesAsync();
                 // Common.Static.Active.SetOrganizerForUserId(organizer, organizer.OrganizerUserId);
-                var result2 = await _userManager.AddToRoleAsync(appUser, "Staff");
+                var result2 = await _userManager.AddToRoleAsync(appUser, "EventOrganizer");
             }
             else
             {

@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 
 <div class="content">
     <div class="card">
@@ -13,7 +14,7 @@
             <p>
                 <a asp-action="Create">Create New</a>
             </p>
-            <table class="table">
+            <table class="table" id="tblGuestList">
                 <thead>
                     <tr>
                         <th>
@@ -89,3 +90,17 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <!-- DataTable Scripts -->
+    <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
+    <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblGuestList').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "searching": true
+            });
+        });
+    </script>
+}
