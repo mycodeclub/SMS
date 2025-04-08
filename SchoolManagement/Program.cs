@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<Appdbcontext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AnkitLocalConStr")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {

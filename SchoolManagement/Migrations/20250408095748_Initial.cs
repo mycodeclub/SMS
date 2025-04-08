@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class resetMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,16 +32,9 @@ namespace SchoolManagement.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fathername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    mothername = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    confirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -390,13 +383,19 @@ namespace SchoolManagement.Migrations
                 values: new object[] { 1, "India" });
 
             migrationBuilder.InsertData(
+                table: "SessionYears",
+                columns: new[] { "UniqueId", "EndDate", "SessionName", "StartDate" },
+                values: new object[] { 1, new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "2025-2026", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
                 table: "Standards",
                 columns: new[] { "UniqueId", "BillingCycle", "FeeAmountPerMonth", "StandardName" },
                 values: new object[,]
                 {
-                    { 1, 2, 4900, "Play Group" },
-                    { 2, 2, 4900, "L KG" },
-                    { 3, 2, 4900, "U KG" }
+                    { 1, 2, 4900, "Nursery" },
+                    { 2, 2, 4900, "Play Group" },
+                    { 3, 2, 4900, "L KG" },
+                    { 4, 2, 4900, "U KG" }
                 });
 
             migrationBuilder.InsertData(

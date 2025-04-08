@@ -7927,18 +7927,25 @@ namespace SchoolManagement.Migrations
                             UniqueId = 1,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
-                            StandardName = "Play Group"
+                            StandardName = "Nursery"
                         },
                         new
                         {
                             UniqueId = 2,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
-                            StandardName = "L KG"
+                            StandardName = "Play Group"
                         },
                         new
                         {
                             UniqueId = 3,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 4900,
+                            StandardName = "L KG"
+                        },
+                        new
+                        {
+                            UniqueId = 4,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
                             StandardName = "U KG"

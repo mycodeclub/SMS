@@ -18,9 +18,11 @@ namespace BpstEducation.Data
         public static void SeedStandard(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Standard>().HasData(
-                new Standard() { UniqueId = 1, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 2, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 3, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 4900 }
+                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 4900 }
+               
              );
         }
         public static void SeedSession(this ModelBuilder modelBuilder)

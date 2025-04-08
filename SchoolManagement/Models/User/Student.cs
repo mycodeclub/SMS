@@ -8,17 +8,23 @@ namespace SchoolManagement.Models.User
         [Key]
         public int StudentId { get; set; }
 
+        [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
+        [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
         public List<ParentOrGeneral>? ParentOrGeneral { get; set; }
+        [Display(Name = "Email Address")]
         public string? EmailAddress { get; set; }
+        [Display(Name = "Contact Number")]
         public string? PhoneNumber { get; set; } = string.Empty;
 
+        [Display(Name = "Date Of Birth")]
         public DateTime DOB { get; set; }
 
         public string? Gender { get; set; }
+        [Display(Name = "Admission Date")]
         public DateTime AdmitionDate { get; set; }
 
         public int StandardId { get; set; }

@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(Appdbcontext))]
-    [Migration("20250407024256_seedsession")]
-    partial class seedsession
+    [Migration("20250408095748_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7807,16 +7807,13 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ConfirmPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -7825,18 +7822,6 @@ namespace SchoolManagement.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Fathername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -7851,10 +7836,6 @@ namespace SchoolManagement.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -7875,14 +7856,6 @@ namespace SchoolManagement.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("confirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("mothername")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -7957,18 +7930,25 @@ namespace SchoolManagement.Migrations
                             UniqueId = 1,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
-                            StandardName = "Play Group"
+                            StandardName = "Nursery"
                         },
                         new
                         {
                             UniqueId = 2,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
-                            StandardName = "L KG"
+                            StandardName = "Play Group"
                         },
                         new
                         {
                             UniqueId = 3,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 4900,
+                            StandardName = "L KG"
+                        },
+                        new
+                        {
+                            UniqueId = 4,
                             BillingCycle = 2,
                             FeeAmountPerMonth = 4900,
                             StandardName = "U KG"

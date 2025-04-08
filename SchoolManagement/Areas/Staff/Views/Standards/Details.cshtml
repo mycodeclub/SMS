@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Standard";
 }
-
+<div class="content">
+    <div class="card">
+        <div class="card-body">
 <h1>Details</h1>
 
 <div>
@@ -35,3 +38,4 @@
     <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+</div></div></div>

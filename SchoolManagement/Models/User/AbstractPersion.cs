@@ -7,9 +7,15 @@ namespace SchoolManagement.Models.User
     {
         [Key]
         public int UniqueId { get; set; }
+
+        [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
+        [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
+        [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
+
+        [Display(Name = "Date Of Birth")]
         public DateTime DOB { get; set; }
 
         [NotMapped]

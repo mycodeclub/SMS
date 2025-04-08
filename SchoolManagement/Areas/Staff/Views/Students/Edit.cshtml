@@ -3,8 +3,11 @@
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
 }
-
+<div class="content">
+    <div class="card">
+        <div class="card-body">
 <h1>Edit</h1>
 
 <h4>Student</h4>
@@ -69,7 +72,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+</div></div>
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

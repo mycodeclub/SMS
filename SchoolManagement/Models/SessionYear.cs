@@ -7,8 +7,12 @@ namespace SchoolManagement.Models
     {
         [Key]
         public int UniqueId { get; set; }
+        [Display(Name = "Session  Name")]
         public string SessionName { get; set; } = string.Empty;
-        public DateTime StartDate { get; set; } 
+        [Display(Name = "Start Date")]
+        public DateTime StartDate { get; set; }
+
+        [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
     }
 }
