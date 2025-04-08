@@ -18,7 +18,7 @@ namespace SchoolManagement.Areas.Staff
         }
 
         // GET: Staff/Students
-        public async Task<IActionResult> Index(int id=1)
+        public async Task<IActionResult> Index(int id = 1)
         {
             List<Student> students;
             if (id > 0)
@@ -64,6 +64,8 @@ namespace SchoolManagement.Areas.Staff
                 student = new Student
                 {
                     SessionYearId = 1,
+                    DOB = DateTime.Now.AddYears(-2),
+                    AdmitionDate = DateTime.Now,
                     ParentOrGeneral =
                     [
                         new ParentOrGeneral(){RelationWithStudent="Father"},
