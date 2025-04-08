@@ -20,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.SessionName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+         @Html.DisplayNameFor(model => model.StartDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
@@ -36,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.SessionName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+               @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
@@ -46,12 +46,11 @@
                 <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
                                   
-
-                                      
+                  
             </td>
-                                <td>
-                                    <a asp-action="Create">Create New</a>
-                                </td>
+           <td>
+             <a asp-action="Create">Create New</a>
+         </td>
         </tr>
 }
     </tbody>

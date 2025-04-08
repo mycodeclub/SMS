@@ -18,10 +18,22 @@ namespace SchoolManagement.Areas.Staff
         }
 
         // GET: Staff/Students
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id=1)
         {
-            var appdbcontext = _context.Students.Include(s => s.Session).Include(s => s.Standard);
-            return View(await appdbcontext.ToListAsync());
+            List<Student> students;
+            if (id > 0)
+                students = await _context.Students
+                    .Include(s => s.Session)
+                    .Include(s => s.Standard)
+                    .Include(s => s.ParentOrGeneral)
+                    .Where(s => s.StandardId == id).ToListAsync();
+            else students = await _context.Students
+             .Include(s => s.Session)
+             .Include(s => s.Standard)
+             .Include(s => s.ParentOrGeneral).ToListAsync();
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", id);
+
+            return View(students);
         }
 
         // GET: Staff/Students/Details/5
@@ -45,7 +57,7 @@ namespace SchoolManagement.Areas.Staff
         }
 
         // GET: Staff/Students/Create
-        public async Task<IActionResult>Create(int id)
+        public async Task<IActionResult> Create(int id)
         {
             var student = await _context.Students.Include(s => s.ParentOrGeneral).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
             if (student == null)
@@ -58,7 +70,7 @@ namespace SchoolManagement.Areas.Staff
                         new ParentOrGeneral(){RelationWithStudent="Mother"}
                     ]
                 };
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId","SessionName");
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
             return View(student);
         }
@@ -68,7 +80,7 @@ namespace SchoolManagement.Areas.Staff
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Student student)
+        public async Task<IActionResult> Create(Student student)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +89,7 @@ namespace SchoolManagement.Areas.Staff
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId",student.StandardId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             return View(student);
         }
 

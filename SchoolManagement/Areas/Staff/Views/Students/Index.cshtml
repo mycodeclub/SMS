@@ -1,89 +1,127 @@
 ﻿@model IEnumerable<SchoolManagement.Models.User.Student>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.ActiveTabName = "Students";
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewBag.ActiveTabName = "Students";
 }
-<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+
+@section Style {
+	<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+
+}
 <div class="content">
-    <div class="card">
-        <div class="card-body">
-            <p>
-              <a asp-action="Create"  style=" background-color:bisque">Create New</a>
-            </p>
-            <table class="table table-bordered table-striped" id="tblGuestLists">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FullName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DOB)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Gender)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.AdmitionDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Standard.StandardName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Session.SessionName)
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)                         
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
-                            </td>
-                           
-                           
-                         
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DOB)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Gender)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.AdmitionDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Standard.StandardName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Session.SessionName)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-                                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-                                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+	<div class="card">
+		<div class="card-body">
+			<p>
+				<a asp-action="Create" style=" background-color:bisque">Create New</a>
+			</p>
+
+			<select id="StandardIdDDL" onchange="ReloadIndex()" onc class="form-control" asp-items="ViewBag.StandardId">
+				<option value="0"> -- All -- </option>
+			</select>
+			<table class="table table-bordered table-striped" id="tblStudents">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.FullName)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.DOB)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Gender)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.AdmitionDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Standard.StandardName)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.Session.SessionName)
+						</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.FullName)
+							</td>
+
+
+
+							<td>
+								@Html.DisplayFor(modelItem => item.DOB)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Gender)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.AdmitionDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Standard.StandardName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Session.SessionName)
+							</td>
+							<td>
+								<a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
+								<a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
+								<a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
+
+
+
 @section Scripts {
-    <!-- DataTable Scripts -->
-    <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
-    <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#tblGuestList').DataTable({
-                "pageLength": 10,
-                "ordering": true,
-                "searching": true
-            });
-        });
-   </script>
+	<!-- DataTable Scripts -->
+	<script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
+	<script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+	<script>
+			function ReloadIndex()
+			{
+				let _standardId  = $('#StandardIdDDL').val();
+				window.location.href='/Staff/Students/index/'+_standardId;
+			}
+		$(document).ready(function () {
+			$('#tblStudents').DataTable({
+				"pageLength": 10,
+				"ordering": true,
+				"searching": true
+			});
+		});
+	</script>
 }
+
+
+@* @section Scripts {
+	<!-- DataTable Scripts -->
+	<script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
+	<script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+	<script>
+			$(document).ready(function () {
+				$('#tblGuestLists').DataTable({
+					"pageLength": 10,
+					"ordering": true,
+					"searching": true
+				});
+			});
+
+		function ReloadIndex(thisObj)
+			{
+				window.location.href='/Staff/Students/index/'$('#StandardIdDDL').val();
+			}
+	</script>
+}
+ *@
