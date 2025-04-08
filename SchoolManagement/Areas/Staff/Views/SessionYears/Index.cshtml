@@ -9,10 +9,11 @@
 <div class="content">
     <div class="card">
         <div class="card-body">
-        <p>
-       <a asp-action="Create">Create New</a>
-     </p>
+            <div class="card-header">
+         
+     
    <table class="table table-bordered table-striped" id="tblGuestLists">
+                   
     <thead>
         <tr>
             <th>
@@ -24,7 +25,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
-            <th></th>
+            <th>Actions</th>
+            <th>Add More</th>
         </tr>
     </thead>
     <tbody>
@@ -43,12 +45,19 @@
                 <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
+                                  
+
+                                      
             </td>
+                                <td>
+                                    <a asp-action="Create">Create New</a>
+                                </td>
         </tr>
 }
     </tbody>
 </table>
 </div></div></div>
+</div>
 @section Scripts {
     <!-- DataTable Scripts -->
     <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
@@ -34,7 +35,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
                 return NotFound();
@@ -44,11 +45,22 @@ namespace SchoolManagement.Areas.Staff
         }
 
         // GET: Staff/Students/Create
-        public IActionResult Create()
+        public async Task<IActionResult>Create(int id)
         {
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId");
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId");
-            return View();
+            var student = await _context.Students.Include(s => s.ParentOrGeneral).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
+            if (student == null)
+                student = new Student
+                {
+                    SessionYearId = 1,
+                    ParentOrGeneral =
+                    [
+                        new ParentOrGeneral(){RelationWithStudent="Father"},
+                        new ParentOrGeneral(){RelationWithStudent="Mother"}
+                    ]
+                };
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId","SessionName");
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
+            return View(student);
         }
 
         // POST: Staff/Students/Create
@@ -56,7 +68,7 @@ namespace SchoolManagement.Areas.Staff
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StudentId,FirstName,LastName,EmailAddress,PhoneNumber,DOB,Gender,AdmitionDate,StandardId,SessionYearId")] Student student)
+        public async Task<IActionResult> Create( Student student)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +77,7 @@ namespace SchoolManagement.Areas.Staff
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId",student.StandardId);
             return View(student);
         }
 
@@ -94,7 +106,7 @@ namespace SchoolManagement.Areas.Staff
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("StudentId,FirstName,LastName,EmailAddress,PhoneNumber,DOB,Gender,AdmitionDate,StandardId,SessionYearId")] Student student)
         {
-            if (id != student.StudentId)
+            if (id != student.UniqueId)
             {
                 return NotFound();
             }
@@ -108,7 +120,7 @@ namespace SchoolManagement.Areas.Staff
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StudentExists(student.StudentId))
+                    if (!StudentExists(student.UniqueId))
                     {
                         return NotFound();
                     }
@@ -135,7 +147,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .FirstOrDefaultAsync(m => m.StudentId == id);
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
                 return NotFound();
@@ -161,7 +173,7 @@ namespace SchoolManagement.Areas.Staff
 
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.StudentId == id);
+            return _context.Students.Any(e => e.UniqueId == id);
         }
     }
 }

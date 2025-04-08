@@ -10,10 +10,14 @@
         <div class="card-body">
             <h6 class="card-header bg-primary text-light mb-2">Personal Info</h6>
             <hr />
-        
                     <form asp-action="Create">
                         <div class="row">
-                            <input type="hidden" asp-for="StudentId" />
+ 
+                            <input type="hidden" asp-for="UniqueId" />
+                              <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                            <label asp-for="StandardId" class="control-label">Standard Id</label>
+                            <select asp-for="StandardId" class="form-control" asp-items="ViewBag.StandardId"></select>
+                        </div>
                             <div class="form-group col-md-4 col-sm-6 col-lg-3">
                                 <label asp-for="FirstName" class="form-label">First Name</label>
                                 <input asp-for="FirstName" class="form-control" />
@@ -28,44 +32,32 @@
                             </div>
 
                             <div class="form-group col-md-4 col-sm-6 col-lg-3">
-                                <label asp-for="EmailAddress" class="form-label">Email Address</label>
-                                <input asp-for="EmailAddress" class="form-control" />
-                                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group col-md-4 col-sm-6 col-lg-3">
-
-                                <label asp-for="PhoneNumber" class="form-label">Contact Number</label>
-                                <input asp-for="PhoneNumber" class="form-control" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-group col-md-4 col-sm-6 col-lg-3">
-
                                 <label asp-for="DOB" class="form-label">Date Of Birth</label>
                                 <input asp-for="DOB" class="form-control" type="date" />
                                 <span asp-validation-for="DOB" class="text-danger"></span>
                             </div>
 
+                        <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                       </div>
 
-                            <div class="form-group col-md-4 col-sm-6 col-lg-3">
-                                <label asp-for="Gender" class="form-label">Gender</label>
-                                <input asp-for="Gender" class="form-control" />
-                                <span asp-validation-for="Gender" class="text-danger"></span>
-                            </div>
                             <div class="form-group col-md-4 col-sm-6 col-lg-3">
                                 <label asp-for="AdmitionDate" class="form-label"> Admission Date</label>
                                 <input asp-for="AdmitionDate" class="form-control" type="date" />
                                 <span asp-validation-for="AdmitionDate" class="text-danger"></span>
                             </div>
                          
-                      <div class="form-group col-md-4 col-sm-6 col-lg-3">
-                            <label asp-for="StandardId" class="control-label">Standard Id</label>
-                            <select asp-for="StandardId" class="form-control" asp-items="ViewBag.StandardId"></select>
-                        </div>
+                    
                         <div class="form-group col-md-4 col-sm-6 col-lg-3">
                             <label asp-for="SessionYearId" class="control-label">Session Year </label>
-                            <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
+                        <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
                         </div>
                         </div>
                         <div class="form-group">

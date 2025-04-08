@@ -6,12 +6,14 @@ namespace SchoolManagement.Models.User
     public class Student
     {
         [Key]
-        public int StudentId { get; set; }
+        public int UniqueId { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
+
+        [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
         public List<ParentOrGeneral>? ParentOrGeneral { get; set; }
@@ -33,7 +35,7 @@ namespace SchoolManagement.Models.User
 
         public int SessionYearId { get; set; }
         [ForeignKey("SessionYearId")]
-        public SessionYear Session { get; set; } = default!;
+        public SessionYear? Session { get; set; } = default!;
 
     }
 }

@@ -226,7 +226,7 @@ namespace SchoolManagement.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    StudentId = table.Column<int>(type: "int", nullable: false)
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -240,7 +240,7 @@ namespace SchoolManagement.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.StudentId);
+                    table.PrimaryKey("PK_Students", x => x.UniqueId);
                     table.ForeignKey(
                         name: "FK_Students_SessionYears_SessionYearId",
                         column: x => x.SessionYearId,
@@ -293,7 +293,7 @@ namespace SchoolManagement.Migrations
                         name: "FK_StudentFees_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "StudentId",
+                        principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -344,7 +344,7 @@ namespace SchoolManagement.Migrations
                     HomeAddressUniqueId = table.Column<int>(type: "int", nullable: true),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CTC = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: true),
+                    StudentUniqueId = table.Column<int>(type: "int", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrimaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SecondryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -361,10 +361,10 @@ namespace SchoolManagement.Migrations
                         principalTable: "Addresses",
                         principalColumn: "UniqueId");
                     table.ForeignKey(
-                        name: "FK_Parents_Students_StudentId",
-                        column: x => x.StudentId,
+                        name: "FK_Parents_Students_StudentUniqueId",
+                        column: x => x.StudentUniqueId,
                         principalTable: "Students",
-                        principalColumn: "StudentId");
+                        principalColumn: "UniqueId");
                 });
 
             migrationBuilder.InsertData(
@@ -1726,9 +1726,9 @@ namespace SchoolManagement.Migrations
                 column: "HomeAddressUniqueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parents_StudentId",
+                name: "IX_Parents_StudentUniqueId",
                 table: "Parents",
-                column: "StudentId");
+                column: "StudentUniqueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",

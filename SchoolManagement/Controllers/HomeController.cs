@@ -32,13 +32,21 @@ namespace SchoolManagement.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public IActionResult Contact() //create
         {
             return View();
         }
-       
+        [HttpPost]
+        public IActionResult Contact( Contact contact) //create
+        {
+            return View();
+        }
 
+        public IActionResult Vision()
+        {
+            return View();
+        }
 
 
         public IActionResult Facility()

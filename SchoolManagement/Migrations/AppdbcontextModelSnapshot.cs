@@ -8024,25 +8024,25 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StudentId")
+                    b.Property<int?>("StudentUniqueId")
                         .HasColumnType("int");
 
                     b.HasKey("UniqueId");
 
                     b.HasIndex("HomeAddressUniqueId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentUniqueId");
 
                     b.ToTable("Parents");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("UniqueId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
                     b.Property<DateTime>("AdmitionDate")
                         .HasColumnType("datetime2");
@@ -8073,7 +8073,7 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("StandardId")
                         .HasColumnType("int");
 
-                    b.HasKey("StudentId");
+                    b.HasKey("UniqueId");
 
                     b.HasIndex("SessionYearId");
 
@@ -8195,7 +8195,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasOne("SchoolManagement.Models.User.Student", null)
                         .WithMany("ParentOrGeneral")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentUniqueId");
 
                     b.Navigation("HomeAddress");
                 });
