@@ -3,17 +3,16 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "SessionYear";
 }
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <div class="content">
     <div class="card">
         <div class="card-body">
-
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+        <p>
+       <a asp-action="Create">Create New</a>
+     </p>
+   <table class="table table-bordered table-striped" id="tblGuestLists">
     <thead>
         <tr>
             <th>
@@ -56,7 +55,7 @@
     <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#tblGuestList').DataTable({
+            $('#tblGuestLists').DataTable({
                 "pageLength": 10,
                 "ordering": true,
                 "searching": true
