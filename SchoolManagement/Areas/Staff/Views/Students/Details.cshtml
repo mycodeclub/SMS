@@ -15,29 +15,14 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.FullName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.FullName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
+        
+       
+       
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DOB)
         </dt>
@@ -68,10 +53,37 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Session.UniqueId)
         </dd>
+       
+           <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ParentOrGeneral[0].FullName)
+            </dt>
+          <dd class="col-sm-10">
+             @Html.DisplayFor(model => model.ParentOrGeneral[0].FullName)
+           </dd>
+
+         <dt class="col-sm-2">
+          @Html.DisplayNameFor(model => model.ParentOrGeneral[0].Email)
+          </dt>
+           <dd class="col-sm-10">
+             @Html.DisplayFor(model => model.ParentOrGeneral[0].Email)
+            </dd>
+          <dt class="col-sm-2">
+              @Html.DisplayNameFor(model => model.ParentOrGeneral[0].PrimaryPhoneNumber)
+            </dt>
+            <dd class="col-sm-10">
+             @Html.DisplayFor(model => model.ParentOrGeneral[0].PrimaryPhoneNumber)
+              </dd>
+          <dt class="col-sm-2">
+           @Html.DisplayNameFor(model => model.ParentOrGeneral[0].SecondryPhoneNumber)
+            </dt>
+        <dd class="col-sm-10">
+           @Html.DisplayFor(model => model.ParentOrGeneral[0].SecondryPhoneNumber)
+            </dd>
+
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.UniqueId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
 

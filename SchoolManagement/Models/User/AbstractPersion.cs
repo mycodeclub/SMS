@@ -16,14 +16,14 @@ namespace SchoolManagement.Models.User
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
         [Display(Name = "Date Of Birth")]
-        public DateTime DOB { get; set; }
+        public DateTime DOB { get; set; } = DateTime.Now;
 
         [NotMapped]
         public string Age
         {
             get
             {
-                var today = DateTime.Today;
+                var today = DateTime.Now;
 
                 int years = today.Year - DOB.Year;
                 int months = today.Month - DOB.Month;

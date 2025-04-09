@@ -6,9 +6,9 @@ namespace SchoolManagement.Models.User
     {
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
-        [Display(Name = "Primary Phone Number")]
+        [Display(Name = "Primary Contact ")]
         public string PrimaryPhoneNumber { get; set; } = string.Empty;
-        [Display(Name = "Secondry Phone Number")]
+        [Display(Name = "Secondry Contact")]
         public string SecondryPhoneNumber { get; set; } = string.Empty;
 
     }

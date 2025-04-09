@@ -47,6 +47,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
+                .Include(s=>s.ParentOrGeneral)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -66,8 +67,11 @@ namespace SchoolManagement.Areas.Staff
                     SessionYearId = 1,
                     DOB = DateTime.Now.AddYears(-2),
                     AdmitionDate = DateTime.Now,
+                    
                     ParentOrGeneral =
+                    
                     [
+                        
                         new ParentOrGeneral(){RelationWithStudent="Father"},
                         new ParentOrGeneral(){RelationWithStudent="Mother"}
                     ]
@@ -86,6 +90,7 @@ namespace SchoolManagement.Areas.Staff
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -118,7 +123,7 @@ namespace SchoolManagement.Areas.Staff
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StudentId,FirstName,LastName,EmailAddress,PhoneNumber,DOB,Gender,AdmitionDate,StandardId,SessionYearId")] Student student)
+        public async Task<IActionResult> Edit( int id, Student student)
         {
             if (id != student.UniqueId)
             {
@@ -161,6 +166,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
+                .Include(s=>s.ParentOrGeneral)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
