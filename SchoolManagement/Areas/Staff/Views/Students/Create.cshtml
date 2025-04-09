@@ -12,7 +12,7 @@
 			<hr />
 			<form asp-action="Create">
 				<div class="row">
-
+					
 					<input type="hidden" asp-for="UniqueId" />
 					<div class="form-group col-md-4 col-sm-6 col-lg-3">
 						<label asp-for="StandardId" class="control-label">Standard Id</label>
@@ -59,10 +59,88 @@
 						<label asp-for="SessionYearId" class="control-label">Session Year </label>
 						<select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
 					</div>
-				</div> 
-	 
-		<div class="form-group">
-			<input type="submit" value="Create" class="btn btn-primary" />
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						
+						<h6>Father Details</h6>
+						<hr />
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].FirstName" class="form-label"> First Name</label>
+							<input asp-for="ParentOrGeneral[0].FirstName" class="form-control"  />
+							<span asp-validation-for="ParentOrGeneral[0].FirstName" class="text-danger"></span>
+						</div>
+				
+
+						<div class="form-group  ">
+							<label asp-for="ParentOrGeneral[0].LastName" class="form-label"> Last Name</label>
+							<input asp-for="ParentOrGeneral[0].LastName" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].LastName" class="text-danger"></span>
+						</div>
+
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].HomeAddress" class="form-label"> Home Address</label>
+							<input asp-for="ParentOrGeneral[0].HomeAddress" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].HomeAddress" class="text-danger"></span>
+						</div>
+
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].Occupation" class="form-label"> Occupation </label>
+							<input asp-for="ParentOrGeneral[0].Occupation" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].Occupation" class="text-danger"></span>
+						</div>
+						<div class="form-group">
+							<label asp-for="ParentOrGeneral[0].CTC" class="form-label">CTC</label>
+							<input asp-for="ParentOrGeneral[0].CTC" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].CTC" class="text-danger"></span>
+						</div>
+							</div>
+						</div>
+						</div>
+				<div class="col-md-6">
+				<div class="card">
+					<div class="card-body">
+						
+						<h6>Mother Details</h6>
+						<hr />
+						<div class="form-group">
+							<label asp-for="ParentOrGeneral[0].FirstName" class="form-label"> First Name</label>
+							<input asp-for="ParentOrGeneral[0].FirstName" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].FirstName" class="text-danger"></span>
+						</div>
+
+
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].LastName" class="form-label"> Last Name</label>
+							<input asp-for="ParentOrGeneral[0].LastName" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].LastName" class="text-danger"></span>
+						</div>
+
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].HomeAddress" class="form-label"> Home Address</label>
+							<input asp-for="ParentOrGeneral[0].HomeAddress" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].HomeAddress" class="text-danger"></span>
+						</div>
+
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].Occupation" class="form-label"> Occupation </label>
+							<input asp-for="ParentOrGeneral[0].Occupation" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].Occupation" class="text-danger"></span>
+						</div>
+						<div class="form-group ">
+							<label asp-for="ParentOrGeneral[0].CTC" class="form-label">CTC</label>
+							<input asp-for="ParentOrGeneral[0].CTC" class="form-control" />
+							<span asp-validation-for="ParentOrGeneral[0].CTC" class="text-danger"></span>
+						</div>
+							</div>
+					</div>
+				</div>
+				</div>
+
+			<div class="form-group col-md-6">
+			<input type="submit" value="Create"  class="btn btn-primary" />
 		</div>
 		</form>
 	</div>
