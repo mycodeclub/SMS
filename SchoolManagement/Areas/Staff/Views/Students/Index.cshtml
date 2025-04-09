@@ -10,16 +10,22 @@
 	<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 
 }
-<div class="content">
-	<div class="card">
-		<div class="card-body">
-			<p style="margin-left:850px">
-				<a asp-action="Create" style=" background-color:bisque;border:2px solid black">New Admission</a>
-			</p>
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
+<div class="content px-3">
+	<div class="card shadow rounded-4">
+		<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+			<h4 class="mb-0">👩‍🎓Student List</h4>
+			<a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
+				<i class="fa fa-plus me-1"></i> New Admission
+			</a>
+		</div>
+		<br />
 			<select id="StandardIdDDL" onchange="ReloadIndex()" onc class="form-control" asp-items="ViewBag.StandardId">
-				<option value="0"> -- All -- </option>
+				<option value="0">-- All --</option>
 			</select>
+			<div class="card-body">
 			<table class="table table-bordered table-striped" id="tblStudents">
 				<thead>
 					<tr>

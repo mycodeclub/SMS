@@ -6,15 +6,21 @@
     ViewBag.ActiveTabName = "SessionYear";
 }
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
-<div class="content">
-    <div class="card">
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+<div class="content px-3">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h4 class="mb-0"><i class="fa-solid fa-layer-group me-2"></i>Session of Standard</h4>
+            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
+                <i class="fa fa-plus me-1"></i> Add New Session
+            </a>
+        </div>
         <div class="card-body">
-            <div class="card-header">
-         
-     
-   <table class="table table-bordered table-striped" id="tblGuestLists">
-                   
-    <thead>
+            <table class="table table-hover table-striped border shadow-sm rounded" id="tblGuestLists">
+                <thead class="table-light">
+              
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.SessionName)
@@ -26,7 +32,7 @@
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
             <th>Actions</th>
-            <th>Add More</th>
+           
         </tr>
     </thead>
     <tbody>
@@ -48,9 +54,7 @@
                                   
                   
             </td>
-           <td>
-             <a asp-action="Create">New Session</a>
-         </td>
+          
         </tr>
 }
     </tbody>
