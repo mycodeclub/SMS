@@ -22,9 +22,14 @@
 			</a>
 		</div>
 		<br />
-			<select id="StandardIdDDL" onchange="ReloadIndex()" onc class="form-control" asp-items="ViewBag.StandardId">
-				<option value="0">-- All --</option>
-			</select>
+		<div class="d-flex justify-content-center my-8">
+			<div class="w-50">
+				<select id="StandardIdDDL" onchange="ReloadIndex()" class="form-control" asp-items="ViewBag.StandardId">
+					<option value="0">-- All --</option>
+				</select>
+			</div>
+		</div>
+
 			<div class="card-body">
 			<table class="table table-bordered table-striped" id="tblStudents">
 				<thead>
