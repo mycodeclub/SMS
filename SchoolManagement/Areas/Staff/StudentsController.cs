@@ -85,7 +85,7 @@ namespace SchoolManagement.Areas.Staff
             }
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            return View(student);
+            return RedirectToAction("Create", student.UniqueId);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -125,11 +125,16 @@ namespace SchoolManagement.Areas.Staff
 
         // ---------------------------------- Parents 
 
-        public IActionResult AddParents(int studentId)
+        public async Task<IActionResult> AddParents(int studentId, int parentId)
         {
-            return View(new ParentOrGuardians() { StudentUniqueId = studentId });
+            var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
+            if (parent == null)
+                parent = new ParentOrGuardians() { StudentUniqueId = studentId };
+            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "RelationName", parent.RelationId);
+            return View(parent);
         }
 
+        [HttpPost]
         public IActionResult AddParents(ParentOrGuardians parent)
         {
             // save to db & redirect to student Details.

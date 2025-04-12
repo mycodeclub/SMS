@@ -24,6 +24,7 @@ namespace SchoolManagement.Data
             modelBuilder.SeedCountry();
             modelBuilder.SeedState();
             modelBuilder.SeedCities();
+            modelBuilder.SeedRelation();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -39,5 +40,6 @@ namespace SchoolManagement.Data
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Relation> Relations { get; set; }
      }
 }

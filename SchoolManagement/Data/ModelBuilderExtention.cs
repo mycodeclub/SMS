@@ -2,40 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
+using SchoolManagement.Models.User;
 
 namespace BpstEducation.Data
 {
     public static class ModelBuilderExtention
     {
-        public static void SeedRoles(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole() { Id = "1", Name = "Admin", NormalizedName = "ADMIN", },//ConcurrencyStamp = "1" },
-                new IdentityRole() { Id = "2", Name = "Staff", NormalizedName = "STAFF", },// ConcurrencyStamp = "1" },
-                new IdentityRole() { Id = "3", Name = "Parent", NormalizedName = "PARENT" }// , ConcurrencyStamp = "1" }
-                );
-        }
-        public static void SeedStandard(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Standard>().HasData(
-                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 4900 }
-               
-             );
-        }
-        public static void SeedSession(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<SessionYear>().HasData(
-                new SessionYear()
-                {
-                    UniqueId = 1,
-                    SessionName = "2025-2026",
-                    StartDate = new DateTime(2025, 03, 01),
-                    EndDate = new DateTime(2026, 2, 2)
-                });
-        }
         public static void SeedCountry(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Country>().HasData(
@@ -1301,6 +1273,50 @@ namespace BpstEducation.Data
                  new City() { UniqueId = 1215, StateId = 32, Name = "Zaidpur" },
                  new City() { UniqueId = 1216, StateId = 32, Name = "Zamania" }
                  );
+        }
+        public static void SeedRoles(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole() { Id = "1", Name = "Admin", NormalizedName = "ADMIN", },//ConcurrencyStamp = "1" },
+                new IdentityRole() { Id = "2", Name = "Staff", NormalizedName = "STAFF", },// ConcurrencyStamp = "1" },
+                new IdentityRole() { Id = "3", Name = "Parent", NormalizedName = "PARENT" }// , ConcurrencyStamp = "1" }
+                );
+        }
+        public static void SeedStandard(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Standard>().HasData(
+                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 4900 },
+                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 4900 }
+
+             );
+        }
+        public static void SeedRelation(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Relation>().HasData(
+                new Relation() { UniqueId = 1, RelationName = "Mother" },
+                new Relation() { UniqueId = 2, RelationName = "Father" },
+                new Relation() { UniqueId = 3, RelationName = "Sister" },
+                new Relation() { UniqueId = 4, RelationName = "Brother" },
+                new Relation() { UniqueId = 5, RelationName = "GrandFather" },
+                new Relation() { UniqueId = 6, RelationName = "GrandMother" },
+                new Relation() { UniqueId = 7, RelationName = "MaternalMother" },
+                new Relation() { UniqueId = 8, RelationName = "MaternalFather" },
+                new Relation() { UniqueId = 9, RelationName = "Uncle" },
+                new Relation() { UniqueId = 10, RelationName = "Aunty" }
+                );
+        }
+        public static void SeedSession(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SessionYear>().HasData(
+                new SessionYear()
+                {
+                    UniqueId = 1,
+                    SessionName = "2025-2026",
+                    StartDate = new DateTime(2025, 03, 01),
+                    EndDate = new DateTime(2026, 2, 2)
+                });
         }
 
     }

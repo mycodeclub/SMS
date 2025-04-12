@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(Appdbcontext))]
-    partial class AppdbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250412085536__relation")]
+    partial class _relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -8016,8 +8019,9 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RelationId")
-                        .HasColumnType("int");
+                    b.Property<string>("RelationWithStudent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecondryPhoneNumber")
                         .IsRequired()
@@ -8029,8 +8033,6 @@ namespace SchoolManagement.Migrations
                     b.HasKey("UniqueId");
 
                     b.HasIndex("HomeAddressUniqueId");
-
-                    b.HasIndex("RelationId");
 
                     b.HasIndex("StudentUniqueId");
 
@@ -8263,12 +8265,6 @@ namespace SchoolManagement.Migrations
                         .WithMany()
                         .HasForeignKey("HomeAddressUniqueId");
 
-                    b.HasOne("SchoolManagement.Models.User.Relation", "Relation")
-                        .WithMany()
-                        .HasForeignKey("RelationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SchoolManagement.Models.User.Student", null)
                         .WithMany("ParentOrGuardians")
                         .HasForeignKey("StudentUniqueId")
@@ -8276,8 +8272,6 @@ namespace SchoolManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("HomeAddress");
-
-                    b.Navigation("Relation");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>
