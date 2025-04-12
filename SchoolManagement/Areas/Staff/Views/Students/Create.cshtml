@@ -1,231 +1,123 @@
 ﻿@model SchoolManagement.Models.User.Student
 
 @{
-	ViewData["Title"] = "Create";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	ViewBag.ActiveTabName = "Students";
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
 }
 <div class="content">
-	<div class="card">
-		<div class="card-body" style="border:1px solid blue">
-			<h6 class="card-header bg-primary text-light mb-2">Personal Info</h6>
-			<hr />
-			<form asp-action="Create">
-				<div class="row">
-					
-					<input type="hidden" asp-for="UniqueId" />
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="StandardId" class="control-label">Standard </label>
-						<select asp-for="StandardId" class="form-control" asp-items="ViewBag.StandardId"></select>
-					</div>
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="FirstName" class="form-label">First Name</label>
-						<input asp-for="FirstName" class="form-control" />
-						<span asp-validation-for="FirstName" class="text-danger"></span>
+    <div class="card">
+        <div class="card-body" style="border:1px solid blue">
+            <h6 class="card-header bg-primary text-light mb-2">Personal Info</h6>
+            <hr />
+            <form asp-action="Create">
+                <div class="row">
+                    <input type="hidden" asp-for="UniqueId" />
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="StandardId" class="control-label">Standard </label>
+                        <select asp-for="StandardId" class="form-control" asp-items="ViewBag.StandardId"></select>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
 
-					</div>
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="LastName" class="form-label">Last Name</label>
-						<input asp-for="LastName" class="form-control" />
-						<span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
 
-					</div>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="DOB" class="form-label">Date Of Birth</label>
+                        <input asp-for="DOB" class="form-control" type="date" />
+                        <span asp-validation-for="DOB" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <select asp-for="Gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="AdmitionDate" class="form-label"> Admission Date</label>
+                        <input asp-for="AdmitionDate" class="form-control" type="date" />
+                        <span asp-validation-for="AdmitionDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <label asp-for="SessionYearId" class="control-label">Session Year </label>
+                        <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
+                    </div>
+                  <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                        <a href="/Staff/Students/AddParents/" class="btn btn-primary"> Add Parents</a>
+                            
+                  </div>
+                </div>
 
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="DOB" class="form-label">Date Of Birth</label>
-						<input asp-for="DOB" class="form-control" type="date" />
-						<span asp-validation-for="DOB" class="text-danger"></span>
-					</div>
+                @if (Model.ParentOrGuardians != null)
+                {
+                    <div class="row">
+                        <div class="card">
+                            <div class="card-header" style="border:1px solid blue">
+                                <h6 class="card-header bg-primary text-light">Perents Details  </h6>
+                            </div>
+                            <div class="card-body" style="border:1px solid blue">
 
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="Gender" class="form-label">Gender</label>
-						<select asp-for="Gender" class="form-control">
-							<option value="">Select Gender</option>
-							<option value="Male">Male</option>
-							<option value="Female">Female</option>
-							<option value="Other">Other</option>
-						</select>
-						<span asp-validation-for="Gender" class="text-danger"></span>
-					</div>
+                                <table class="table table-border">
+                                    <thead>
+                                        <tr>
+                                            <th> Relation </th>
+                                            <th> Name </th>
+                                            <th> DOB </th>
+                                            <th> PrimaryPhoneNumber </th>
+                                            <th> CTC </th>
+                                            <th> Occupation </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="AdmitionDate" class="form-label"> Admission Date</label>
-						<input asp-for="AdmitionDate" class="form-control" type="date" />
-						<span asp-validation-for="AdmitionDate" class="text-danger"></span>
-					</div>
-
-
-					<div class="form-group col-md-4 col-sm-6 col-lg-3">
-						<label asp-for="SessionYearId" class="control-label">Session Year </label>
-						<select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
-					</div>
-				</div>
-				<div class="row">
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						
-						<h6>Father Details</h6>
-						<hr />
-								<div class="row">
-									<div class="form-group col-md-6  ">
-										<label asp-for="ParentOrGeneral[0].FirstName" class="form-label"> First Name</label>
-										<input asp-for="ParentOrGeneral[0].FirstName" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].FirstName" class="text-danger"></span>
-									</div>
-
-
-									<div class="form-group col-md-6 ">
-										<label asp-for="ParentOrGeneral[0].LastName" class="form-label"> Last Name</label>
-										<input asp-for="ParentOrGeneral[0].LastName" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].LastName" class="text-danger"></span>
-									</div>
-
-
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].RelationWithStudent" class="form-label">Relation </label>
-										<input asp-for="ParentOrGeneral[0].RelationWithStudent" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].RelationWithStudent" class="text-danger"></span>
-									</div>
-
-
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].Email" class="form-label">Email</label>
-										<input asp-for="ParentOrGeneral[0].Email" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].Email" class="text-danger"></span>
-									</div>
-
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].DOB" class="form-label">Date Of Birth</label>
-										<input asp-for="ParentOrGeneral[0].DOB" class="form-control" type="date" />
-										<span asp-validation-for="ParentOrGeneral[0].DOB" class="text-danger"></span>
-									</div>
-									<div class="form-group col-md-6 ">
-										<label asp-for="ParentOrGeneral[0].PrimaryPhoneNumber" class="form-label">Primary Contact</label>
-										<input asp-for="ParentOrGeneral[0].PrimaryPhoneNumber" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].PrimaryPhoneNumber" class="text-danger"></span>
-									</div>
-
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].SecondryPhoneNumber" class="form-label">Secondary  Contact </label>
-										<input asp-for="ParentOrGeneral[0].SecondryPhoneNumber" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].SecondryPhoneNumber" class="text-danger"></span>
-									</div>
+                                        @foreach (var p in Model.ParentOrGuardians)
+                                        {
+                                            <tr>
+                                                <td>@p.RelationWithStudent</td>
+                                                <td>@p.FullName</td>
+                                                <td>@p.DOB.ToShortDateString() | Age:  @p.Age</td>
+                                                <td>@p.PrimaryPhoneNumber </td>
+                                                <td>@p.CTC </td>
+                                                <td>@p.Occupation </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
 
+                    </div>
+                }
+                <br />
+                <div class="form-group col-md-6">
+                    <input type="submit" value="Create" style="margin-left:400px;border:1px solid black" class="btn btn-primary" />
 
+                </div>
+            </form>
+        </div>
+    </div>
 
-									<div class="form-group col-md-6 ">
-										<label asp-for="ParentOrGeneral[0].HomeAddress" class="form-label"> Home Address</label>
-										<input asp-for="ParentOrGeneral[0].HomeAddress" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].HomeAddress" class="text-danger"></span>
-									</div>
-
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].Occupation" class="form-label"> Occupation </label>
-										<input asp-for="ParentOrGeneral[0].Occupation" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].Occupation" class="text-danger"></span>
-									</div>
-									<div class="form-group col-md-6">
-										<label asp-for="ParentOrGeneral[0].CTC" class="form-label">CTC</label>
-										<input asp-for="ParentOrGeneral[0].CTC" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[0].CTC" class="text-danger"></span>
-									</div>
-								</div>
-							</div>
-						</div>
-						</div>
-				<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						
-						<h6>Mother Details</h6>
-						<hr />
-								<div class="row">
-									<div class="form-group col-md-6  ">
-										<label asp-for="ParentOrGeneral[1].FirstName" class="form-label"> First Name</label>
-										<input asp-for="ParentOrGeneral[1].FirstName" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[1].FirstName" class="text-danger"></span>
-									</div>
-
-
-									<div class="form-group col-md-6 ">
-										<label asp-for="ParentOrGeneral[1].LastName" class="form-label"> Last Name</label>
-										<input asp-for="ParentOrGeneral[1].LastName" class="form-control" />
-										<span asp-validation-for="ParentOrGeneral[1].LastName" class="text-danger"></span>
-									</div>
-
-
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].RelationWithStudent" class="form-label">Relation </label>
-									<input asp-for="ParentOrGeneral[1].RelationWithStudent" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[0].RelationWithStudent" class="text-danger"></span>
-								</div>
-
-
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].Email" class="form-label">Email</label>
-									<input asp-for="ParentOrGeneral[1].Email" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].Email" class="text-danger"></span>
-								</div>
-
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].DOB" class="form-label">Date Of Birth</label>
-									<input asp-for="ParentOrGeneral[1].DOB" class="form-control" type="date" />
-									<span asp-validation-for="ParentOrGeneral[1].DOB" class="text-danger"></span>
-								</div>
-									<div class="form-group col-md-6 ">
-									<label asp-for="ParentOrGeneral[1].PrimaryPhoneNumber" class="form-label">Primary Contact </label>
-									<input asp-for="ParentOrGeneral[1].PrimaryPhoneNumber" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].PrimaryPhoneNumber" class="text-danger"></span>
-								</div>
-
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].SecondryPhoneNumber" class="form-label">Secondary  Contact</label>
-									<input asp-for="ParentOrGeneral[1].SecondryPhoneNumber" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].SecondryPhoneNumber" class="text-danger"></span>
-								</div>  
-
-									<div class="form-group col-md-6 ">
-									<label asp-for="ParentOrGeneral[1].HomeAddress" class="form-label"> Home Address</label>
-									<input asp-for="ParentOrGeneral[1].HomeAddress" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].HomeAddress" class="text-danger"></span>
-								</div>
-
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].Occupation" class="form-label"> Occupation </label>
-									<input asp-for="ParentOrGeneral[1].Occupation" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].Occupation" class="text-danger"></span>
-								</div>
-									<div class="form-group col-md-6">
-									<label asp-for="ParentOrGeneral[1].CTC" class="form-label">CTC</label>
-									<input asp-for="ParentOrGeneral[1].CTC" class="form-control" />
-									<span asp-validation-for="ParentOrGeneral[1].CTC" class="text-danger"></span>
-								</div>
-								</div>
-
-							</div>
-					</div>
-				</div>
-				</div>
-              <br />
-			<div class="form-group col-md-6">
-			<input type="submit" value="Create" style="margin-left:400px;border:1px solid black"  class="btn btn-primary" />
-		
-		</div>
-		</form>
-	</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
 </div>
-
-<div>
-	<a asp-action="Index">Back to List</a>
-</div>
-</div>
-	</div>
+    </div>
 </div>
 
 @section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

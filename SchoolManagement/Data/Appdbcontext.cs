@@ -32,7 +32,7 @@ namespace SchoolManagement.Data
         }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
         public DbSet<Student> Students { get; set; }       // student
-        public DbSet<ParentOrGeneral> Parents { get; set; }     // parent
+        public DbSet<ParentOrGuardians> Parents { get; set; }     // parent
         public DbSet<Standard> Standards { get; set; }      //class/standards
         public DbSet<StudentFee> StudentFees { get; set; }     //feestructure
         public DbSet<Country> Countrys { get; set; }

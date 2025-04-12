@@ -7982,7 +7982,7 @@ namespace SchoolManagement.Migrations
                     b.ToTable("StudentFees");
                 });
 
-            modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGeneral", b =>
+            modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>
                 {
                     b.Property<int>("UniqueId")
                         .ValueGeneratedOnAdd()
@@ -8190,14 +8190,14 @@ namespace SchoolManagement.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGeneral", b =>
+            modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>
                 {
                     b.HasOne("SchoolManagement.Models.Address.Address", "HomeAddress")
                         .WithMany()
                         .HasForeignKey("HomeAddressUniqueId");
 
                     b.HasOne("SchoolManagement.Models.User.Student", null)
-                        .WithMany("ParentOrGeneral")
+                        .WithMany("ParentOrGuardians")
                         .HasForeignKey("StudentUniqueId");
 
                     b.Navigation("HomeAddress");
@@ -8224,7 +8224,7 @@ namespace SchoolManagement.Migrations
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>
                 {
-                    b.Navigation("ParentOrGeneral");
+                    b.Navigation("ParentOrGuardians");
                 });
 #pragma warning restore 612, 618
         }

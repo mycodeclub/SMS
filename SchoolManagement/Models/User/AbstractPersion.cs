@@ -8,6 +8,8 @@ namespace SchoolManagement.Models.User
         [Key]
         public int UniqueId { get; set; }
 
+        public int StudentUniqueId { get; set; }
+
         [Display(Name = "First Name")]
         public string FirstName { get; set; } = string.Empty;
         [Display(Name = "Last Name")]
@@ -37,7 +39,8 @@ namespace SchoolManagement.Models.User
                     months += 12;
                 }
 
-                return $"{years} years, {months} months";
+                return $"{years} Y";
+                // return $"{years} Y, {months} M";
             }
         }
     }

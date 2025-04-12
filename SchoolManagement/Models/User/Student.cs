@@ -16,7 +16,7 @@ namespace SchoolManagement.Models.User
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
-        public List<ParentOrGeneral>? ParentOrGeneral { get; set; }
+        public List<ParentOrGuardians>? ParentOrGuardians { get; set; }
         [Display(Name = "Email Address")]
         public string? EmailAddress { get; set; }
         [Display(Name = "Contact Number")]

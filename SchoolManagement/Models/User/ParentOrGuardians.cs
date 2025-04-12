@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.Models.User
 {
-    public class ParentOrGeneral : AbstractPersion
+    public class ParentOrGuardians : AbstractPersion
     {
         [Display(Name = "Relation With Student")]
         public string RelationWithStudent { get; set; } = string.Empty;

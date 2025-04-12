@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(Appdbcontext))]
-    partial class AppdbcontextModelSnapshot : ModelSnapshot
+    [Migration("20250412075155_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,7 +230,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.Address.City", b =>
@@ -249,7 +252,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
 
                     b.HasData(
                         new
@@ -7558,7 +7561,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -7587,7 +7590,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("States", (string)null);
+                    b.ToTable("States");
 
                     b.HasData(
                         new
@@ -7887,7 +7890,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("SessionYears", (string)null);
+                    b.ToTable("SessionYears");
 
                     b.HasData(
                         new
@@ -7919,7 +7922,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Standards", (string)null);
+                    b.ToTable("Standards");
 
                     b.HasData(
                         new
@@ -7976,7 +7979,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentFees", (string)null);
+                    b.ToTable("StudentFees");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>
@@ -8033,7 +8036,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StudentUniqueId");
 
-                    b.ToTable("Parents", (string)null);
+                    b.ToTable("Parents");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>
@@ -8079,7 +8082,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StandardId");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

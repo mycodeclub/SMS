@@ -25,12 +25,12 @@ namespace SchoolManagement.Areas.Staff
                 students = await _context.Students
                     .Include(s => s.Session)
                     .Include(s => s.Standard)
-                    .Include(s => s.ParentOrGeneral)
+                    .Include(s => s.ParentOrGuardians)
                     .Where(s => s.StandardId == id).ToListAsync();
             else students = await _context.Students
              .Include(s => s.Session)
              .Include(s => s.Standard)
-             .Include(s => s.ParentOrGeneral).ToListAsync();
+             .Include(s => s.ParentOrGuardians).ToListAsync();
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", id);
 
             return View(students);
@@ -47,7 +47,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .Include(s => s.ParentOrGeneral)
+                .Include(s => s.ParentOrGuardians)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -60,21 +60,13 @@ namespace SchoolManagement.Areas.Staff
         // GET: Staff/Students/Create
         public async Task<IActionResult> Create(int id)
         {
-            var student = await _context.Students.Include(s => s.ParentOrGeneral).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
+            var student = await _context.Students.Include(s => s.ParentOrGuardians).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
             if (student == null)
                 student = new Student
                 {
                     SessionYearId = 1,
                     DOB = DateTime.Now.AddYears(-2),
-                    AdmitionDate = DateTime.Now,
-
-                    ParentOrGeneral =
-
-                    [
-
-                        new ParentOrGeneral(){RelationWithStudent="Father",DOB = DateTime.Now.AddYears(-25)},
-                        new ParentOrGeneral(){RelationWithStudent="Mother",DOB = DateTime.Now.AddYears(-22)}
-                    ]
+                    AdmitionDate = DateTime.Now
                 };
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
@@ -95,7 +87,7 @@ namespace SchoolManagement.Areas.Staff
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             return View(student);
         }
-   
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -106,7 +98,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .Include(s => s.ParentOrGeneral)
+                .Include(s => s.ParentOrGuardians)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -133,7 +125,16 @@ namespace SchoolManagement.Areas.Staff
 
         // ---------------------------------- Parents 
 
+        public IActionResult AddParents(int studentId)
+        {
+            return View(new ParentOrGuardians() { StudentUniqueId = studentId });
+        }
 
+        public IActionResult AddParents(ParentOrGuardians parent)
+        {
+            // save to db & redirect to student Details.
+            return View();
+        }
 
     }
 }
