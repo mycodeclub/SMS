@@ -15,14 +15,12 @@ namespace SchoolManagement.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly Appdbcontext _context;
 
-       
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, Appdbcontext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
         }
-
 
         public IActionResult Index()
         {
@@ -77,17 +75,17 @@ namespace SchoolManagement.Controllers
                     var user = await _userManager.FindByNameAsync(model.LoginName);
                     var role = await _userManager.GetRolesAsync(user);
 
-                    
+
                     if (role.Contains("SuperAdmin"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "SuperAdmin" });
 
                     else if (role.Contains("Staff"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "Staff" });
 
-                   
 
-                     
-                    
+
+
+
                 }
                 else { ModelState.AddModelError("", "Invalid Email Id or Password"); }
             }
@@ -111,7 +109,7 @@ namespace SchoolManagement.Controllers
                 AppUser appUser = new AppUser()
                 {
                     UserName = "admin@bpst.com",
-                    Email= "admin@bpst.com",
+                    Email = "admin@bpst.com",
                     Password = "Admin@20",
                     ConfirmPassword = "Admin@20",
                     PhoneNumber = "9999999999",
@@ -147,8 +145,7 @@ namespace SchoolManagement.Controllers
             var result = await AutoAdminLogin();
             if (result)
             {
-                return RedirectToAction("Index", "Home", new { Area = "SuperAdmin" });
-                return RedirectToAction("Index", "Home", new { Area = "Staff" });
+                return RedirectToAction("Index", "Students", new { Area = "Staff" });
             }
             else { return RedirectToAction("CreateMasterUser"); }
         }

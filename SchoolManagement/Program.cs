@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<Appdbcontext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AnkitLocalConStr")));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
@@ -37,7 +37,7 @@ app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Account}/{action=AutoLogin}/{id?}");
 
 //.WithStaticAssets();
 

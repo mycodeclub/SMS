@@ -8,10 +8,10 @@
 
 @section Style {
 	<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+	<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
 }
-<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
 <div class="content px-3">
 	<div class="card shadow rounded-4">
@@ -109,25 +109,4 @@
 		});
 	</script>
 }
-
-
-@* @section Scripts {
-	<!-- DataTable Scripts -->
-	<script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
-	<script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
-	<script>
-			$(document).ready(function () {
-				$('#tblGuestLists').DataTable({
-					"pageLength": 10,
-					"ordering": true,
-					"searching": true
-				});
-			});
-
-		function ReloadIndex(thisObj)
-			{
-				window.location.href='/Staff/Students/index/'$('#StandardIdDDL').val();
-			}
-	</script>
-}
- *@
+ 

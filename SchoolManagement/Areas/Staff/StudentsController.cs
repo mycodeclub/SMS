@@ -47,7 +47,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .Include(s=>s.ParentOrGeneral)
+                .Include(s => s.ParentOrGeneral)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -67,13 +67,13 @@ namespace SchoolManagement.Areas.Staff
                     SessionYearId = 1,
                     DOB = DateTime.Now.AddYears(-2),
                     AdmitionDate = DateTime.Now,
-                    
+
                     ParentOrGeneral =
-                    
+
                     [
-                        
-                        new ParentOrGeneral(){RelationWithStudent="Father"},
-                        new ParentOrGeneral(){RelationWithStudent="Mother"}
+
+                        new ParentOrGeneral(){RelationWithStudent="Father",DOB = DateTime.Now.AddYears(-25)},
+                        new ParentOrGeneral(){RelationWithStudent="Mother",DOB = DateTime.Now.AddYears(-22)}
                     ]
                 };
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
@@ -81,16 +81,12 @@ namespace SchoolManagement.Areas.Staff
             return View(student);
         }
 
-        // POST: Staff/Students/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Student student)
         {
             if (ModelState.IsValid)
             {
-                
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -99,63 +95,7 @@ namespace SchoolManagement.Areas.Staff
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             return View(student);
         }
-
-        // GET: Staff/Students/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            return View(student);
-        }
-
-        // POST: Staff/Students/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit( int id, Student student)
-        {
-            if (id != student.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(student);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            return View(student);
-        }
-
-        // GET: Staff/Students/Delete/5
+   
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -166,7 +106,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .Include(s=>s.ParentOrGeneral)
+                .Include(s => s.ParentOrGeneral)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -191,9 +131,9 @@ namespace SchoolManagement.Areas.Staff
             return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
-        {
-            return _context.Students.Any(e => e.UniqueId == id);
-        }
+        // ---------------------------------- Parents 
+
+
+
     }
 }
