@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
+using SchoolManagement.Models;
 using SchoolManagement.Models.User;
 
 namespace SchoolManagement.Areas.Staff
@@ -25,7 +27,7 @@ namespace SchoolManagement.Areas.Staff
                 students = await _context.Students
                     .Include(s => s.Session)
                     .Include(s => s.Standard)
-                    .Include(s => s.ParentOrGuardians)
+                    .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
                     .Where(s => s.StandardId == id).ToListAsync();
             else students = await _context.Students
              .Include(s => s.Session)
@@ -47,7 +49,7 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
-                .Include(s => s.ParentOrGuardians)
+                .Include(s => s.ParentOrGuardians).ThenInclude(p=>p.Relation)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
@@ -70,6 +72,7 @@ namespace SchoolManagement.Areas.Staff
                 };
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
+            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
         }
 
@@ -83,6 +86,7 @@ namespace SchoolManagement.Areas.Staff
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+             
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             return RedirectToAction("Create", student.UniqueId);
@@ -124,22 +128,77 @@ namespace SchoolManagement.Areas.Staff
         }
 
         // ---------------------------------- Parents 
-
+        [HttpGet]
         public async Task<IActionResult> AddParents(int studentId, int parentId)
         {
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
                 parent = new ParentOrGuardians() { StudentUniqueId = studentId };
+           
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "RelationName", parent.RelationId);
             return View(parent);
         }
 
-        [HttpPost]
-        public IActionResult AddParents(ParentOrGuardians parent)
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParents(ParentOrGuardians parent)
         {
-            // save to db & redirect to student Details.
-            return View();
+           
+            if (ModelState.IsValid)
+            {
+                if (parent.UniqueId == 0)
+                    _context.Parents.Add(parent);
+                else
+
+                    _context.Update(parent);
+                
+                await _context.SaveChangesAsync();
+            }
+
+              // for reload a student view
+
+             var student = await _context.Students
+               .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+               .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
+
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
+            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId",parent.StudentUniqueId);
+            return View(parent); 
         }
+        [HttpGet]
+        public async Task<IActionResult> DeleteParents(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var parent = await _context.Parents
+                .Include(s => s.Relation)
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            if (parent == null)
+            {
+                return NotFound();
+            }
+
+            return View(parent);
+
+        }
+
+        [HttpPost, ActionName("DeleteParents")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteParent(int id)
+        {
+            var parent = await _context.Parents.FindAsync(id);
+            if (parent != null)
+            {
+                _context.Parents.Remove(parent); 
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details));
+        }
+
 
     }
 }

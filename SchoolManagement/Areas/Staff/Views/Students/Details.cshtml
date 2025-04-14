@@ -1,73 +1,94 @@
-﻿@model SchoolManagement.Models.User.Student
+﻿
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
 }
-<div class="content">
 
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="mb-3" style="background-color:lightgrey">👩‍🎓Student Details</h2>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr><th>Full Name</th><td>@Html.DisplayFor(model => model.FullName)</td></tr>
-                            <tr><th>Date of Birth</th><td>@Html.DisplayFor(model => model.DOB)</td></tr>
-                            <tr><th>Gender</th><td>@Html.DisplayFor(model => model.Gender)</td></tr>
-                            <tr><th>Admission Date</th><td>@Html.DisplayFor(model => model.AdmitionDate)</td></tr>
-                            <tr><th>Standard</th><td>@Html.DisplayFor(model => model.Standard.UniqueId)</td></tr>
-                            <tr><th>Session</th><td>@Html.DisplayFor(model => model.Session.UniqueId)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+<div class="card mt-1 mb-2">
+    <div class="card-body" style="border:1px solid blue">
+        <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Standard</strong></div>
+                <div class="fs-6">@Model.Standard.StandardName</div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Full Name</strong></div>
+                <div class="fs-6">@Model.FullName</div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Date Of Birth</strong></div>
+                <div class="fs-6">@Model.DOB.ToString("yyyy-MM-dd")</div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Gender</strong></div>
+                <div class="fs-6">@Model.Gender</div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Admission Date</strong></div>
+                <div class="fs-6">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+                <div><strong class="text-muted">Session Year</strong></div>
+                <div class="fs-6">@Model.Session.SessionName</div>
             </div>
         </div>
     </div>
-
-    <div class="row mb-4">
-        <!-- Father Details -->
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="mb-3" style="background-color:lightgrey">👨‍👧 Father Details</h2>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr><th>Full Name</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].FullName)</td></tr>
-                            <tr><th>Email</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].Email)</td></tr>
-                            <tr><th>Contact</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].PrimaryPhoneNumber)</td></tr>
-                            <tr><th>Date of Birth</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].DOB)</td></tr>
-                            <tr><th>Occupation</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].Occupation)</td></tr>
-                            <tr><th>CTC</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[0].CTC)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mother Details -->
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="mb-3" style="background-color:lightgrey">👩‍👧 Mother Details</h2>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr><th>Full Name</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[1].FullName)</td></tr>
-                            <tr><th>Email</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[1].Email)</td></tr>
-                            <tr><th>Contact</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[1].PrimaryPhoneNumber)</td></tr>
-                            <tr><th>Occupation</th><td>@Html.DisplayFor(model => model.ParentOrGuardians[1].Occupation)</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="mt-4">
-        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.UniqueId">Edit</a>
-        <a class="btn btn-secondary" asp-action="Index">Back to List</a>
-    </div>
-
 </div>
+@if (Model.ParentOrGuardians != null)
+            {
+                <div class="card">
+                    <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <label class="text-white" style="font-size:1.6em;">Parents Details</label>
+                        <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
+                    </div>
+                    <div class="card-body" style="border:1px solid blue">
+                        <table class="table table-bordered table-striped">
+                            <thead style="background-color:lightgrey">
+                                <tr>
+                                    <th>Relation</th>
+                                    <th>Name</th>
+                                    <th>DOB | Age</th>
+                                    <th>Primary Phone</th>
+                                    <th>CTC</th>
+                                    <th>Occupation</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model.ParentOrGuardians)
+                                {
+                                    <tr>
+                                        <td>@p.Relation.RelationName</td>
+                                        <td>@p.FullName</td>
+                                        <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                                        <td>@p.PrimaryPhoneNumber</td>
+                                        <td>@p.CTC</td>
+                                        <td>@p.Occupation</td>
+                                        <td>
+
+                                <a asp-action="AddParents" asp-route-id="@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                                  <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
