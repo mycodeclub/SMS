@@ -8,5 +8,6 @@ namespace SchoolManagement.Models.User
         public int UniqueId { get; set; }
         [Required]
         public string RelationName { get; set; } = string.Empty;
+        public bool AllowMultiple { get; set; } = false;
     }
 }

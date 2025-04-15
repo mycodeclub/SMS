@@ -8,27 +8,33 @@
     <div class="card-body" style="border:1px solid blue">
         <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
         <div class="row">
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <div class="col-md-4 col-sm-6 ">
                 <div><strong class="text-muted">Standard</strong></div>
                 <div class="fs-6">@Model.Standard.StandardName</div>
             </div>
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <br />
+            <div class="col-md-4 col-sm-6">
                 <div><strong class="text-muted">Full Name</strong></div>
                 <div class="fs-6">@Model.FullName</div>
             </div>
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <br />
+            <div class="col-md-4 col-sm-6 ">
                 <div><strong class="text-muted">Date Of Birth</strong></div>
                 <div class="fs-6">@Model.DOB.ToString("yyyy-MM-dd")</div>
             </div>
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <br />
+            <div class="col-md-4 col-sm-6 ">
                 <div><strong class="text-muted">Gender</strong></div>
                 <div class="fs-6">@Model.Gender</div>
             </div>
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <br />
+            <div class="col-md-4 col-sm-6 ">
                 <div><strong class="text-muted">Admission Date</strong></div>
                 <div class="fs-6">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
             </div>
-            <div class="col-md-4 col-sm-6 col-lg-3 mb-3">
+            <br />
+
+            <div class="col-md-4 col-sm-6 ">
                 <div><strong class="text-muted">Session Year</strong></div>
                 <div class="fs-6">@Model.Session.SessionName</div>
             </div>
@@ -71,16 +77,14 @@
                                 <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
                             </td>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-
-        </div>
-    </div>
-
+                           }
+                       </tbody>
+                    </table>
+                 </div>
+             </div>
+         }
+   
+      
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

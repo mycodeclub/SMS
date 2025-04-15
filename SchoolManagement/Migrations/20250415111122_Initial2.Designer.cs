@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(Appdbcontext))]
-    [Migration("20250412084733_datas")]
-    partial class datas
+    [Migration("20250415111122_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -8019,9 +8019,8 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RelationWithStudent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RelationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecondryPhoneNumber")
                         .IsRequired()
@@ -8033,6 +8032,8 @@ namespace SchoolManagement.Migrations
                     b.HasKey("UniqueId");
 
                     b.HasIndex("HomeAddressUniqueId");
+
+                    b.HasIndex("RelationId");
 
                     b.HasIndex("StudentUniqueId");
 
@@ -8047,6 +8048,9 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
+                    b.Property<bool>("AllowMultiple")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RelationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -8054,6 +8058,68 @@ namespace SchoolManagement.Migrations
                     b.HasKey("UniqueId");
 
                     b.ToTable("Relations");
+
+                    b.HasData(
+                        new
+                        {
+                            UniqueId = 1,
+                            AllowMultiple = false,
+                            RelationName = "Mother"
+                        },
+                        new
+                        {
+                            UniqueId = 2,
+                            AllowMultiple = false,
+                            RelationName = "Father"
+                        },
+                        new
+                        {
+                            UniqueId = 3,
+                            AllowMultiple = false,
+                            RelationName = "GrandFather"
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            AllowMultiple = false,
+                            RelationName = "GrandMother"
+                        },
+                        new
+                        {
+                            UniqueId = 5,
+                            AllowMultiple = false,
+                            RelationName = "MaternalMother"
+                        },
+                        new
+                        {
+                            UniqueId = 6,
+                            AllowMultiple = false,
+                            RelationName = "MaternalFather"
+                        },
+                        new
+                        {
+                            UniqueId = 7,
+                            AllowMultiple = true,
+                            RelationName = "Sister"
+                        },
+                        new
+                        {
+                            UniqueId = 8,
+                            AllowMultiple = true,
+                            RelationName = "Brother"
+                        },
+                        new
+                        {
+                            UniqueId = 9,
+                            AllowMultiple = true,
+                            RelationName = "Uncle"
+                        },
+                        new
+                        {
+                            UniqueId = 10,
+                            AllowMultiple = true,
+                            RelationName = "Aunty"
+                        });
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>
@@ -8213,6 +8279,12 @@ namespace SchoolManagement.Migrations
                         .WithMany()
                         .HasForeignKey("HomeAddressUniqueId");
 
+                    b.HasOne("SchoolManagement.Models.User.Relation", "Relation")
+                        .WithMany()
+                        .HasForeignKey("RelationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SchoolManagement.Models.User.Student", null)
                         .WithMany("ParentOrGuardians")
                         .HasForeignKey("StudentUniqueId")
@@ -8220,6 +8292,8 @@ namespace SchoolManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("HomeAddress");
+
+                    b.Navigation("Relation");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>

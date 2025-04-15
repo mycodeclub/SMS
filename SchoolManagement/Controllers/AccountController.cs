@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Address;
 
 namespace SchoolManagement.Controllers
 {
@@ -179,6 +180,18 @@ namespace SchoolManagement.Controllers
                 }
             }
             return result;
+        }
+        public async Task<List<City>> GetCities()
+        {
+            return await _context.Cities.ToListAsync();
+        }
+        public async Task<List<City>> GetCitiesByStateId(int id)
+        {
+            return await _context.Cities.Where(c => c.StateId == id).ToListAsync();
+        }
+        public async Task<City> GetCity(int id)
+        {
+            return await _context.Cities.FindAsync(id);
         }
 
     }

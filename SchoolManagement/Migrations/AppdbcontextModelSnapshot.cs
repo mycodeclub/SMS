@@ -8045,6 +8045,9 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
+                    b.Property<bool>("AllowMultiple")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RelationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -8057,51 +8060,61 @@ namespace SchoolManagement.Migrations
                         new
                         {
                             UniqueId = 1,
+                            AllowMultiple = false,
                             RelationName = "Mother"
                         },
                         new
                         {
                             UniqueId = 2,
+                            AllowMultiple = false,
                             RelationName = "Father"
                         },
                         new
                         {
                             UniqueId = 3,
-                            RelationName = "Sister"
-                        },
-                        new
-                        {
-                            UniqueId = 4,
-                            RelationName = "Brother"
-                        },
-                        new
-                        {
-                            UniqueId = 5,
+                            AllowMultiple = false,
                             RelationName = "GrandFather"
                         },
                         new
                         {
-                            UniqueId = 6,
+                            UniqueId = 4,
+                            AllowMultiple = false,
                             RelationName = "GrandMother"
                         },
                         new
                         {
-                            UniqueId = 7,
+                            UniqueId = 5,
+                            AllowMultiple = false,
                             RelationName = "MaternalMother"
                         },
                         new
                         {
-                            UniqueId = 8,
+                            UniqueId = 6,
+                            AllowMultiple = false,
                             RelationName = "MaternalFather"
                         },
                         new
                         {
+                            UniqueId = 7,
+                            AllowMultiple = true,
+                            RelationName = "Sister"
+                        },
+                        new
+                        {
+                            UniqueId = 8,
+                            AllowMultiple = true,
+                            RelationName = "Brother"
+                        },
+                        new
+                        {
                             UniqueId = 9,
+                            AllowMultiple = true,
                             RelationName = "Uncle"
                         },
                         new
                         {
                             UniqueId = 10,
+                            AllowMultiple = true,
                             RelationName = "Aunty"
                         });
                 });

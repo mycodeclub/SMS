@@ -1,17 +1,63 @@
-﻿ @model SchoolManagement.Models.User.ParentOrGuardians
+﻿@using SchoolManagement.Models.User
+ @model SchoolManagement.Models.User.ParentOrGuardians
 @{
     ViewData["Title"] = "AddParents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
+    List<ParentOrGuardians> stuParents = ViewBag.stuParents;
+    List<Relation> relationMaster = ViewBag.RelationId;
 }
 
-<form asp-action="AddParents" method="post"> 
-    <div class="content">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <input type="hidden" asp-for="StudentUniqueId" />       
-                    <div class="form-group col-md-6  ">
+@if (stuParents != null)
+{
+    <div class="card">
+        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+            <label class="text-white" style="font-size:1.6em;">Parents Details</label>
+            <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
+        </div>
+        <div class="card-body" style="border:1px solid blue">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:lightgrey">
+                    <tr>
+                        <th>Relation</th>
+                        <th>Name</th>
+                        <th>DOB | Age</th>
+                        <th>Primary Phone</th>
+                        <th>CTC</th>
+                        <th>Occupation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in stuParents)
+                    {
+                        <tr>
+                            <td>@p.Relation.RelationName</td>
+                            <td>@p.FullName</td>
+                            <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                            <td>@p.PrimaryPhoneNumber</td>
+                            <td>@p.CTC</td>
+                            <td>@p.Occupation</td>
+                            <td>
+
+                                <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                                <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<form asp-action="AddParents" method="post">
+    <div class="card" style="margin-left:5px;margin-right:5px;">
+      <div class="card-header bg-light">Parent Details</div>
+        <div class="card-body row" >
+           
+                    <input type="hidden" asp-for="StudentUniqueId" />
+                    <div class="form-group form-group col-md-4 col-sm-6 col-lg-3  ">
 
                         <label asp-for="@Model.FirstName" class="form-label"> First Name</label>
                         <input asp-for="@Model.FirstName" class="form-control" autocomplete="off" />
@@ -19,64 +65,119 @@
                     </div>
 
 
-                    <div class="form-group col-md-6 ">
+                    <div class="form-group form-group col-md-4 col-sm-6 col-lg-3 ">
                         <label asp-for="@Model.LastName" class="form-label"> Last Name</label>
                         <input asp-for="@Model.LastName" class="form-control" autocomplete="off" />
                         <span asp-validation-for="@Model.LastName" class="text-danger"></span>
                     </div>
 
 
-                    <div class="form-group col-md-6">
+                    <div class=" form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="RelationId" class="control-label">Relation With Student </label>
-                        <select asp-for="RelationId" class="form-control" asp-items="ViewBag.RelationId"></select>
+                        <select asp-for="RelationId" class="form-control">
+                            @foreach (var r in relationMaster)
+                            {
+                                if (!r.AllowMultiple &&  stuParents.Any(p => p.RelationId == r.UniqueId))
+                                {
+                                    <option disabled style="color:lightgrey" value="@r.UniqueId"> @r.RelationName </option>
+                                }
+                                else
+                                {
+                                    <option value="@r.UniqueId"> @r.RelationName </option>
+                                }
+                            }
+                        </select>
                     </div>
 
-
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.DOB" class="form-label">Date Of Birth</label>
                         <input asp-for="@Model.DOB" class="form-control" type="date" />
                         <span asp-validation-for="@Model.DOB" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-6 ">
+                    <div class="form-group form-group col-md-4 col-sm-6 col-lg-3 ">
                         <label asp-for="@Model.PrimaryPhoneNumber" class="form-label">Primary Contact</label>
                         <input asp-for="@Model.PrimaryPhoneNumber" class="form-control" autocomplete="off" />
                         <span asp-validation-for="@Model.PrimaryPhoneNumber" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.SecondryPhoneNumber" class="form-label">Secondary  Contact </label>
                         <input asp-for="@Model.SecondryPhoneNumber" class="form-control" autocomplete="off" />
                         <span asp-validation-for="@Model.SecondryPhoneNumber" class="text-danger"></span>
                     </div>
 
-
-                    <div class="form-group col-md-6 ">
-                        <label asp-for="@Model.HomeAddress" class="form-label"> Home Address</label>
-                        <input asp-for="@Model.HomeAddress" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="@Model.HomeAddress" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group col-md-6">
+                   
+                    <div class=" form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.Occupation" class="form-label"> Occupation </label>
                         <input asp-for="@Model.Occupation" class="form-control" autocomplete="off" />
                         <span asp-validation-for="@Model.Occupation" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.CTC" class="form-label">CTC</label>
                         <input asp-for="@Model.CTC" class="form-control" />
                         <span asp-validation-for="@Model.CTC" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-light">HomeAddress Details</div>
+                        <div class="card-body row">
+                            <div class="form-group col-sm-12 col-md-6  col-lg-4">
+                                <label asp-for="HomeAddress.CountryId" class="text-bold">  </label><small>  </small>
+                                <select asp-for="HomeAddress.CountryId" asp-items="ViewBag.CountryId" style="height:2em" class="custom-select form-control"></select>
+                                <span asp-validation-for="HomeAddress.CountryId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-sm-12 com-md-6 col-lg-4">
+                                <label asp-for="HomeAddress.StateId" class="control-label"></label><small>  </small>
+                                <select asp-for="HomeAddress.StateId" asp-items="ViewBag.StateId" style="height:2em" onchange="HomeAddress.GetCitiesByStateId($(this).children('option:selected').val())" class="custom-select form-control"> <option id="0"> -- Select State -- </option> </select>
+                                <span asp-validation-for="HomeAddress.StateId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-sm-12 com-md-6 col-lg-4">
+                                <label asp-for="HomeAddress.CityId" class="control-label"></label><small></small>
+                                <select asp-for="HomeAddress.CityId" asp-items="ViewBag.CityId" style="height:2em" class="custom-select form-control"></select>
+                                <span asp-validation-for="HomeAddress.CityId" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                <label class="control-label" asp-for="HomeAddress.AddressLine1"></label>
+                                <input asp-for="HomeAddress.AddressLine1" class="form-control" placeholder="HomeAddress Line 1" />
+                                <span asp-validation-for="HomeAddress.AddressLine1" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                <label class="control-label" asp-for="HomeAddress.AddressLine2"></label>
+                                <input asp-for="HomeAddress.AddressLine2" class="form-control" placeholder="HomeAddress Line 2" />
+                                <span asp-validation-for="HomeAddress.AddressLine2" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                <label class="control-label" asp-for="HomeAddress.AddressLine3"></label>
+                                <input asp-for="HomeAddress.AddressLine3" class="form-control" placeholder="HomeAddress Line 3" />
+                                <span asp-validation-for="HomeAddress.AddressLine3" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                <label class="control-label" asp-for="HomeAddress.NearestLandMark"></label>
+                                <input asp-for="HomeAddress.NearestLandMark" class="form-control" placeholder="Nearest Land Mark" />
+                                <span asp-validation-for="HomeAddress.NearestLandMark" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                <label class="control-label" asp-for="HomeAddress.PinCode"></label>
+                                <input asp-for="HomeAddress.PinCode" class="form-control" placeholder="Pin Code" />
+                                <span asp-validation-for="HomeAddress.PinCode" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-12">
                         <input type="submit" value="Add Parent" class="btn btn-primary" />
                     </div>
                 </div>
+                </div>
             </div>
+          
         </div>
-    </div>
-</form>
+   </form>
+    
 
 @section Scripts {
+    <script src="~/appjs/address.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+  
     }
 }
