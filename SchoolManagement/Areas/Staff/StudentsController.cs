@@ -29,7 +29,7 @@ namespace SchoolManagement.Areas.Staff
                 students = await _context.Students
                     .Include(s => s.Session)
                     .Include(s => s.Standard)
-                    .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+                    .Include(s => s.ParentOrGuardians)
                     .Where(s => s.StandardId == id).ToListAsync();
             else students = await _context.Students
              .Include(s => s.Session)
@@ -58,6 +58,9 @@ namespace SchoolManagement.Areas.Staff
                 return NotFound();
             }
 
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
         }
 
@@ -102,11 +105,11 @@ namespace SchoolManagement.Areas.Staff
                 return NotFound();
             }
 
-                 var student = await _context.Students
-                .Include(s => s.Session)
-                .Include(s => s.Standard)
-                .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            var student = await _context.Students
+           .Include(s => s.Session)
+           .Include(s => s.Standard)
+           .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+           .FirstOrDefaultAsync(m => m.UniqueId == id);
 
             if (student == null)
             {
@@ -197,11 +200,16 @@ namespace SchoolManagement.Areas.Staff
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
                 parent = new ParentOrGuardians() { StudentUniqueId = studentId };
-            ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == studentId).ToListAsync();
-            ViewBag.RelationId = await _context.Relations.ToListAsync();
+
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+
+
+            ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
+            ViewBag.RelationId = await _context.Relations.ToListAsync();
+            ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", 1);
+
             return View(parent);
         }
 
@@ -214,27 +222,28 @@ namespace SchoolManagement.Areas.Staff
             {
                 if (parent.UniqueId == 0)
                     _context.Parents.Add(parent);
-                else
-
-                    _context.Update(parent);
-
+                else 
+                    _context.Update(parent); 
                 await _context.SaveChangesAsync();
             }
 
-            // for reload a student view
 
             var student = await _context.Students
           .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
           .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
 
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId",student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-            ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
-            ViewBag.RelationId = await _context.Relations.ToListAsync();
-              return View(parent);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+
+            var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
+            ViewBag.stuParents = parents;
+            var _relation = await _context.Relations.ToListAsync();
+            ViewBag.RelationId = _relation;
+            ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
+
+            return View(parent);
         }
         [HttpGet]
         public async Task<IActionResult> DeleteParents(int id)
@@ -268,7 +277,7 @@ namespace SchoolManagement.Areas.Staff
             }
             return View(parent);
         }
-      
+
 
     }
 }

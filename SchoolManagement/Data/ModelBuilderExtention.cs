@@ -1297,14 +1297,14 @@ namespace BpstEducation.Data
             modelBuilder.Entity<Relation>().HasData(
                 new Relation() { UniqueId = 1, RelationName = "Mother" },
                 new Relation() { UniqueId = 2, RelationName = "Father" },
-                new Relation() { UniqueId = 3, RelationName = "Sister" },
-                new Relation() { UniqueId = 4, RelationName = "Brother" },
-                new Relation() { UniqueId = 5, RelationName = "GrandFather" },
-                new Relation() { UniqueId = 6, RelationName = "GrandMother" },
-                new Relation() { UniqueId = 7, RelationName = "MaternalMother" },
-                new Relation() { UniqueId = 8, RelationName = "MaternalFather" },
-                new Relation() { UniqueId = 9, RelationName = "Uncle" },
-                new Relation() { UniqueId = 10, RelationName = "Aunty" }
+                new Relation() { UniqueId = 3, RelationName = "GrandFather" },
+                new Relation() { UniqueId = 4, RelationName = "GrandMother" },
+                new Relation() { UniqueId = 5, RelationName = "MaternalMother" },
+                new Relation() { UniqueId = 6, RelationName = "MaternalFather" },
+                new Relation() { UniqueId = 7, RelationName = "Sister", AllowMultiple = true },
+                new Relation() { UniqueId = 8, RelationName = "Brother", AllowMultiple = true },
+                new Relation() { UniqueId = 9, RelationName = "Uncle", AllowMultiple = true },
+                new Relation() { UniqueId = 10, RelationName = "Aunty", AllowMultiple = true }
                 );
         }
         public static void SeedSession(this ModelBuilder modelBuilder)
