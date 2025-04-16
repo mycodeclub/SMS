@@ -1,5 +1,4 @@
 ﻿@model SchoolManagement.Models.User.Student
-
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -56,7 +55,51 @@
                                     <label asp-for="SessionYearId" class="control-label">Session Year </label>
                                     <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
                                 </div>
-
+                                <div class="card">
+                                    <div class="card-header bg-light">HomeAddress Details</div>
+                                    <div class="card-body row">
+                                        <div class="form-group col-sm-12 col-md-6  col-lg-4">
+                                            <label asp-for="HomeAddress.CountryId" class="text-bold">  </label><small>  </small>
+                                            <select asp-for="HomeAddress.CountryId" asp-items="ViewBag.CountryId" style="height:2em" class="custom-select form-control"></select>
+                                            <span asp-validation-for="HomeAddress.CountryId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-sm-12 com-md-6 col-lg-4">
+                                            <label asp-for="HomeAddress.StateId" class="control-label"></label><small>  </small>
+                                            <select asp-for="HomeAddress.StateId" asp-items="ViewBag.StateId" style="height:2em" onchange="HomeAddress.GetCitiesByStateId($(this).children('option:selected').val())" class="custom-select form-control"> <option id="0"> -- Select State -- </option> </select>
+                                            <span asp-validation-for="HomeAddress.StateId" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-sm-12 com-md-6 col-lg-4">
+                                            <label asp-for="HomeAddress.CityId" class="control-label"></label><small></small>
+                                            <select asp-for="HomeAddress.CityId" asp-items="ViewBag.CityId" style="height:2em" class="custom-select form-control"></select>
+                                            <span asp-validation-for="HomeAddress.CityId" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                            <label class="control-label" asp-for="HomeAddress.AddressLine1"></label>
+                                            <input asp-for="HomeAddress.AddressLine1" class="form-control" placeholder="HomeAddress Line 1" />
+                                            <span asp-validation-for="HomeAddress.AddressLine1" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                            <label class="control-label" asp-for="HomeAddress.AddressLine2"></label>
+                                            <input asp-for="HomeAddress.AddressLine2" class="form-control" placeholder="HomeAddress Line 2" />
+                                            <span asp-validation-for="HomeAddress.AddressLine2" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                            <label class="control-label" asp-for="HomeAddress.AddressLine3"></label>
+                                            <input asp-for="HomeAddress.AddressLine3" class="form-control" placeholder="HomeAddress Line 3" />
+                                            <span asp-validation-for="HomeAddress.AddressLine3" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                            <label class="control-label" asp-for="HomeAddress.NearestLandMark"></label>
+                                            <input asp-for="HomeAddress.NearestLandMark" class="form-control" placeholder="Nearest Land Mark" />
+                                            <span asp-validation-for="HomeAddress.NearestLandMark" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+                                            <label class="control-label" asp-for="HomeAddress.PinCode"></label>
+                                            <input asp-for="HomeAddress.PinCode" class="form-control" placeholder="Pin Code" />
+                                            <span asp-validation-for="HomeAddress.PinCode" class="text-danger"></span>
+                                        </div>
+                              </div>
+                            </div>
                             </div>
                             <div class="form-group col-md-6">
                                 <input type="submit" value="Create" style="margin-left:400px;border:1px solid black" class="btn btn-primary" />
@@ -120,6 +163,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/appjs/address.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

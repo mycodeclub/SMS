@@ -20,7 +20,7 @@ namespace SchoolManagement.Models.User
         [Display(Name = "Email Address")]
         public string? EmailAddress { get; set; }
         [Display(Name = "Contact Number")]
-        public string? PhoneNumber { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
 
         [Display(Name = "Date Of Birth")]
         public DateTime DOB { get; set; }
@@ -29,6 +29,7 @@ namespace SchoolManagement.Models.User
         [Display(Name = "Admission Date")]
         public DateTime AdmitionDate { get; set; }
 
+        public Address.Address? HomeAddress { get; set; }
         public int StandardId { get; set; }
         [ForeignKey("StandardId")]
         public Standard? Standard { get; set; }

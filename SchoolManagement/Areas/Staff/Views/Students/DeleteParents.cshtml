@@ -1,9 +1,11 @@
-﻿@model SchoolManagement.Models.User.ParentOrGuardians
+﻿@using SchoolManagement.Models
+@model SchoolManagement.Models.User.ParentOrGuardians
 @{
     ViewData["Title"] = "Delete Parents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
 }
+
 <div class="card border-danger p-3">
 <form asp-action="DeleteParents" method="post">
         <input type="hidden" asp-for="UniqueId" />
@@ -23,8 +25,6 @@
         <dt class="col-sm-3">Occupation</dt>
         <dd class="col-sm-9">@Model.Occupation</dd>
     </dl>
-
-       
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="Details" asp-controller="Students" asp-route-id="@Model.StudentUniqueId" class="btn btn-secondary">Cancel</a>
    

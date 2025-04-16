@@ -10,7 +10,7 @@
 
                 cityDropdown.append($('<option>', {
                     value: '',
-                    text: '--select city--'
+                    text: '-Select City-'
                 }));
 
                 $.each(data, function (i, city) {

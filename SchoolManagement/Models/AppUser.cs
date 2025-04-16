@@ -24,25 +24,10 @@ public class AppUser:IdentityUser
 
 
 
-
-
-
         [Required]
         [Phone]
         [Display(Name = " Enter Phone Number")]
         public string PhoneNumber { get; set; }
-
-
-
-
-
-
-
-
-
-
-        
-
 
 
         [NotMapped]

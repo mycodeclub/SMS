@@ -7,9 +7,7 @@
     List<ParentOrGuardians> stuParents = ViewBag.stuParents;
     List<Relation> relationMaster = ViewBag.RelationId;
 }
-@{ Html.RenderPartial("_ParentsPartial", stuParents); }
-
- 
+@{ Html.RenderPartial("_ParentsPartial", stuParents);}
 <form asp-action="AddParents" method="post">
     <div class="card" style="margin-left:5px;margin-right:5px;">
       <div class="card-header bg-light">Parent Details</div>
@@ -61,19 +59,19 @@
                     <div class="form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.SecondryPhoneNumber" class="form-label">Secondary  Contact </label>
                         <input asp-for="@Model.SecondryPhoneNumber" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="@Model.SecondryPhoneNumber" class="text-danger"></span>
+                      
                     </div>
 
                    
                     <div class=" form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.Occupation" class="form-label"> Occupation </label>
                         <input asp-for="@Model.Occupation" class="form-control" autocomplete="off" />
-                        <span asp-validation-for="@Model.Occupation" class="text-danger"></span>
+                   
                     </div>
                     <div class="form-group col-md-4 col-sm-6 col-lg-3">
                         <label asp-for="@Model.CTC" class="form-label">CTC</label>
                         <input asp-for="@Model.CTC" class="form-control" />
-                        <span asp-validation-for="@Model.CTC" class="text-danger"></span>
+                       
                     </div>
                     <div class="card">
                         <div class="card-header bg-light">HomeAddress Details</div>
@@ -138,4 +136,3 @@
     
   
     }
-}

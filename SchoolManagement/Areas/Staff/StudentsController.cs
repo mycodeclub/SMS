@@ -36,6 +36,9 @@ namespace SchoolManagement.Areas.Staff
              .Include(s => s.Standard)
              .Include(s => s.ParentOrGuardians).ToListAsync();
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", id);
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
 
             return View(students);
         }
@@ -75,6 +78,9 @@ namespace SchoolManagement.Areas.Staff
                     DOB = DateTime.Now.AddYears(-2),
                     AdmitionDate = DateTime.Now
                 };
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
@@ -91,6 +97,9 @@ namespace SchoolManagement.Areas.Staff
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
 
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
@@ -226,12 +235,9 @@ namespace SchoolManagement.Areas.Staff
                     _context.Update(parent); 
                 await _context.SaveChangesAsync();
             }
-
-
             var student = await _context.Students
           .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
           .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
-
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
@@ -242,7 +248,6 @@ namespace SchoolManagement.Areas.Staff
             var _relation = await _context.Relations.ToListAsync();
             ViewBag.RelationId = _relation;
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
-
             return View(parent);
         }
         [HttpGet]
@@ -259,6 +264,10 @@ namespace SchoolManagement.Areas.Staff
             {
                 return NotFound();
             }
+            var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
+            ViewBag.stuParents = parents;
+            var _relation = await _context.Relations.ToListAsync();
+            ViewBag.RelationId = _relation;
 
             return View(parent);
 
@@ -275,6 +284,10 @@ namespace SchoolManagement.Areas.Staff
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details));
             }
+            var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
+            ViewBag.stuParents = parents;
+            var _relation = await _context.Relations.ToListAsync();
+            ViewBag.RelationId = _relation;
             return View(parent);
         }
 
