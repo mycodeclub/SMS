@@ -35,11 +35,12 @@ namespace SchoolManagement.Areas.Staff
              .Include(s => s.Session)
              .Include(s => s.Standard)
              .Include(s => s.ParentOrGuardians).ToListAsync();
+            
+
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", id);
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-
             return View(students);
         }
 
@@ -54,6 +55,12 @@ namespace SchoolManagement.Areas.Staff
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
+                 .Include(s => s.HomeAddress)
+                  .ThenInclude(a => a.Country)
+                  .Include(s => s.HomeAddress)
+                  .ThenInclude(a => a.State)  
+                 .Include(s => s.HomeAddress)
+                      .ThenInclude(a => a.City)   
                 .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
@@ -66,7 +73,6 @@ namespace SchoolManagement.Areas.Staff
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
         }
-
         // GET: Staff/Students/Create
         public async Task<IActionResult> Create(int id)
         {
@@ -87,48 +93,57 @@ namespace SchoolManagement.Areas.Staff
             return View(student);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Student student)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
+                if (student.UniqueId == 0)
+                    _context.Students.Add(student);
+                else
+                    _context.Update(student);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
+
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
             return RedirectToAction("Edit", student.UniqueId);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var student = await _context.Students
-           .Include(s => s.Session)
-           .Include(s => s.Standard)
-           .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-           .FirstOrDefaultAsync(m => m.UniqueId == id);
+        //[HttpGet]
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var student = await _context.Students
+        //   .Include(s => s.Session)
+        //   .Include(s => s.Standard)
+        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.State)
+        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.City)
+        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.Country)
+        //   .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+        //   .FirstOrDefaultAsync(m => m.UniqueId == id);
 
-            if (student == null)
-            {
-                return NotFound();
-            }
-            // Load dropdowns if needed
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            return View(student);
-        }
+        //    if (student == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    // Load dropdowns if needed
+        //    ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+        //    ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+        //    ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+        //    ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
+        //    ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+        //    return View(student);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -159,7 +174,10 @@ namespace SchoolManagement.Areas.Staff
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             return View(student);
         }
@@ -213,8 +231,6 @@ namespace SchoolManagement.Areas.Staff
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-
-
             ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
             ViewBag.RelationId = await _context.Relations.ToListAsync();
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", 1);
@@ -235,14 +251,13 @@ namespace SchoolManagement.Areas.Staff
                     _context.Update(parent); 
                 await _context.SaveChangesAsync();
             }
-            var student = await _context.Students
-          .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-          .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
+             var student = await _context.Students
+            .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+            .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
-
             var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
             ViewBag.stuParents = parents;
             var _relation = await _context.Relations.ToListAsync();
@@ -290,7 +305,6 @@ namespace SchoolManagement.Areas.Staff
             ViewBag.RelationId = _relation;
             return View(parent);
         }
-
 
     }
 }

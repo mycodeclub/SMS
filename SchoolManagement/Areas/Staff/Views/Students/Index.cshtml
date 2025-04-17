@@ -34,6 +34,7 @@
 			<table class="table table-bordered table-striped" id="tblStudents">
 				<thead>
 					<tr>
+						
 						<th>
 							@Html.DisplayNameFor(model => model.FullName)
 						</th>
@@ -46,12 +47,9 @@
 						<th>
 							@Html.DisplayNameFor(model => model.AdmitionDate)
 						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Standard.StandardName)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.Session.SessionName)
-						</th>
+					
+						<th>Parent</th>
+
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -59,11 +57,10 @@
 					@foreach (var item in Model)
 					{
 						<tr>
+							
 							<td>
 								@Html.DisplayFor(modelItem => item.FullName)
 							</td>
-
-
 
 							<td>
 								@Html.DisplayFor(modelItem => item.DOB)
@@ -74,11 +71,9 @@
 							<td>
 								@Html.DisplayFor(modelItem => item.AdmitionDate)
 							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Standard.StandardName)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.Session.SessionName)
+							<td> 
+								@(item.ParentOrGuardians?.Count() ?? 0)
+															
 							</td>
 							<td>
 								<a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
