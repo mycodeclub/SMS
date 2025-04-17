@@ -10,8 +10,8 @@ namespace SchoolManagement.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly Appdbcontext _dbContext;
-        public HomeController(ILogger<HomeController> logger,Appdbcontext appdbcontext)
+        private readonly AppDbContext _dbContext;
+        public HomeController(ILogger<HomeController> logger,AppDbContext appdbcontext)
         {
             _logger = logger;
             _dbContext = appdbcontext;

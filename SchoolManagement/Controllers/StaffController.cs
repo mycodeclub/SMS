@@ -7,8 +7,8 @@ namespace SchoolManagement.Controllers
     public class StaffController : Controller
     {
 
-        private readonly Appdbcontext _context;
-        public StaffController(Appdbcontext context)
+        private readonly AppDbContext _context;
+        public StaffController(AppDbContext context)
         {
             _context = context;
         }

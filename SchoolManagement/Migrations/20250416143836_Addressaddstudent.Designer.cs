@@ -11,7 +11,7 @@ using SchoolManagement.Data;
 
 namespace SchoolManagement.Migrations
 {
-    [DbContext(typeof(Appdbcontext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20250416143836_Addressaddstudent")]
     partial class Addressaddstudent
     {

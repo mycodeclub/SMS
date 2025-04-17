@@ -7,8 +7,8 @@ namespace SchoolManagement.Controllers
 {
     public class StandardController : Controller
     {
-        private readonly Appdbcontext _context;
-        public StandardController(Appdbcontext context)
+        private readonly AppDbContext _context;
+        public StandardController(AppDbContext context)
         {
             _context = context;
         }

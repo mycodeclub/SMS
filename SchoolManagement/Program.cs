@@ -2,13 +2,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-builder.Services.AddDbContext<Appdbcontext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
+builder.Services.AddScoped<IStudentService, StudentService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
@@ -17,7 +19,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-}).AddEntityFrameworkStores<Appdbcontext>();
+}).AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 

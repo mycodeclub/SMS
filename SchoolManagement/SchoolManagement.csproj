@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\UiTemplate\ScannerUI\font\.DS_Store" />
   </ItemGroup>
 

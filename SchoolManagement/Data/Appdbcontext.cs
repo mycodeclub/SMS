@@ -9,9 +9,9 @@ using System;
 
 namespace SchoolManagement.Data
 {
-    public class Appdbcontext : IdentityDbContext<AppUser>
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public Appdbcontext(DbContextOptions<Appdbcontext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }

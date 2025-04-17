@@ -13,9 +13,9 @@ namespace SchoolManagement.Areas.Staff
     [Area("Staff")]
     public class SessionYearsController : Controller
     {
-        private readonly Appdbcontext _context;
+        private readonly AppDbContext _context;
 
-        public SessionYearsController(Appdbcontext context)
+        public SessionYearsController(AppDbContext context)
         {
             _context = context;
         }

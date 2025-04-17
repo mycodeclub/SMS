@@ -14,9 +14,9 @@ namespace SchoolManagement.Areas.Staff
     [Area("Staff")]
     public class StudentsController : Controller
     {
-        private readonly Appdbcontext _context;
+        private readonly AppDbContext _context;
 
-        public StudentsController(Appdbcontext context)
+        public StudentsController(AppDbContext context)
         {
             _context = context;
         }

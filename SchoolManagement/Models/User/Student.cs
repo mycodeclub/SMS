@@ -36,6 +36,8 @@ namespace SchoolManagement.Models.User
 
         public int SessionYearId { get; set; }
         [ForeignKey("SessionYearId")]
+
+        public bool IsDeleted { get; set; }
         public SessionYear? Session { get; set; } = default!;
 
     }

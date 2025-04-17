@@ -7,23 +7,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Staff
 {
     [Area("Staff")]
     public class StandardsController : Controller
     {
-        private readonly Appdbcontext _context;
+        [Obsolete]
+        private readonly AppDbContext _context;
+        private readonly IStudentService _studentService;
 
-        public StandardsController(Appdbcontext context)
+        public StandardsController(IStudentService studentService)
         {
-            _context = context;
+            //  _context = context;
+            _studentService = studentService;
         }
 
         // GET: Staff/Standards
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Standards.ToListAsync());
+            var students = await _studentService.GetAllStudents();
+            return View(students);
         }
 
         // GET: Staff/Standards/Details/5
