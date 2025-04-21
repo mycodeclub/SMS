@@ -25,6 +25,7 @@ namespace SchoolManagement.Data
             modelBuilder.SeedState();
             modelBuilder.SeedCities();
             modelBuilder.SeedRelation();
+            modelBuilder.SeedFeeTypeMaster();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

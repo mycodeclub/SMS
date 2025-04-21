@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
+using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 
 namespace BpstEducation.Data
@@ -1317,6 +1318,15 @@ namespace BpstEducation.Data
                     StartDate = new DateTime(2025, 03, 01),
                     EndDate = new DateTime(2026, 2, 2)
                 });
+        }
+        public static void SeedFeeTypeMaster(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FeeTypeMaster>().HasData(
+                new FeeTypeMaster() { UniqueId = 1, FeeType = "Admission Fee", },
+                new FeeTypeMaster() { UniqueId = 1, FeeType = "Tuition Fee", },
+                new FeeTypeMaster() { UniqueId = 1, FeeType = "Semester Fee", },
+                new FeeTypeMaster() { UniqueId = 1, FeeType = "Other Fee", }
+                );
         }
 
     }
