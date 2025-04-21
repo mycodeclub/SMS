@@ -11,6 +11,8 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AnkitLocalConStr")));
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IUserServiceBAL, UserServiceBAL>();
+
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {

@@ -18,16 +18,16 @@ namespace SchoolManagement.Areas.Staff
         private readonly AppDbContext _context;
         private readonly IStudentService _studentService;
 
-        public StandardsController(IStudentService studentService)
+        public StandardsController(IStudentService studentService , AppDbContext context)
         {
-            //  _context = context;
+              _context = context;
             _studentService = studentService;
         }
 
         // GET: Staff/Standards
         public async Task<IActionResult> Index()
         {
-            var students = await _studentService.GetAllStudents();
+            var students = await _context.Standards.ToListAsync();
             return View(students);
         }
 

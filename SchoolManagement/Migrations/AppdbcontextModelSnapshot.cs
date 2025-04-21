@@ -188,11 +188,9 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine3")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CityId")
@@ -208,7 +206,6 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NearestLandMark")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PinCode")
@@ -7864,7 +7861,7 @@ namespace SchoolManagement.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("AppUser", (string)null);
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.Fee.FeeTypeMaster", b =>
@@ -8176,6 +8173,9 @@ namespace SchoolManagement.Migrations
                     b.Property<DateTime>("AdmitionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
@@ -8198,6 +8198,9 @@ namespace SchoolManagement.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

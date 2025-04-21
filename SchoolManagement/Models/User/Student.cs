@@ -39,6 +39,7 @@ namespace SchoolManagement.Models.User
 
         public bool IsDeleted { get; set; }
         public SessionYear? Session { get; set; } = default!;
-
+        public DateTime CreatedDate { get; internal set; }
+        public DateTime LastUpdatedDate { get; internal set; }
     }
 }

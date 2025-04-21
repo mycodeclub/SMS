@@ -12,13 +12,13 @@ namespace SchoolManagement.Models.Address
         public string AddressLine1 { get; set; } = string.Empty;
 
         [Display(Name = "Address Line 2 ")]
-        public string AddressLine2 { get; set; }
+        public string? AddressLine2 { get; set; }
 
         [Display(Name = "Address Line 3 ")]
-        public string AddressLine3 { get; set; }
+        public string? AddressLine3 { get; set; }
 
         [Display(Name = "Nearest Landmark")]
-        public string NearestLandMark { get; set; }
+        public string? NearestLandMark { get; set; }
 
 
 

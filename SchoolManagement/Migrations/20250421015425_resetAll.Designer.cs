@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250421005918_reset")]
-    partial class reset
+    [Migration("20250421015425_resetAll")]
+    partial class resetAll
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,11 +191,9 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine2")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine3")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CityId")
@@ -211,7 +209,6 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NearestLandMark")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PinCode")
@@ -7867,7 +7864,53 @@ namespace SchoolManagement.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("AppUser", (string)null);
+                });
+
+            modelBuilder.Entity("SchoolManagement.Models.Fee.FeeTypeMaster", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FeeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UniqueId");
+
+                    b.ToTable("FeeTypeMaster");
+
+                    b.HasData(
+                        new
+                        {
+                            UniqueId = 1,
+                            Description = "",
+                            FeeType = "Admission Fee"
+                        },
+                        new
+                        {
+                            UniqueId = 2,
+                            Description = "",
+                            FeeType = "Tuition Fee"
+                        },
+                        new
+                        {
+                            UniqueId = 3,
+                            Description = "",
+                            FeeType = "Semester Fee"
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            Description = "",
+                            FeeType = "Other Fee"
+                        });
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.SessionYear", b =>
@@ -8133,6 +8176,9 @@ namespace SchoolManagement.Migrations
                     b.Property<DateTime>("AdmitionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
@@ -8155,6 +8201,9 @@ namespace SchoolManagement.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

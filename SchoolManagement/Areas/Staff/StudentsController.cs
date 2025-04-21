@@ -101,9 +101,17 @@ namespace SchoolManagement.Areas.Staff
             if (ModelState.IsValid)
             {
                 if (student.UniqueId == 0)
-                    _context.Students.Add(student);
+                {
+                    student.LastUpdatedDate = student.CreatedDate = DateTime.UtcNow;
+                    _context.Add(student);
+
+
+                }
                 else
+                {
+                    student.LastUpdatedDate = DateTime.UtcNow;
                     _context.Update(student);
+                }
                 await _context.SaveChangesAsync();
             }
 
@@ -112,75 +120,10 @@ namespace SchoolManagement.Areas.Staff
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            return RedirectToAction("Edit", student.UniqueId);
+            //return RedirectToAction("Edit", student.UniqueId);
+            return RedirectToAction("Index");
         }
-
-
-        //[HttpGet]
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var student = await _context.Students
-        //   .Include(s => s.Session)
-        //   .Include(s => s.Standard)
-        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.State)
-        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.City)
-        //   .Include(sa=>sa.HomeAddress).ThenInclude(a=>a.Country)
-        //   .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-        //   .FirstOrDefaultAsync(m => m.UniqueId == id);
-
-        //    if (student == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    // Load dropdowns if needed
-        //    ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-        //    ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-        //    ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-        //    ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
-        //    ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
-        //    return View(student);
-        //}
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Student student)
-        {
-            if (id != student.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(student);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!_context.Students.Any(e => e.UniqueId == id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
-            return View(student);
-        }
+      
 
 
 
