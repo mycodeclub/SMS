@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace SchoolManagement.Models
 {
@@ -14,5 +15,27 @@ namespace SchoolManagement.Models
 
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
+
+        public List<string> MonthsInSession
+        {
+            get
+
+
+            {
+                var months = new List<string>();
+                var current = new DateTime(StartDate.Year, StartDate.Month, 1);
+
+                var end = new DateTime(EndDate.Year, EndDate.Month, 1);
+
+                while (current <= end)
+                {
+                    months.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(current.Month));
+                    current = current.AddMonths(1);
+                } 
+                return months;
+            }
+        }
+
+
     }
 }
