@@ -8,6 +8,10 @@ using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
 using SchoolManagement.Models.User;
+using System;
+using System.Formats.Tar;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace SchoolManagement.Areas.Staff
 {
@@ -96,8 +100,9 @@ namespace SchoolManagement.Areas.Staff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Student student)
+        public async Task<IActionResult> Create(Models.User.Student student)
         {
+            ValidateFileUploads(student);
             if (ModelState.IsValid)
             {
                 if (student.UniqueId == 0)
@@ -105,26 +110,34 @@ namespace SchoolManagement.Areas.Staff
                     student.LastUpdatedDate = student.CreatedDate = DateTime.UtcNow;
                     _context.Add(student);
 
-
                 }
                 else
                 {
                     student.LastUpdatedDate = DateTime.UtcNow;
                     _context.Update(student);
                 }
+
                 await _context.SaveChangesAsync();
+                if (student.Aadhar != null && student.Aadhar.Length > 0)
+                {
+                    student.AadharFileUrl = await Common.CommonFuntions.UploadFile(student.Aadhar, "Student", student.UniqueId, "Aadhar");
+                    await _context.SaveChangesAsync();
+                }
+                if (student.Photos != null && student.Photos.Length > 0)
+                {
+                    student.PhotosFileUrl = await Common.CommonFuntions.UploadFile(student.Photos, "Student", student.UniqueId, "Photos");
+                    await _context.SaveChangesAsync();
+                }
+                ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+                ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+                ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+                ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
+                ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
+                //return RedirectToAction("Edit", student.UniqueId);
+                return RedirectToAction("Index");
             }
-
-            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-            //return RedirectToAction("Edit", student.UniqueId);
-            return RedirectToAction("Index");
+            return View(student);
         }
-      
-
 
 
 
@@ -194,7 +207,18 @@ namespace SchoolManagement.Areas.Staff
                     _context.Update(parent); 
                 await _context.SaveChangesAsync();
             }
-             var student = await _context.Students
+            await _context.SaveChangesAsync();
+            if (parent.Aadhar != null && parent.Aadhar.Length > 0)
+            {
+                parent.AadharFileUrl = await Common.CommonFuntions.UploadFile(parent.Aadhar, "Student", parent.UniqueId, "Aadhar");
+                await _context.SaveChangesAsync();
+            }
+            if (parent.Photos != null && parent.Photos.Length > 0)
+            {
+                parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Student", parent.UniqueId, "Photos");
+                await _context.SaveChangesAsync();
+            }
+            var student = await _context.Students
             .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
             .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
@@ -247,6 +271,73 @@ namespace SchoolManagement.Areas.Staff
             var _relation = await _context.Relations.ToListAsync();
             ViewBag.RelationId = _relation;
             return View(parent);
+        }
+
+        private bool StudentsExists(int id)
+        {
+            return _context.Students.Any(e => e.UniqueId == id);
+        }
+        private async Task<(string? AadhaarImagePath, string? PhotoImagePath)> UploadAadhaarAndPhotosImageAsync(IFormFile? aadhaarFile, IFormFile? photoFile)
+        {
+            string? aadhaarImagePath = null;
+            string? photoImagePath = null;
+
+            if (aadhaarFile != null && aadhaarFile.Length > 0)
+            {
+                var aadhaarFileName = Path.GetFileName(aadhaarFile.FileName);
+                var aadhaarFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+                if (!Directory.Exists(aadhaarFilePath))
+                    Directory.CreateDirectory(aadhaarFilePath);
+
+                using (var stream = new FileStream(aadhaarFilePath + aadhaarFileName, FileMode.Create))
+                    await aadhaarFile.CopyToAsync(stream);
+
+                aadhaarImagePath = "/images/" + aadhaarFileName;
+            }
+
+            if (photoFile != null && photoFile.Length > 0)
+            {
+                var photoFileName = Path.GetFileName(photoFile.FileName);
+                var photoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", photoFileName);
+
+                using (var stream = new FileStream(photoFilePath, FileMode.Create))
+                {
+                    await photoFile.CopyToAsync(stream);
+                }
+
+                photoImagePath = "/images/" + photoFile;
+            }
+
+            return (aadhaarImagePath,photoImagePath);
+        }
+
+
+        
+        private void ValidateFileUploads(Student student)
+        {
+            if (student.Aadhar !=null )
+            {
+                if (student.Aadhar.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("Aadhar", "Aadhaar file size must not exceed 2 MB.");
+                }
+                else if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(Path.GetExtension(student.Aadhar.FileName).ToLower()))
+                {
+                    ModelState.AddModelError("Aadhar", "Only JPG, JPEG, and PNG formats are allowed for Aadhaar.");
+                }
+            }
+
+            if (student.Photos != null)
+            {
+                if (student.Photos.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("Photos", "Photos file size must not exceed 2 MB.");
+                }
+                else if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(Path.GetExtension(student.Photos.FileName).ToLower()))
+                {
+                    ModelState.AddModelError("Photos", "Only JPG, JPEG, and PNG formats are allowed for Photos.");
+                }
+            }
         }
 
     }

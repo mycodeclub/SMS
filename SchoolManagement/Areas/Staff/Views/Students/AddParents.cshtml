@@ -8,7 +8,8 @@
     List<Relation> relationMaster = ViewBag.RelationId;
 }
 @{ Html.RenderPartial("_ParentsPartial", stuParents);}
-<form asp-action="AddParents" method="post">
+
+<form asp-action="AddParents" enctype="multipart/form-data" class="needs-validation" novalidate>
     <div class="card" style="margin-left:5px;margin-right:5px;">
       <div class="card-header bg-light">Parent Details</div>
         <div class="card-body row">
@@ -73,6 +74,36 @@
                         <input asp-for="@Model.CTC" class="form-control" />
                        
                     </div>
+            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                <label asp-for="AadhaarNumber" class="form-label"></label>
+                <input asp-for="AadhaarNumber" class="form-control" placeholder="Enter Aadhaar Number" />
+                <span asp-validation-for="AadhaarNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                <label asp-for="PanNumber" class="form-label" ></label>
+                <input asp-for="PanNumber" class="form-control" placeholder="Enter PAN Number" />
+                <span asp-validation-for="PanNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                <label asp-for="Aadhar" class="form-label"></label>
+                <input asp-for="Aadhar" type="file" class="form-control" id="aadharInput" />
+                <span asp-validation-for="Aadhar" class="text-danger"></span>
+                <img id="aadharPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
+            </div>
+            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                <label asp-for="PanFileUrl" class="form-label"></label>
+                <input asp-for="PanFileUrl" type="file" class="form-control" id="panInput" />
+                <span asp-validation-for="PanFileUrl" class="text-danger"></span>
+                <img id="photoPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
+            </div>
+            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                <label asp-for="Photos" class="form-label"></label>
+                <input asp-for="Photos" type="file" class="form-control" id="photosInput" />
+                <span asp-validation-for="Photos" class="text-danger"></span>
+                <img id="photoPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
+            </div>
+        
                     <div class="card">
                         <div class="card-header bg-light">HomeAddress Details</div>
                         <div class="card-body row">
@@ -129,10 +160,43 @@
     
 
 @section Scripts {
-    <script src="~/appjs/address.js"></script>
+    
+<script src="~/appjs/address.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var aadharInput = document.getElementById('aadharInput');
+            var panInput = document.getElementById('panInput');
+            var aadharPreview = document.getElementById('aadharPreview');
+            var panPreview = document.getElementById('panPreview');
+            var photosInput = document.getElementById('photosInput');
+               var photoPreview = document.getElementById('photoPreview');
+
+            function handleFileSelect(input, preview) {
+                input.addEventListener('change', function () {
+                    var file = input.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.style.display = 'none';
+                    }
+                });
+            }
+
+            handleFileSelect(aadharInput, aadharPreview);
+            handleFileSelect(panInput, panPreview);
+            handleFileSelect(photosInput, photoPreview);
+        });
+
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
     
   
     }

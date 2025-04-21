@@ -1,6 +1,6 @@
 ﻿namespace SchoolManagement.Models.Fee
 {
-    public class StudentFee
+    public class StudentFees
     {
     }
 }

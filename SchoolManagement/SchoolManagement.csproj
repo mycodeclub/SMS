@@ -29,4 +29,9 @@
     <None Include="wwwroot\UiTemplate\ScannerUI\font\.DS_Store" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\UserFiles\Students\" />
+  </ItemGroup>
+
 </Project>

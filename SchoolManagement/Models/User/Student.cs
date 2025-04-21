@@ -37,7 +37,27 @@ namespace SchoolManagement.Models.User
         public int SessionYearId { get; set; }
         [ForeignKey("SessionYearId")]
 
+        [Required]
+        [RegularExpression(@"^\d{12}$", ErrorMessage = "Invalid Aadhaar number. It must be a 12-digit number.")]
+        [Display(Name = "Aadhaar Num.")]
+        public string AadhaarNumber { get; set; } = string.Empty;
+
+        [NotMapped]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload Aadhar")]
+        public IFormFile? Aadhar { get; set; }
+
+        public string? AadharFileUrl { get; set; }
+
+        [NotMapped]
+        [DataType(DataType.Upload)]
+        [Display(Name = "Upload Photos")]
+        public IFormFile? Photos { get; set; }
+
+        public string? PhotosFileUrl { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public SessionYear? Session { get; set; } = default!;
         public DateTime CreatedDate { get; internal set; }
         public DateTime LastUpdatedDate { get; internal set; }
