@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250421015425_resetAll")]
-    partial class resetAll
+    [Migration("20250421123303_capital")]
+    partial class capital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7945,6 +7945,58 @@ namespace SchoolManagement.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SchoolManagement.Models.StaffNewModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AadhaarNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Experience")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrimaryPhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Qualification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SessionYearId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SessionYearId");
+
+                    b.ToTable("StaffNewModels");
+                });
+
             modelBuilder.Entity("SchoolManagement.Models.Standard", b =>
                 {
                     b.Property<int>("UniqueId")
@@ -8318,6 +8370,17 @@ namespace SchoolManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Models.StaffNewModel", b =>
+                {
+                    b.HasOne("SchoolManagement.Models.SessionYear", "SessionYear")
+                        .WithMany()
+                        .HasForeignKey("SessionYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SessionYear");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.StudentFee", b =>

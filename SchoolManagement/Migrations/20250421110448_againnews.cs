@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class resetAll : Migration
+    public partial class againnews : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -246,6 +246,34 @@ namespace SchoolManagement.Migrations
                         name: "FK_States_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
+                        principalColumn: "UniqueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StaffNewModels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Experience = table.Column<int>(type: "int", nullable: true),
+                    AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SessionYearId = table.Column<int>(type: "int", nullable: false),
+                    Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrimaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffNewModels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StaffNewModels_SessionYears_SessionYearId",
+                        column: x => x.SessionYearId,
+                        principalTable: "SessionYears",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1808,6 +1836,11 @@ namespace SchoolManagement.Migrations
                 column: "StudentUniqueId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StaffNewModels_SessionYearId",
+                table: "StaffNewModels",
+                column: "SessionYearId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
                 table: "States",
                 column: "CountryId");
@@ -1856,6 +1889,9 @@ namespace SchoolManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Parents");
+
+            migrationBuilder.DropTable(
+                name: "StaffNewModels");
 
             migrationBuilder.DropTable(
                 name: "StudentFees");

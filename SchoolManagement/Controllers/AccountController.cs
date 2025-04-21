@@ -77,11 +77,11 @@ namespace SchoolManagement.Controllers
                     var role = await _userManager.GetRolesAsync(user);
 
 
-                    if (role.Contains("SuperAdmin"))
-                        return RedirectToAction("Dashboard", "Home", new { Area = "SuperAdmin" });
+                    if (role.Contains("Admin"))
+                        return RedirectToAction("Index", "Home", new { Area = "Admin" });
 
                     else if (role.Contains("Staff"))
-                        return RedirectToAction("Dashboard", "Home", new { Area = "Staff" });
+                        return RedirectToAction("Index", "Home", new { Area = "Staff" });
 
 
 
@@ -146,7 +146,7 @@ namespace SchoolManagement.Controllers
             var result = await AutoAdminLogin();
             if (result)
             {
-                return RedirectToAction("Index", "Students", new { Area = "Staff" });
+                return RedirectToAction("Index", "StaffNew", new { Area = "Admin" });
             }
             else { return RedirectToAction("CreateMasterUser"); }
         }
@@ -156,8 +156,7 @@ namespace SchoolManagement.Controllers
         {
             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
             return result.Succeeded;
-        }
-
+        } 
 
         private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {
@@ -170,7 +169,8 @@ namespace SchoolManagement.Controllers
                 await _context.SaveChangesAsync();
                 await _context.SaveChangesAsync();
                 // Common.Static.Active.SetOrganizerForUserId(organizer, organizer.OrganizerUserId);
-                var result2 = await _userManager.AddToRoleAsync(appUser, "Staff");
+                await _userManager.AddToRoleAsync(appUser, "Staff");
+                await _userManager.AddToRoleAsync(appUser, "Admin");
             }
             else
             {

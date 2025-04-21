@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250421110448_againnews")]
+    partial class againnews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7972,10 +7975,6 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PrimaryPhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -7986,6 +7985,10 @@ namespace SchoolManagement.Migrations
 
                     b.Property<int>("SessionYearId")
                         .HasColumnType("int");
+
+                    b.Property<string>("lastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -8082,13 +8085,6 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
-                    b.Property<string>("AadhaarNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AadharFileUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("CTC")
                         .HasColumnType("int");
 
@@ -8112,16 +8108,6 @@ namespace SchoolManagement.Migrations
 
                     b.Property<string>("Occupation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PanFileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PanNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotosFileUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrimaryPhoneNumber")
@@ -8239,13 +8225,6 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
-                    b.Property<string>("AadhaarNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AadharFileUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("AdmitionDate")
                         .HasColumnType("datetime2");
 
@@ -8280,9 +8259,6 @@ namespace SchoolManagement.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhotosFileUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SessionYearId")
