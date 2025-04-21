@@ -1323,9 +1323,9 @@ namespace BpstEducation.Data
         {
             modelBuilder.Entity<FeeTypeMaster>().HasData(
                 new FeeTypeMaster() { UniqueId = 1, FeeType = "Admission Fee", },
-                new FeeTypeMaster() { UniqueId = 1, FeeType = "Tuition Fee", },
-                new FeeTypeMaster() { UniqueId = 1, FeeType = "Semester Fee", },
-                new FeeTypeMaster() { UniqueId = 1, FeeType = "Other Fee", }
+                new FeeTypeMaster() { UniqueId = 2, FeeType = "Tuition Fee", },
+                new FeeTypeMaster() { UniqueId = 3, FeeType = "Semester Fee", },
+                new FeeTypeMaster() { UniqueId = 4, FeeType = "Other Fee", }
                 );
         }
 

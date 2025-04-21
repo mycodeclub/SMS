@@ -1,11 +1,10 @@
 ﻿using BpstEducation.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.Emit;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
 using SchoolManagement.Models.User;
-using System;
+using SchoolManagement.Models.Fee;
 
 namespace SchoolManagement.Data
 {
@@ -42,5 +41,6 @@ namespace SchoolManagement.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
-     }
+        public DbSet<SchoolManagement.Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
+    }
 }

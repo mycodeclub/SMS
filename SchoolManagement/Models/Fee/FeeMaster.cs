@@ -4,6 +4,7 @@ namespace SchoolManagement.Models.Fee
 {
     public class FeeTypeMaster
     {
+        [Key]
         public int UniqueId { get; set; }
         [Required]
         public string FeeType { get; set; } = string.Empty;
