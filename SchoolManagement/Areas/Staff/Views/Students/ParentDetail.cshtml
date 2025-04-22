@@ -1,0 +1,79 @@
+﻿@model SchoolManagement.Models.User.ParentOrGuardians
+
+@{
+    ViewData["Title"] = "Parent Detail";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
+}
+
+<h1 class="mb-4">Parent Detail</h1>
+
+<div class="container">
+    <div class="row">
+       
+        <div class="col-md-8">
+            <h4>Parent Information</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Relation)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Relation.RelationName)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AadhaarNumber)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.AadhaarNumber)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Occupation)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Occupation)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CTC)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CTC)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FullName)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.FullName)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DOB)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.DOB)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PrimaryPhoneNumber)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.PrimaryPhoneNumber)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.SecondryPhoneNumber)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.SecondryPhoneNumber)</dd>
+
+                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FullAddress)</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.FullAddress)</dd>
+            </dl>
+        </div>
+
+
+
+        <div class="col-md-4">
+            <h4>Documents</h4>
+            <hr />
+
+            @if (!string.IsNullOrEmpty(Model.AadharFileUrl))
+            {
+                <div class="mb-3">
+                    <label><strong>Aadhaar Card:</strong></label><br />
+                    <img src="@Model.AadharFileUrl" alt="Aadhaar Image" class="img-fluid rounded shadow-sm" style="max-height: 300px;" />
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.PhotosFileUrl))
+            {
+                <div class="mb-3">
+                    <label><strong>Photo:</strong></label><br />
+                    <img src="/wwwroot/UserFileswwwroot/@Model.Photos" alt="Profile Photo" class="img-fluid rounded-circle shadow-sm" style="max-height: 300px;" />
+                </div>
+
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.UniqueId" class="btn btn-primary me-2">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

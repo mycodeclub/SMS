@@ -116,7 +116,6 @@ namespace SchoolManagement.Areas.Staff
                     student.LastUpdatedDate = DateTime.UtcNow;
                     _context.Update(student);
                 }
-
                 await _context.SaveChangesAsync();
                 if (student.Aadhar != null && student.Aadhar.Length > 0)
                 {
@@ -138,7 +137,6 @@ namespace SchoolManagement.Areas.Staff
             }
             return View(student);
         }
-
 
 
         public async Task<IActionResult> Delete(int? id)
@@ -196,26 +194,26 @@ namespace SchoolManagement.Areas.Staff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParents(ParentOrGuardians parent)
+        public async Task<IActionResult> AddParents(Models.User.ParentOrGuardians parent)
         {
-
+            ValidateFileUploads(parent);
             if (ModelState.IsValid)
             {
                 if (parent.UniqueId == 0)
                     _context.Parents.Add(parent);
                 else 
-                    _context.Update(parent); 
+                    _context.Update(parent);
                 await _context.SaveChangesAsync();
             }
             await _context.SaveChangesAsync();
             if (parent.Aadhar != null && parent.Aadhar.Length > 0)
             {
-                parent.AadharFileUrl = await Common.CommonFuntions.UploadFile(parent.Aadhar, "Student", parent.UniqueId, "Aadhar");
+                parent.AadharFileUrl = await Common.CommonFuntions.UploadFile(parent.Aadhar, "Parent", parent.UniqueId, "Aadhar");
                 await _context.SaveChangesAsync();
             }
             if (parent.Photos != null && parent.Photos.Length > 0)
             {
-                parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Student", parent.UniqueId, "Photos");
+                parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Parent", parent.UniqueId, "Photos");
                 await _context.SaveChangesAsync();
             }
             var student = await _context.Students
@@ -232,6 +230,33 @@ namespace SchoolManagement.Areas.Staff
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
             return View(parent);
         }
+
+
+        public async Task<IActionResult> ParentDetail(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var parent = await _context.Students
+                 .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+                  .Include(s => s.FullAddress)
+                  .Include(s=>s.Session)
+                  .Include(s=>s.Standard)
+                 
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
+
+            if (parent == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "RelationName", parent.RelationId);
+
+            return View(parent);
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> DeleteParents(int id)
         {
@@ -281,8 +306,10 @@ namespace SchoolManagement.Areas.Staff
         {
             string? aadhaarImagePath = null;
             string? photoImagePath = null;
+        
 
             if (aadhaarFile != null && aadhaarFile.Length > 0)
+
             {
                 var aadhaarFileName = Path.GetFileName(aadhaarFile.FileName);
                 var aadhaarFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
@@ -307,11 +334,38 @@ namespace SchoolManagement.Areas.Staff
 
                 photoImagePath = "/images/" + photoFile;
             }
-
+            
             return (aadhaarImagePath,photoImagePath);
         }
 
+        private void ValidateFileUploads(ParentOrGuardians parent)
+        {
+            if (parent.Aadhar != null)
+            {
+                if (parent.Aadhar.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("Aadhar", "Aadhaar file size must not exceed 2 MB.");
+                }
+                else if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(Path.GetExtension(parent.Aadhar.FileName).ToLower()))
+                {
+                    ModelState.AddModelError("Aadhar", "Only JPG, JPEG, and PNG formats are allowed for Aadhaar.");
+                }
+            }
 
+            if (parent.Photos != null)
+              {
+                if (parent.Photos.Length > 2 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("Photos", "Photos file size must not exceed 2 MB.");
+                }
+                else if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(Path.GetExtension(parent.Photos.FileName).ToLower()))
+                {
+                    ModelState.AddModelError("Photos", "Only JPG, JPEG, and PNG formats are allowed for Photos.");
+                 }
+                }
+             
+           }
+            
         
         private void ValidateFileUploads(Student student)
         {

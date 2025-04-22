@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SchoolManagement.Models.User.Student
+@{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
@@ -36,7 +37,13 @@
 
          
              <!-- Home Address -->
-      
+            <div class="col-md-4 col-sm-6 ">
+                <div><strong class="text-muted">Address Of Student</strong></div>
+                <div class="fs-6">@Model.FullAddress</div>
+            </div>
+             
+
+
         </div>
     </div>
 </div>
@@ -73,6 +80,11 @@
                             <td>
 
                                 <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                              
+                                <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
+                                    <i class="fa fa-eye"></i>
+                                </a> |
+
                                 <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
                             </td>
                         </tr>

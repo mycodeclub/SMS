@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace SchoolManagement.Models.User
 {
@@ -17,11 +18,7 @@ namespace SchoolManagement.Models.User
         public string AadhaarNumber { get; set; } = string.Empty;
 
 
-        [Required]
-        [RegularExpression(@"^[A-Z]{5}\d{4}[A-Z]{1}$", ErrorMessage = "Invalid PA" +
-           "N number. Format should be: XXXXX1234X.")]
-        [Display(Name = "Pan Num.")]
-        public string? PanNumber { get; set; } = string.Empty;
+        
 
 
         [NotMapped]
@@ -38,14 +35,38 @@ namespace SchoolManagement.Models.User
 
         public string? PhotosFileUrl { get; set; }
 
+        public Address.Address? HomeAddress { get; set; }
 
         [NotMapped]
-        [Display(Name = "Upload Pan")]
-        public IFormFile? Pan { get; set; }
-        public string? PanFileUrl { get; set; }
+        public string FullAddress
+        {
+            get
+            {
+                StringBuilder _address = new StringBuilder();
+                if (HomeAddress != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(HomeAddress.AddressLine1))
+                        _address.Append($"{HomeAddress.AddressLine1} - ");
+                    if (!string.IsNullOrWhiteSpace(HomeAddress.AddressLine2))
+                        _address.Append($"{HomeAddress.AddressLine2} - ");
+                    if (!string.IsNullOrWhiteSpace(HomeAddress.AddressLine3))
+                        _address.Append($"{HomeAddress.AddressLine3} - ");
+                    if (!string.IsNullOrWhiteSpace(HomeAddress.NearestLandMark))
+                        _address.Append($"{HomeAddress.NearestLandMark} - ");
 
+                    if (HomeAddress.State != null && !string.IsNullOrWhiteSpace(HomeAddress.State.Name))
+                        _address.Append($"{HomeAddress.State.Name} - ");
+                    if (HomeAddress.City != null && !string.IsNullOrWhiteSpace(HomeAddress.City.Name))
+                        _address.Append($"{HomeAddress.City.Name} - ");
 
-        public Address.Address? HomeAddress { get; set; }
+                    if (!string.IsNullOrWhiteSpace(HomeAddress.PinCode))
+                        _address.Append($"{HomeAddress.PinCode}");
+
+                }
+                return _address.ToString();
+            }
+        }
+
         public string Occupation { get; set; } = string.Empty;
         public int CTC { get; set; }
 

@@ -21,6 +21,10 @@ namespace SchoolManagement.Common
                     case "Staff":
                         filePath += StaticVariables.StaffFilesDefaultPath + "\\" + userId.ToString() + "\\";
                         break;
+
+                    case "Parent":
+                        filePath += StaticVariables.ParentFilesDefaultPath + "\\" + userId.ToString() + "\\";
+                        break;
                 }
 
                 if (!Directory.Exists(filePath))
