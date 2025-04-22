@@ -55,7 +55,6 @@ namespace SchoolManagement.Areas.Staff
             {
                 return NotFound();
             }
-
             var student = await _context.Students
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
@@ -231,33 +230,36 @@ namespace SchoolManagement.Areas.Staff
             return View(parent);
         }
 
-
-        public async Task<IActionResult> ParentDetail(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var parent = await _context.Students
-                 .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-                  .Include(s => s.FullAddress)
-                  .Include(s=>s.Session)
-                  .Include(s=>s.Standard)
-                 
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
-
-            if (parent == null)
-            {
-                return NotFound();
-            }
-
-            ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "RelationName", parent.RelationId);
-
-            return View(parent);
-        }
-
-
         [HttpGet]
+        
+
+
+            // GET: ParentOrGuardians/ParentDetail/5
+            public async Task<IActionResult> ParentDetail(int? id)
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var parentOrGuardian = await _context.Parents
+                    .Include(p => p.Relation) 
+                    .Include(p=>p.StudentUniqueId)
+                     
+                    .FirstOrDefaultAsync(m => m.UniqueId == id);
+
+                if (parentOrGuardian == null)
+                {
+                    return NotFound();
+                }
+
+                return View(parentOrGuardian);
+            }
+      
+
+
+
+    [HttpGet]
         public async Task<IActionResult> DeleteParents(int id)
         {
             if (id == null)
