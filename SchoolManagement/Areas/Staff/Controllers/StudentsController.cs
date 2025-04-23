@@ -55,15 +55,15 @@ namespace SchoolManagement.Areas.Staff
             {
                 return NotFound();
             }
-            var student = await _context.Students
-                .Include(s => s.Session)
-                .Include(s => s.Standard)
-                 .Include(s => s.HomeAddress)
-                  .ThenInclude(a => a.Country)
-                  .Include(s => s.HomeAddress)
-                  .ThenInclude(a => a.State)  
-                 .Include(s => s.HomeAddress)
-                      .ThenInclude(a => a.City)   
+               var student = await _context.Students
+               .Include(s => s.Session)
+               .Include(s => s.Standard)
+               .Include(s => s.HomeAddress)
+               .ThenInclude(a => a.Country)
+               .Include(s => s.HomeAddress)
+               .ThenInclude(a => a.State)  
+               .Include(s => s.HomeAddress)
+               .ThenInclude(a => a.City)   
                 .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
@@ -79,7 +79,7 @@ namespace SchoolManagement.Areas.Staff
         // GET: Staff/Students/Create
         public async Task<IActionResult> Create(int id)
         {
-            var student = await _context.Students.Include(s => s.ParentOrGuardians).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
+            var student = await _context.Students.Include(s => s.ParentOrGuardians).ThenInclude(s=>s.Relation).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
             if (student == null)
                 student = new Student
                 {

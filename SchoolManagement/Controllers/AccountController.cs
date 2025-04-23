@@ -104,44 +104,44 @@ namespace SchoolManagement.Controllers
         }
 
 
-        public async Task<IActionResult> CreateMasterUser()
-        {
-            var resultStr = string.Empty;
-            try
-            {
-                AppUser appUser = new AppUser()
-                {
-                    UserName = "admin@bpst.com",
-                    Email = "admin@bpst.com",
-                    Password = "Admin@20",
-                    ConfirmPassword = "Admin@20",
-                    PhoneNumber = "9999999999",
-                };
+        //public async Task<IActionResult> CreateMasterUser()
+        //{
+        //    var resultStr = string.Empty;
+        //    try
+        //    {
+        //        AppUser appUser = new AppUser()
+        //        {
+        //            UserName = "admin@bpst.com",
+        //            Email = "admin@bpst.com",
+        //            Password = "Admin@20",
+        //            ConfirmPassword = "Admin@20",
+        //            PhoneNumber = "9999999999",
+        //        };
 
-                var result = await RegisterOrg(appUser);
+        //        var result = await RegisterOrg(appUser);
 
-                if (result.Succeeded)
-                {
-                    var userRoles = _context.Roles.ToList();
-                    foreach (var role in userRoles)
-                        await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
-                    resultStr = "Master User Created Successfully.";
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        resultStr = "Some Error: " + error.Code;
-                    }
-                }
+        //        if (result.Succeeded)
+        //        {
+        //            var userRoles = _context.Roles.ToList();
+        //            foreach (var role in userRoles)
+        //                await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
+        //            resultStr = "Master User Created Successfully.";
+        //        }
+        //        else
+        //        {
+        //            foreach (var error in result.Errors)
+        //            {
+        //                resultStr = "Some Error: " + error.Code;
+        //            }
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                resultStr = "Some Error: " + ex.Message;
-            }
-            return RedirectToAction("AutoLogin");
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        resultStr = "Some Error: " + ex.Message;
+        //    }
+        //    return RedirectToAction("AutoLogin");
+        //}
 
         public async Task<IActionResult> AutoLogin()
         {

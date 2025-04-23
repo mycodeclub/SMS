@@ -14,7 +14,15 @@ namespace SchoolManagement.Models
         public Student Student { get; set; } = default!;
         public int Month { get; set; }
         public int SubmittedFeesAmount { get; set; }
-
         public DateTime SubmittedDate { get; set; }
+
+        public int AnnulyFee { get; set; }
+
+        public int  Quarentely { get; set;}
+
+        public int HalfYearly { get; set; }
+
+
+
     }
 }
