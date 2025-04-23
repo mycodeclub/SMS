@@ -83,6 +83,8 @@ namespace SchoolManagement.Controllers
                     else if (role.Contains("Staff"))
                         return RedirectToAction("Index", "Home", new { Area = "Staff" });
 
+                    else if (role.Contains("Admin"))
+                        return RedirectToAction("Dashboard", "Home", new { Area = "Admin" });
 
 
 

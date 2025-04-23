@@ -99,7 +99,7 @@ namespace SchoolManagement.Areas.Staff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Models.User.Student student)
+        public async Task<IActionResult> Create(Student student)
         {
             ValidateFileUploads(student);
             if (ModelState.IsValid)
@@ -193,7 +193,7 @@ namespace SchoolManagement.Areas.Staff
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParents(Models.User.ParentOrGuardians parent)
+        public async Task<IActionResult> AddParents(ParentOrGuardians parent)
         {
             ValidateFileUploads(parent);
             if (ModelState.IsValid)
@@ -244,8 +244,7 @@ namespace SchoolManagement.Areas.Staff
 
                 var parentOrGuardian = await _context.Parents
                     .Include(p => p.Relation) 
-                    .Include(p=>p.StudentUniqueId)
-                     
+                    
                     .FirstOrDefaultAsync(m => m.UniqueId == id);
 
                 if (parentOrGuardian == null)
@@ -257,9 +256,7 @@ namespace SchoolManagement.Areas.Staff
             }
       
 
-
-
-    [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> DeleteParents(int id)
         {
             if (id == null)
@@ -368,7 +365,7 @@ namespace SchoolManagement.Areas.Staff
              
            }
             
-        
+        // for student photo & Adhaar
         private void ValidateFileUploads(Student student)
         {
             if (student.Aadhar !=null )

@@ -12,14 +12,7 @@ namespace SchoolManagement.Services
         {
             _context = context;
         }
-        public async Task<bool> DeleteStudent(Student student)
-        {
-            student.IsDeleted = true;
-            _context.Students.Update(student);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
+   
         public Task<List<Student>> GetAllStudents()
         {
             return _context.Students.Where(s => s.IsDeleted == false).ToListAsync();
@@ -33,24 +26,38 @@ namespace SchoolManagement.Services
             return await result.ToListAsync();
         }
 
-        public Task<List<Student>> GetStudentById(int id)
+
+        public async Task<Student> SaveStudent(Student student)
         {
-            throw new NotImplementedException();
+            _context.Students.Add(student);
+            await _context.SaveChangesAsync();
+            return student;
         }
 
-        public Task<Student> SaveStudent(Student student)
+        public async Task<bool> UpdateStudent(Student student)
         {
-            throw new NotImplementedException();
+            _context.Students.Update(student);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<bool> UpdateStudent(Student student)
+        public async Task<List<Student>> GetStudentById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Students
+                .Where(s => s.UniqueId == id && s.IsDeleted == false)
+                .ToListAsync();
+        }
+        public async Task<bool> DeleteStudent(Student student)
+        {
+            student.IsDeleted = true;
+            _context.Students.Update(student);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<Student> GetStudent(int id)
+        {
+            return await _context.Students.FirstOrDefaultAsync(s => s.UniqueId == id && s.IsDeleted == false);
         }
 
-        public Task<Student> GetStudent(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

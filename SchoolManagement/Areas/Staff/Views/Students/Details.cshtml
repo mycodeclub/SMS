@@ -9,43 +9,43 @@
     <div class="card-body" style="border:1px solid blue">
         <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
         <div class="row">
-            <div class="col-md-4 col-sm-6 ">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
                 <div><strong class="text-muted">Standard</strong></div>
                 <div class="fs-6">@Model.Standard.StandardName</div>
             </div>
             <br />
-            <div class="col-md-4 col-sm-6">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2">
                 <div><strong class="text-muted">Full Name</strong></div>
                 <div class="fs-6">@Model.FullName</div>
             </div>
             <br />
-            <div class="col-md-4 col-sm-6 ">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
                 <div><strong class="text-muted">Date Of Birth</strong></div>
-                <div class="fs-6">@Model.DOB.ToString("yyyy-MM-dd")</div>
+                <div class="fs-6">@Model.DOB.ToString("dd-MM-yyyyy")</div>
             </div>
             <br />
-            <div class="col-md-4 col-sm-6 ">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
                 <div><strong class="text-muted">Gender</strong></div>
                 <div class="fs-6">@Model.Gender</div>
             </div>
             <br />
-            <div class="col-md-4 col-sm-6 ">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
                 <div><strong class="text-muted">Admission Date</strong></div>
                 <div class="fs-6">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
             </div>
-            <br />
-
-         
-             <!-- Home Address -->
-            <div class="col-md-4 col-sm-6 ">
-                <div><strong class="text-muted">Address Of Student</strong></div>
-                <div class="fs-6">@Model.FullAddress</div>
+           
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2-md-4 col-sm-6">
+                <div><strong class="text-muted">Aadhaar Number</strong></div>
+                <div class="fs-6">@Model.AadhaarNumber</div>
             </div>
-             
 
+            <div class="form-group col-md-12">
+                <label class="text-bold"> Full Address </label>
+                <p class="">@Model.FullAddress  </p>
+            </div>
 
+        
         </div>
-    </div>
 </div>
 @if (Model.ParentOrGuardians != null)
 {

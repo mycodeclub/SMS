@@ -10,7 +10,6 @@ namespace SchoolManagement.Services
         public Task<Student> SaveStudent(Student student);
         public Task<bool> DeleteStudent(Student student);
         public Task<bool> UpdateStudent(Student student);
-
         public Task<Student> GetStudent(int id);
 
     }

@@ -32,6 +32,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.BillingCycle)
                         </th>
+                        <th>Student Enrolled</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -42,6 +43,10 @@
                             <td>@item.StandardName</td>
                             <td>@item.FeeAmountPerMonth</td>
                             <td>@item.BillingCycle</td>
+                            <td>
+                                @(item.StandardName?.Count() ?? 0)
+
+                            </td>
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
                                 <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
