@@ -10,5 +10,6 @@ namespace SchoolManagement.Models.Fee
         [Display(Name ="Fee Type")]
         public string FeeType { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
+
     }
 }

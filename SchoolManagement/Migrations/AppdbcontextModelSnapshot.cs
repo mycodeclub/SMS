@@ -8114,13 +8114,6 @@ namespace SchoolManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PanFileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PanNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhotosFileUrl")
                         .HasColumnType("nvarchar(max)");
 

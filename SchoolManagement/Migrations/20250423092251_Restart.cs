@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class againnews : Migration
+    public partial class Restart : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -262,7 +262,7 @@ namespace SchoolManagement.Migrations
                     SessionYearId = table.Column<int>(type: "int", nullable: false),
                     Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrimaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -351,6 +351,9 @@ namespace SchoolManagement.Migrations
                     HomeAddressUniqueId = table.Column<int>(type: "int", nullable: true),
                     StandardId = table.Column<int>(type: "int", nullable: false),
                     SessionYearId = table.Column<int>(type: "int", nullable: false),
+                    AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AadharFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotosFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -384,6 +387,9 @@ namespace SchoolManagement.Migrations
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RelationId = table.Column<int>(type: "int", nullable: false),
+                    AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AadharFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotosFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HomeAddressUniqueId = table.Column<int>(type: "int", nullable: true),
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CTC = table.Column<int>(type: "int", nullable: false),
