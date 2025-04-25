@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
+using SchoolManagement.Services;
 
 namespace SchoolManagement.Controllers
 {
@@ -15,12 +16,14 @@ namespace SchoolManagement.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
+        private readonly IUserServiceBAL _userService;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IUserServiceBAL userService, AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -104,44 +107,44 @@ namespace SchoolManagement.Controllers
         }
 
 
-        //public async Task<IActionResult> CreateMasterUser()
-        //{
-        //    var resultStr = string.Empty;
-        //    try
-        //    {
-        //        AppUser appUser = new AppUser()
-        //        {
-        //            UserName = "admin@bpst.com",
-        //            Email = "admin@bpst.com",
-        //            Password = "Admin@20",
-        //            ConfirmPassword = "Admin@20",
-        //            PhoneNumber = "9999999999",
-        //        };
+        public async Task<IActionResult> CreateMasterUser()
+        {
+            var resultStr = string.Empty;
+            try
+            {
+                AppUser appUser = new AppUser()
+                {
+                    UserName = "admin@bpst.com",
+                    Email = "admin@bpst.com",
+                    Password = "Admin@20",
+                    ConfirmPassword = "Admin@20",
+                    PhoneNumber = "9999999999",
+                };
 
-        //        var result = await RegisterOrg(appUser);
+                var result = await RegisterOrg(appUser);
 
-        //        if (result.Succeeded)
-        //        {
-        //            var userRoles = _context.Roles.ToList();
-        //            foreach (var role in userRoles)
-        //                await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
-        //            resultStr = "Master User Created Successfully.";
-        //        }
-        //        else
-        //        {
-        //            foreach (var error in result.Errors)
-        //            {
-        //                resultStr = "Some Error: " + error.Code;
-        //            }
-        //        }
+                if (result.Succeeded)
+                {
+                    var userRoles = _context.Roles.ToList();
+                    foreach (var role in userRoles)
+                        await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
+                    resultStr = "Master User Created Successfully.";
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        resultStr = "Some Error: " + error.Code;
+                    }
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        resultStr = "Some Error: " + ex.Message;
-        //    }
-        //    return RedirectToAction("AutoLogin");
-        //}
+            }
+            catch (Exception ex)
+            {
+                resultStr = "Some Error: " + ex.Message;
+            }
+            return RedirectToAction("AutoLogin");
+        }
 
         public async Task<IActionResult> AutoLogin()
         {
@@ -195,6 +198,49 @@ namespace SchoolManagement.Controllers
         {
             return await _context.Cities.FindAsync(id);
         }
+        public async Task<IActionResult> ChangePassword()
+        {
+            ViewBag.Layout = _userService.GetLayout();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(UpdatePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userService.UpldateLoggedInUserPassword(model.NewEmail, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                    return RedirectToAction(ViewBag.Layout);
+
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+            }
+            ViewBag.Layout = _userService.GetLayout();
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangeEmail()
+        {
+            var emailUpdate = new UpdateEmailVM() { };
+            if (_signInManager.IsSignedIn(User))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                emailUpdate.OldEmail = user.Email;
+            }
+            ViewBag.Layout = _userService.GetLayout();
+            return View(emailUpdate);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeEmail(UpdateEmailVM updateEmail)
+        {
+            var result = await _userService.UpldateLoggedInUserEmail(updateEmail);
+            ViewBag.Layout = _userService.GetLayout();
+            return View(updateEmail);
+        }
+
 
     }
 }

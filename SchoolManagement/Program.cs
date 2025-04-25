@@ -14,6 +14,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IUserServiceBAL, UserServiceBAL>();
 
 
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.Password.RequiredLength = 3;

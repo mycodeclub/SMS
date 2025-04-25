@@ -12,11 +12,13 @@
 <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
-<a href="/Admin/StaffNew/Create" class="btn btn-success">Add New Staff</a>
 
+<div class="content">
+    <a href="/Admin/StaffNew/Create" class="btn btn-success">Add New Staff</a>
 
-<div class="card">
-<div class="card-body">
+    <div class="card">
+
+        <div class="card-body">
         <table class="table table-bordered table-striped" id="tblGuestLists">
         <thead>
         <tr>
@@ -26,12 +28,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Experience)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AadhaarNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SessionYear)
-            </th>
+           
+           
             <th>
                 @Html.DisplayNameFor(model => model.Qualification)
             </th>
@@ -62,12 +60,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Experience)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AadhaarNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionYear.UniqueId)
-            </td>
+          
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Qualification)
             </td>
@@ -100,6 +94,8 @@
 </table>
 </div>
 </div>
+</div>
+
 @section Scripts {
     <!-- DataTable Scripts -->
     <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
