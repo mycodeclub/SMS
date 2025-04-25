@@ -12,11 +12,15 @@ namespace SchoolManagement.Models
         public int StudentId { get; set; }
         [ForeignKey("StudentId")]
         public Student Student { get; set; } = default!;
-        public int Month { get; set; }
+
+        public int TotalFee { get; set; }
+
+        public int DiscountFee { get; set; }
+        public int MonthFee { get; set; }
         public int SubmittedFeesAmount { get; set; }
         public DateTime SubmittedDate { get; set; }
 
-        public int AnnulyFee { get; set; }
+        public int AnnualyFee { get; set; }
 
         public int  Quarentely { get; set;}
 
