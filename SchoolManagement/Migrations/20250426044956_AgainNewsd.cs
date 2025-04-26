@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class Restart : Migration
+    public partial class AgainNewsd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -430,9 +430,14 @@ namespace SchoolManagement.Migrations
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StudentId = table.Column<int>(type: "int", nullable: false),
-                    Month = table.Column<int>(type: "int", nullable: false),
+                    TotalFee = table.Column<int>(type: "int", nullable: false),
+                    DiscountFee = table.Column<int>(type: "int", nullable: false),
+                    MonthFee = table.Column<int>(type: "int", nullable: false),
                     SubmittedFeesAmount = table.Column<int>(type: "int", nullable: false),
-                    SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AnnuallyFee = table.Column<int>(type: "int", nullable: false),
+                    Quarentely = table.Column<int>(type: "int", nullable: false),
+                    HalfYearly = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

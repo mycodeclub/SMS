@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250423092251_Restart")]
-    partial class Restart
+    [Migration("20250426044956_AgainNewsd")]
+    partial class AgainNewsd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -8058,7 +8058,19 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
-                    b.Property<int>("Month")
+                    b.Property<int>("AnnuallyFee")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountFee")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HalfYearly")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MonthFee")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quarentely")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentId")
@@ -8068,6 +8080,9 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("SubmittedFeesAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalFee")
                         .HasColumnType("int");
 
                     b.HasKey("UniqueId");

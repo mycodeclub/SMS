@@ -20,7 +20,7 @@ namespace SchoolManagement.Models
         public int SubmittedFeesAmount { get; set; }
         public DateTime SubmittedDate { get; set; }
 
-        public int AnnualyFee { get; set; }
+        public int AnnuallyFee { get; set; }
 
         public int  Quarentely { get; set;}
 

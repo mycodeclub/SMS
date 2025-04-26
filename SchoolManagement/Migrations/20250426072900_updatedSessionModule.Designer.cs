@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250425053839_nownew")]
-    partial class nownew
+    [Migration("20250426072900_updatedSessionModule")]
+    partial class updatedSessionModule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7921,14 +7921,26 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAcitve")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SessionName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("UniqueId");
@@ -7939,9 +7951,13 @@ namespace SchoolManagement.Migrations
                         new
                         {
                             UniqueId = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = false,
+                            IsDeleted = false,
                             SessionName = "2025-2026",
-                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -8058,13 +8074,16 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
-                    b.Property<int>("AnnulyFee")
+                    b.Property<int>("AnnuallyFee")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DiscountFee")
                         .HasColumnType("int");
 
                     b.Property<int>("HalfYearly")
                         .HasColumnType("int");
 
-                    b.Property<int>("Month")
+                    b.Property<int>("MonthFee")
                         .HasColumnType("int");
 
                     b.Property<int>("Quarentely")
@@ -8077,6 +8096,9 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("SubmittedFeesAmount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalFee")
                         .HasColumnType("int");
 
                     b.HasKey("UniqueId");

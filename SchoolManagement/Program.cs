@@ -6,6 +6,9 @@ using SchoolManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add caching services
+builder.Services.AddMemoryCache();
+builder.Services.AddResponseCaching();
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -25,6 +28,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
+
+// Enable response caching middleware
+app.UseResponseCaching();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -8,6 +8,7 @@ namespace SchoolManagement.Models.User
         [Key]
         public int UniqueId { get; set; }
 
+        //@ToDo. Need re evaluvation if its correct at this place.
         public int StudentUniqueId { get; set; }
 
         [Display(Name = "First Name")]
