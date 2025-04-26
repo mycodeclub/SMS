@@ -106,6 +106,9 @@
 
 
 
+                    @if (ActiveTabName.Equals("Session")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/Admin/SessionYears/Index"><i class="fa fa-calendar-check-o"></i> Session  </a></li>
+
                     @if (ActiveTabName.Equals("StaffNew")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/StaffNew/Index"><i class="fa fa-user"></i> Staff  </a></li>
 
