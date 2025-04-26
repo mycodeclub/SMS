@@ -32,6 +32,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="sqlScripts\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\Parent\" />
     <Folder Include="wwwroot\UserFiles\Students\" />

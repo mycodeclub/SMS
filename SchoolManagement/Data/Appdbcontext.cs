@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
 using SchoolManagement.Models.User;
+using SchoolManagement.ProcModels;
 
 namespace SchoolManagement.Data
 {
@@ -23,10 +24,11 @@ namespace SchoolManagement.Data
             modelBuilder.SeedState();
             modelBuilder.SeedCities();
             modelBuilder.SeedRelation();
-             modelBuilder.SeedFeeTypeMaster();
-             modelBuilder.Entity<AppUser>().ToTable("AppUser");
+            modelBuilder.SeedFeeTypeMaster();
+            modelBuilder.Entity<AppUser>().ToTable("AppUser"); 
+            modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
 
-         }
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,5 +46,7 @@ namespace SchoolManagement.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
         public DbSet<SchoolManagement.Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
+        public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
+
     }
 }

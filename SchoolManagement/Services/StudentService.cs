@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
+using SchoolManagement.Models;
 using SchoolManagement.Models.User;
+using SchoolManagement.ProcModels;
 using System.Threading.Tasks;
 
 namespace SchoolManagement.Services
@@ -12,7 +14,7 @@ namespace SchoolManagement.Services
         {
             _context = context;
         }
-   
+
         public Task<List<Student>> GetAllStudents()
         {
             return _context.Students.Where(s => s.IsDeleted == false).ToListAsync();
@@ -20,10 +22,22 @@ namespace SchoolManagement.Services
 
         public async Task<List<Student>> GetStudentByStanderd(int standerdId, bool includingParents = false)
         {
+            try
+            {
+                var dto = await _context.Set<SessionDetailsDto>()
+                   .FromSqlRaw("EXEC GetSessionDetailsByStandard @StandardId = {0}", standerdId)
+                   .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                var errorData = ex.Message;
+
+            }
             var result = _context.Students.Where(s => s.IsDeleted == false && s.StandardId == standerdId);
             if (includingParents == true)
                 result.Include(s => s.ParentOrGuardians);
-            return await result.ToListAsync();
+            var data = await result.ToListAsync();
+            return data;
         }
 
 

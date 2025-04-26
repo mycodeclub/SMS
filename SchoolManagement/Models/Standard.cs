@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SchoolManagement.Models.User;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolManagement.Models
 {
@@ -7,7 +9,7 @@ namespace SchoolManagement.Models
         [Key]
         public int UniqueId { get; set; }
 
-        [Display(Name ="Standard Name")]
+        [Display(Name = "Standard Name")]
         public string StandardName { get; set; } = string.Empty;
 
         [Display(Name = "Fee Amout Per Month")]
@@ -18,6 +20,9 @@ namespace SchoolManagement.Models
         /// </summary>
         [Display(Name = "Billing Cycle")]
         public int BillingCycle { get; set; }
+
+        [NotMapped]
+        public List<Student> ?Students { get; set; }
 
     }
 }

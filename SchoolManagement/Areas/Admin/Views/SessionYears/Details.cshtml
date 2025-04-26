@@ -4,6 +4,7 @@
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "SessionYear";
+    List<SchoolManagement.ProcModels.SessionDetailsDto> Standards = ViewBag.Standards;
 }
 <div class="content">
     <div class="card">
@@ -32,7 +33,37 @@
                         <label class="text-bold"> Is Acitve </label>
                         <p> @Model.IsAcitve</p>
                     </div>
+                </div>
+            </div>
 
+            <div class="card">
+                <div class="card-header">Standards</div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Class Name </th>
+                                <th> Fee Amount </th>
+                                <th>Billing Cycle </th>
+                                <th>Student Count </th>
+                                <th>View Details </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var standard in Standards)
+                            {
+                                <tr>
+                                    <td>@standard.StandardName</td>
+                                    <td>@standard.FeeAmountPerMonth</td>
+                                    <td>@standard.BillingCycle - Month</td>
+                                    <td>@standard.StudentCount </td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Standards" asp-route-id="@standard.StandardId">@standard.StandardName</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

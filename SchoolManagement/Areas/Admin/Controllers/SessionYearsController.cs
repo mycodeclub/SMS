@@ -12,36 +12,30 @@ namespace SchoolManagement.Areas.Admin.Controllers
     public class SessionYearsController : BaseController
     {
         private readonly AppDbContext _context;
+        private readonly ISessionYearService _sessionService;
+        private readonly IStandardService _standardService;
 
-        public SessionYearsController(AppDbContext context, ISessionYearService sessionYearService) : base(sessionYearService)
+        public SessionYearsController(AppDbContext context, ISessionYearService service, IStandardService standardService) : base(service)
         {
             _context = context;
+            _sessionService = service;
+            _standardService = standardService;
         }
 
         // GET: Staff/SessionYears
         public async Task<IActionResult> Index()
         {
-            var sessionyear = await _context.SessionYears.ToListAsync();
+            var sessionyear = await _sessionService.GetAllSessionYears();
             ViewBag.ActiveSession = await GetActiveSession();
 
             return View(sessionyear);
         }
 
         // GET: Staff/SessionYears/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sessionYear = await _context.SessionYears
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (sessionYear == null)
-            {
-                return NotFound();
-            }
-
+            var sessionYear = await _sessionService.GetSessionYearById(id);
+            ViewBag.Standards = await _standardService.GetStandards(id);
             return View(sessionYear);
         }
 
@@ -68,7 +62,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     IsAcitve = true,
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now
-                }; 
+                };
             return View(session);
         }
 
