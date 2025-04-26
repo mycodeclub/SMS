@@ -8,9 +8,14 @@
     // -- New active tab
     string activeTab = string.Empty;
     string ActiveTabName = "something...";
+    string activeSession = string.Empty;
     if (!string.IsNullOrEmpty(ViewBag.activeTabName))
     {
         ActiveTabName = ViewBag.ActiveTabName;
+    }
+    if (!string.IsNullOrEmpty(ViewBag.ActiveSession))
+    {
+        activeSession = @ViewBag.ActiveSession;
     }
 }
 <!DOCTYPE html>
@@ -53,27 +58,34 @@
                         </div>
                     </form>
                 </div>
+               
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         @if (signInManager.IsSignedIn(User))
                         {
 
                             <li class="dropdown user user-menu p-ph-res">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="~/AdminTemp/dist/img/img1.jpg" class="user-image" alt="User Image"> <span class="hidden-xs">@User.Identity.Name</span> </a>
+                              
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <img src="~/AdminTemp/dist/img/img1.jpg" class="user-image" alt="User Image">
+                                    <span class="hidden-xs">@User.Identity.Name</span>
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
                                         <div class="pull-left user-img"><img src="~/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>
                                         <p class="text-left">  <small> @User.Identity.Name</small> </p>
-@*                                         <p class="text-left">  <small> @SessionName</small> </p>
- *@
+                                        <p class="text-left">  <small> @activeSession </small> </p>
+
                                     </li>
-                               
+
                                     <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                                 </ul>
                             </li>
 
                         }
                     </ul>
+                </div> <div class="text-white align-content-center" style="padding-top:1.5em;padding-left:15em">
+                    @activeSession
                 </div>
             </nav>
         </header>
@@ -90,14 +102,14 @@
 
                 <!-- sidebar menu -->
                 <ul class="sidebar-menu" data-widget="tree">
-               
-                    
 
-                    
+
+
+
                     @if (ActiveTabName.Equals("StaffNew")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/StaffNew/Index"><i class="fa fa-user"></i> Staff  </a></li>
 
-                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; } 
+                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li><a href="/Account/ChangeEmail"><i class="fa fa-user"></i>Change Email</a></li>
 
                     @if (ActiveTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }

@@ -6,19 +6,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.User;
+using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
 {
-    
+
     [Area("Admin")]
-    public class StaffNewController : Controller
+    public class StaffNewController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public StaffNewController(AppDbContext context)
+        public StaffNewController(AppDbContext context, ISessionYearService sessionYearService) : base(sessionYearService)
         {
             _context = context;
         }
@@ -27,6 +29,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var stafflist = await _context.StaffNewModels.Include(s => s.SessionYear).ToListAsync();
+            ViewBag.ActiveSession = await GetActiveSession();
             return View(stafflist);
         }
 
@@ -50,7 +53,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task< IActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             var staffNewModel = await _context.StaffNewModels.FirstOrDefaultAsync();
 
@@ -94,7 +97,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,StaffNewModel staffNewModel)
+        public async Task<IActionResult> Edit(int id, StaffNewModel staffNewModel)
         {
             if (id != staffNewModel.Id)
             {

@@ -11,16 +11,18 @@ using SchoolManagement.Models.User;
 using System;
 using System.Formats.Tar;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SchoolManagement.Controllers;
+using SchoolManagement.Services;
 
 
 namespace SchoolManagement.Areas.Staff
 {
     [Area("Staff")]
-    public class StudentsController : Controller
+    public class StudentsController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public StudentsController(AppDbContext context)
+        public StudentsController(AppDbContext context, ISessionYearService sessionYearService) : base(sessionYearService)
         {
             _context = context;
         }
@@ -39,12 +41,13 @@ namespace SchoolManagement.Areas.Staff
              .Include(s => s.Session)
              .Include(s => s.Standard)
              .Include(s => s.ParentOrGuardians).ToListAsync();
-            
+
 
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", id);
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+            ViewBag.ActiveSession = GetActiveSession();   
             return View(students);
         }
 
@@ -55,17 +58,17 @@ namespace SchoolManagement.Areas.Staff
             {
                 return NotFound();
             }
-               var student = await _context.Students
-               .Include(s => s.Session)
-               .Include(s => s.Standard)
-               .Include(s => s.HomeAddress)
-               .ThenInclude(a => a.Country)
-               .Include(s => s.HomeAddress)
-               .ThenInclude(a => a.State)  
-               .Include(s => s.HomeAddress)
-               .ThenInclude(a => a.City)   
-                .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            var student = await _context.Students
+            .Include(s => s.Session)
+            .Include(s => s.Standard)
+            .Include(s => s.HomeAddress)
+            .ThenInclude(a => a.Country)
+            .Include(s => s.HomeAddress)
+            .ThenInclude(a => a.State)
+            .Include(s => s.HomeAddress)
+            .ThenInclude(a => a.City)
+             .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+             .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (student == null)
             {
                 return NotFound();
@@ -79,7 +82,7 @@ namespace SchoolManagement.Areas.Staff
         // GET: Staff/Students/Create
         public async Task<IActionResult> Create(int id)
         {
-            var student = await _context.Students.Include(s => s.ParentOrGuardians).ThenInclude(s=>s.Relation).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
+            var student = await _context.Students.Include(s => s.ParentOrGuardians).ThenInclude(s => s.Relation).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
             if (student == null)
                 student = new Student
                 {
@@ -200,7 +203,7 @@ namespace SchoolManagement.Areas.Staff
             {
                 if (parent.UniqueId == 0)
                     _context.Parents.Add(parent);
-                else 
+                else
                     _context.Update(parent);
                 await _context.SaveChangesAsync();
             }
@@ -231,30 +234,30 @@ namespace SchoolManagement.Areas.Staff
         }
 
         [HttpGet]
-        
 
 
-            // GET: ParentOrGuardians/ParentDetail/5
-            public async Task<IActionResult> ParentDetail(int? id)
+
+        // GET: ParentOrGuardians/ParentDetail/5
+        public async Task<IActionResult> ParentDetail(int? id)
+        {
+            if (id == null)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-
-                var parentOrGuardian = await _context.Parents
-                    .Include(p => p.Relation) 
-                    
-                    .FirstOrDefaultAsync(m => m.UniqueId == id);
-
-                if (parentOrGuardian == null)
-                {
-                    return NotFound();
-                }
-
-                return View(parentOrGuardian);
+                return NotFound();
             }
-      
+
+            var parentOrGuardian = await _context.Parents
+                .Include(p => p.Relation)
+
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
+
+            if (parentOrGuardian == null)
+            {
+                return NotFound();
+            }
+
+            return View(parentOrGuardian);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> DeleteParents(int id)
@@ -305,7 +308,7 @@ namespace SchoolManagement.Areas.Staff
         {
             string? aadhaarImagePath = null;
             string? photoImagePath = null;
-        
+
 
             if (aadhaarFile != null && aadhaarFile.Length > 0)
 
@@ -333,8 +336,8 @@ namespace SchoolManagement.Areas.Staff
 
                 photoImagePath = "/images/" + photoFile;
             }
-            
-            return (aadhaarImagePath,photoImagePath);
+
+            return (aadhaarImagePath, photoImagePath);
         }
 
         private void ValidateFileUploads(ParentOrGuardians parent)
@@ -352,7 +355,7 @@ namespace SchoolManagement.Areas.Staff
             }
 
             if (parent.Photos != null)
-              {
+            {
                 if (parent.Photos.Length > 2 * 1024 * 1024)
                 {
                     ModelState.AddModelError("Photos", "Photos file size must not exceed 2 MB.");
@@ -360,15 +363,15 @@ namespace SchoolManagement.Areas.Staff
                 else if (!new[] { ".jpg", ".jpeg", ".png" }.Contains(Path.GetExtension(parent.Photos.FileName).ToLower()))
                 {
                     ModelState.AddModelError("Photos", "Only JPG, JPEG, and PNG formats are allowed for Photos.");
-                 }
                 }
-             
-           }
-            
+            }
+
+        }
+
         // for student photo & Adhaar
         private void ValidateFileUploads(Student student)
         {
-            if (student.Aadhar !=null )
+            if (student.Aadhar != null)
             {
                 if (student.Aadhar.Length > 2 * 1024 * 1024)
                 {
