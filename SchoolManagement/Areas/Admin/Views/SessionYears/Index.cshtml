@@ -31,6 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAcitve)
+            </th>
             <th>Actions</th>
            
         </tr>
@@ -47,6 +50,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
             </td>
+            <td>
+             <input type="checkbox" name="IsActiveSessionChk" checked="@item.IsAcitve"  onclick="alert()"  />
+             @* @Html.DisplayFor(modelItem => item.IsAcitve)
+           *@  </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |

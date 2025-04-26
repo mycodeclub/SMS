@@ -8,35 +8,37 @@
 <div class="content">
     <div class="card">
         <div class="card-body">
-<h1>Details</h1>
+            <h1></h1>
 
-<div>
-    <h4>Session Year</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SessionName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SessionName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+            <div>
+                <h4>
+                    Session Year Details | @Model.SessionName
+                </h4>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label class="text-bold">  Session Name</label>
+                        <p> @Model.SessionName</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label class="text-bold">    Start Date</label>
+                        <p> @Model.StartDate.ToShortDateString()</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label class="text-bold">  End Date</label>
+                        <p> @Model.EndDate.ToShortDateString()</p>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label class="text-bold"> Is Acitve </label>
+                        <p> @Model.IsAcitve</p>
+                    </div>
+
+                </div>
             </div>
-            </div></div>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

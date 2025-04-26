@@ -1,17 +1,19 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class SessionYearsController : Controller
+    public class SessionYearsController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public SessionYearsController(AppDbContext context)
+        public SessionYearsController(AppDbContext context, ISessionYearService sessionYearService) : base(sessionYearService)
         {
             _context = context;
         }
@@ -19,7 +21,10 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Staff/SessionYears
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SessionYears.ToListAsync());
+            var sessionyear = await _context.SessionYears.ToListAsync();
+            ViewBag.ActiveSession = await GetActiveSession();
+
+            return View(sessionyear);
         }
 
         // GET: Staff/SessionYears/Details/5
@@ -41,9 +46,30 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         // GET: Staff/SessionYears/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
-            return View();
+            var session = await _context.SessionYears.FindAsync(id);
+            if (session != null)
+                return View(session);
+
+            var lastSession = await _context.SessionYears.OrderByDescending(s => s.EndDate).FirstOrDefaultAsync();
+            session = lastSession == null
+                ? new SessionYear
+                {
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddYears(1),
+                    IsAcitve = true
+                }
+                : new SessionYear
+                {
+                    SessionName = $"Session {DateTime.Now.Year}",
+                    StartDate = lastSession.StartDate.AddYears(1),
+                    EndDate = lastSession.EndDate.AddYears(1),
+                    IsAcitve = true,
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                }; 
+            return View(session);
         }
 
         // POST: Staff/SessionYears/Create
@@ -51,7 +77,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(  SessionYear sessionYear)
+        public async Task<IActionResult> Create(SessionYear sessionYear)
         {
             if (ModelState.IsValid)
             {

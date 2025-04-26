@@ -7,12 +7,13 @@
 
     // -- New active tab
     string activeTab = string.Empty;
+    string activeSession = string.Empty;
     string ActiveTabName = "something...";
     if (!string.IsNullOrEmpty(ViewBag.activeTabName))
-    {
-        ActiveTabName = ViewBag.ActiveTabName;
+         ActiveTabName = ViewBag.ActiveTabName;
+     if (!string.IsNullOrEmpty(ViewBag.ActiveSession) && ViewBag.ActiveSession != null)
+         activeSession = ViewBag.ActiveSession;
     }
-}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,6 +65,7 @@
                                     <li class="user-header">
                                         <div class="pull-left user-img"><img src="~/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>
                                         <p class="text-left">  <small> @User.Identity.Name</small> </p>
+                                        <p class="text-left">  <small> @activeSession </small> </p>
                                     </li>
                                     @*<li><a href="#"><i class="icon-profile-male"></i> My Profile</a></li>
                                 <li><a href="#"><i class="icon-wallet"></i> My Balance</a></li>
@@ -77,6 +79,8 @@
 
                         }
                     </ul>
+                </div> <div class="text-white align-content-center" style="padding-top:1.5em;padding-left:15em">
+                    @activeSession
                 </div>
             </nav>
         </header>
@@ -93,24 +97,24 @@
 
                 <!-- sidebar menu -->
                 <ul class="sidebar-menu" data-widget="tree">
-               
-                    
+
+
 
                     @if (ActiveTabName.Equals("SessionYear")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Staff/SessionYears/Index"><i class="fa fa-calendar"></i> Session Year  </a></li>
-                    
+
                     @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Staff/Standards/Index"><i class="fa fa-book"></i> Standard  </a></li>
-                    
+
                     @if (ActiveTabName.Equals("FeeMaster")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Staff/FeeTypeMasters/Index"><i class="fa fa-book"></i> Fee Master  </a></li>
-                    
+
                     @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Staff/Students/Index"><i class="fa fa-user"></i> Students  </a></li>
-                    
 
 
-                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; } 
+
+                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li><a href="/Account/ChangeEmail"><i class="fa fa-user"></i>Change Email</a></li>
 
                     @if (ActiveTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }

@@ -47,7 +47,7 @@ namespace SchoolManagement.Areas.Staff
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-            ViewBag.ActiveSession = GetActiveSession();   
+            ViewBag.ActiveSession = await GetActiveSession();   
             return View(students);
         }
 
