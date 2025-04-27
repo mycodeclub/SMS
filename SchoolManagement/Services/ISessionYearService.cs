@@ -11,5 +11,8 @@ namespace SchoolManagement.Services
         public Task<bool> DeleteSessionYear(int sessionYearId);
 
         public Task<SessionYear> GetActiveSessionYear();
+
+        public SessionYear GetSelectedSession();
+        public void SetSelectedSession(SessionYear session);
     }
 }

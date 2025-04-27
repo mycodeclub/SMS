@@ -13,9 +13,9 @@ namespace SchoolManagement.Services
         public SessionYearService(AppDbContext context, IMemoryCache cache)
         {
             _context = context;
-            _cache = cache; 
+            _cache = cache;
         }
-    
+
         public async Task<List<SessionYear>> GetAllSessionYears()
         {
             if (!_cache.TryGetValue("GetAllSessionYears", out List<SessionYear> sessions))
@@ -51,7 +51,7 @@ namespace SchoolManagement.Services
                 await _context.SaveChangesAsync();
             }
             return dbSession;
-        } 
+        }
         public Task<bool> DeleteSessionYear(int sessionYearId)
         {
             _context.SessionYears.Remove(_context.SessionYears.Find(sessionYearId));
@@ -62,6 +62,20 @@ namespace SchoolManagement.Services
             if (!_cache.TryGetValue("GetAllSessionYears", out List<SessionYear> sessions))
                 sessions = await GetAllSessionYears();
             return sessions.FirstOrDefault(s => s.IsAcitve);
+        } 
+        public SessionYear GetSelectedSession()
+        {
+            if (!_cache.TryGetValue("SelectedSessionYears", out SessionYear session))
+            {
+                session = GetActiveSessionYear().GetAwaiter().GetResult();
+                SetSelectedSession(session);
+            }
+            return session ?? throw new InvalidOperationException("No selected session found."); // Handle null case explicitly
+        }
+
+        public void SetSelectedSession(SessionYear session)
+        {
+            _cache.Set("SelectedSessionYears", session, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(24)));
         }
     }
 }

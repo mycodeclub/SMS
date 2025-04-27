@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
@@ -11,12 +12,15 @@ builder.Services.AddMemoryCache();
 builder.Services.AddResponseCaching();
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddSession();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
 builder.Services.AddScoped<IUserServiceBAL, UserServiceBAL>();
 builder.Services.AddScoped<ISessionYearService, SessionYearService>();
 builder.Services.AddScoped<IStandardService, StandardService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddSingleton<ITempDataProvider, SessionStateTempDataProvider>();
+
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -29,6 +33,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
+app.UseSession();
 
 // Enable response caching middleware
 app.UseResponseCaching();
