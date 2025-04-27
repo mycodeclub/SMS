@@ -31,7 +31,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 SetSelectedSessionTempData();
             }
 
-            var sessionYearsTask = _sessionService.GetAllSessionYears();
+            var sessionYearsTask = _sessionService.GetAllSessionsFromDb();
             var activeSessionTask = GetActiveSession();
             await Task.WhenAll(sessionYearsTask, activeSessionTask);
             ViewBag.ActiveSession = activeSessionTask.Result;
@@ -83,29 +83,19 @@ namespace SchoolManagement.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sessionYear);
+                if (sessionYear.UniqueId == 0)
+                {
+                    sessionYear.CreatedDate = DateTime.Now;
+                    _context.SessionYears.Add(sessionYear);
+                }
+                else _context.SessionYears.Update(sessionYear);
+                sessionYear.UpdatedDate = DateTime.Now;
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(sessionYear);
         }
-
-        // GET: Staff/SessionYears/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sessionYear = await _context.SessionYears.FindAsync(id);
-            if (sessionYear == null)
-            {
-                return NotFound();
-            }
-            return View(sessionYear);
-        }
-
 
 
         // GET: Staff/SessionYears/Delete/5

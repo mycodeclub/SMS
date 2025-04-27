@@ -12,8 +12,7 @@
             <h4>Session Year</h4>
             <hr />
 
-            <form asp-action="Create">
-                <input asp-for="IsAcitve" hidden />
+            <form asp-action="Create"> 
                 <input asp-for="UniqueId" hidden />
                 <input asp-for="CreatedDate" hidden />
                 <input asp-for="UpdatedDate" hidden />
@@ -43,9 +42,7 @@
                     </div>
                     <div class=" col-md-12 form-group align-content-center">
                         <input type="submit" value="Create" class="btn btn-primary" />
-                    </div>
-
-
+                    </div> 
                     <div>
                         <a asp-action="Index">Back to List</a>
                     </div>

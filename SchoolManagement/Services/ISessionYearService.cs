@@ -5,6 +5,7 @@ namespace SchoolManagement.Services
     public interface ISessionYearService
     {
         public Task<List<SessionYear>> GetAllSessionYears();
+        public Task<List<SessionYear>> GetAllSessionsFromDb();
         public Task<SessionYear> GetSessionYearById(int sessionYearId);
         public Task<SessionYear> AddSessionYear(SessionYear sy);
         public Task<SessionYear> UpdateSessionYear(SessionYear sy);

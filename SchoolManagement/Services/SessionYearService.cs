@@ -15,12 +15,17 @@ namespace SchoolManagement.Services
             _context = context;
             _cache = cache;
         }
+        public async Task<List<SessionYear>> GetAllSessionsFromDb()
+        {
+
+            return await _context.SessionYears.ToListAsync();
+        }
 
         public async Task<List<SessionYear>> GetAllSessionYears()
         {
             if (!_cache.TryGetValue("GetAllSessionYears", out List<SessionYear> sessions))
             {
-                sessions = await _context.SessionYears.ToListAsync();
+                sessions = await GetAllSessionsFromDb();
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromHours(24));
                 _cache.Set("GetAllSessionYears", sessions, cacheOptions);
