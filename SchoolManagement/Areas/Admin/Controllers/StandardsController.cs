@@ -45,7 +45,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,StandardName,FeeAmountPerMonth,BillingCycle")] Standard standard)
+        public async Task<IActionResult> Create( Standard standard)
         {
             if (ModelState.IsValid)
             {

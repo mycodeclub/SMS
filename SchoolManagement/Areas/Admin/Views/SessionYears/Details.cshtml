@@ -45,7 +45,7 @@
                                 <th>Class Name </th>
                                 <th> Fee Amount </th>
                                 <th>Billing Cycle </th>
-                                <th>Student Count </th>
+                                <th>Students </th>
                                 <th>View Details </th>
                             </tr>
                         </thead>
@@ -56,7 +56,7 @@
                                     <td>@standard.StandardName</td>
                                     <td>@standard.FeeAmountPerMonth</td>
                                     <td>@standard.BillingCycle - Month</td>
-                                    <td>@standard.StudentCount </td>
+                                    <td>  <a href="/Admin/Students/index/@standard.StandardId">@standard.StudentCount </a> </td>
                                     <td>
                                         <a asp-action="Details" asp-controller="Standards" asp-route-id="@standard.StandardId">@standard.StandardName</a>
                                     </td>

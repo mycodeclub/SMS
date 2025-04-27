@@ -151,7 +151,7 @@ namespace SchoolManagement.Controllers
             var result = await AutoAdminLogin();
             if (result)
             {
-                return RedirectToAction("Index", "StaffNew", new { Area = "Admin" });
+                return RedirectToAction("Details", "SessionYears", new { Area = "Admin", id = 1 });
             }
             else { return RedirectToAction("CreateMasterUser"); }
         }
@@ -161,7 +161,7 @@ namespace SchoolManagement.Controllers
         {
             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
             return result.Succeeded;
-        } 
+        }
 
         private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {

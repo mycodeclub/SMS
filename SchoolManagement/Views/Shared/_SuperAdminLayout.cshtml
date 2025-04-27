@@ -109,6 +109,8 @@
                     @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/Standards/Index"><i class="fa fa-book"></i> Standard  </a></li>
 
+                    @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/Admin/Students/Index"><i class="fa fa-user"></i> Students  </a></li>
 
 
                     @if (ActiveTabName.Equals("StaffNew")) { activeTab = "active"; } else { activeTab = string.Empty; }

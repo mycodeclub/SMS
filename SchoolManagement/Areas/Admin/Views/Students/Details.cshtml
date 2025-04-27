@@ -1,0 +1,108 @@
+﻿@model SchoolManagement.Models.User.Student
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
+}
+
+<div class="card mt-1 mb-2">
+    <div class="card-body" style="border:1px solid blue">
+        <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
+        <div class="row">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
+                <div><strong class="text-muted">Standard</strong></div>
+                <div class="fs-6">@Model.Standard.StandardName</div>
+            </div>
+            <br />
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2">
+                <div><strong class="text-muted">Full Name</strong></div>
+                <div class="fs-6">@Model.FullName</div>
+            </div>
+            <br />
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
+                <div><strong class="text-muted">Date Of Birth</strong></div>
+                <div class="fs-6">@Model.DOB.ToString("dd-MM-yyyyy")</div>
+            </div>
+            <br />
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
+                <div><strong class="text-muted">Gender</strong></div>
+                <div class="fs-6">@Model.Gender</div>
+            </div>
+            <br />
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
+                <div><strong class="text-muted">Admission Date</strong></div>
+                <div class="fs-6">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
+            </div>
+           
+            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2-md-4 col-sm-6">
+                <div><strong class="text-muted">Aadhaar Number</strong></div>
+                <div class="fs-6">@Model.AadhaarNumber</div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="text-bold"> Full Address </label>
+                <p class="">@Model.FullAddress  </p>
+            </div>
+
+        
+        </div>
+</div>
+@if (Model.ParentOrGuardians != null)
+{
+    <div class="card">
+        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+            <label class="text-white" style="font-size:1.6em;">Parents Details</label>
+            <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
+        </div>
+        <div class="card-body" style="border:1px solid blue">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:lightgrey">
+                    <tr>
+                        <th>Relation</th>
+                        <th>Name</th>
+                        <th>DOB | Age</th>
+                        <th>Primary Phone</th>
+                        <th>CTC</th>
+                        <th>Occupation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.ParentOrGuardians)
+                    {
+                        <tr>
+                            <td>@p.Relation.RelationName</td>
+                            <td>@p.FullName</td>
+                            <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                            <td>@p.PrimaryPhoneNumber</td>
+                            <td>@p.CTC</td>
+                            <td>@p.Occupation</td>
+                            <td>
+
+                                <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                              
+                                <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
+                                    <i class="fa fa-eye"></i>
+                                </a> |
+
+                                <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
+                            </td>
+                        </tr>
+                           }
+                       </tbody>
+                    </table>
+                 </div>
+             </div>
+         }
+   
+      
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

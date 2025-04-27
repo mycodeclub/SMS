@@ -1,0 +1,32 @@
+﻿@using SchoolManagement.Models
+@model SchoolManagement.Models.User.ParentOrGuardians
+@{
+    ViewData["Title"] = "Delete Parents";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
+}
+
+<div class="card border-danger p-3">
+<form asp-action="DeleteParents" method="post">
+        <input type="hidden" asp-for="UniqueId" />
+<h3>Are you sure you want to delete this parent?</h3>
+<hr />
+
+    <dl class="row">
+        <dt class="col-sm-3">Full Name</dt>
+        <dd class="col-sm-9">@Model.FullName</dd>
+
+        <dt class="col-sm-3">Relation</dt>
+        <dd class="col-sm-9">@Model.Relation.RelationName</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@Model.PrimaryPhoneNumber</dd>
+
+        <dt class="col-sm-3">Occupation</dt>
+        <dd class="col-sm-9">@Model.Occupation</dd>
+    </dl>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="Details" asp-controller="Students" asp-route-id="@Model.StudentUniqueId" class="btn btn-secondary">Cancel</a>
+   
+    </form>
+     </div>
