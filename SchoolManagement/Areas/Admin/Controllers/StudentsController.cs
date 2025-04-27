@@ -73,13 +73,20 @@ namespace SchoolManagement.Areas.Admin.Controllers
             if (student == null)
                 student = new Student
                 {
-                    SessionYearId = 1,
+                    SessionYearId = _sessionYearService.GetSelectedSession().UniqueId,
                     DOB = DateTime.Now.AddYears(-2),
-                    AdmitionDate = DateTime.Now
+                    AdmitionDate = DateTime.Now,
+                    HomeAddress = new Models.Address.Address()
+                    {
+                        CountryId = 1,
+                        StateId = 32,
+                        CityId = 1124,
+                    },
+
                 };
-            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
