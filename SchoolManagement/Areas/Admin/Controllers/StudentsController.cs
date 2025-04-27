@@ -9,10 +9,11 @@ using SchoolManagement.Services;
 namespace SchoolManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class StudentsController(AppDbContext context, ISessionYearService sessionYearService) : BaseController(sessionYearService)
+    public class StudentsController(AppDbContext context, ISessionYearService sessionYearService, IStudentService studentService) : BaseController(sessionYearService)
     {
         private readonly AppDbContext _context = context;
         private readonly ISessionYearService _sessionYearService = sessionYearService;
+        private readonly IStudentService _studentService = studentService;
         // GET: Staff/Students
         public async Task<IActionResult> Index(int id = 1)
         {
@@ -69,21 +70,22 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Staff/Students/Create
         public async Task<IActionResult> Create(int id)
         {
-            var student = await _context.Students.Include(s => s.ParentOrGuardians).ThenInclude(s => s.Relation).Where(s => s.UniqueId == id).FirstOrDefaultAsync();
+            var student = await _context.Students
+                .Include(s => s.HomeAddress)
+                .Include(s => s.ParentOrGuardians)
+                .ThenInclude(s => s.Relation)
+                .Where(s => s.UniqueId == id)
+                .FirstOrDefaultAsync();
+
             if (student == null)
                 student = new Student
                 {
                     SessionYearId = _sessionYearService.GetSelectedSession().UniqueId,
                     DOB = DateTime.Now.AddYears(-2),
-                    AdmitionDate = DateTime.Now,
-                    HomeAddress = new Models.Address.Address()
-                    {
-                        CountryId = 1,
-                        StateId = 32,
-                        CityId = 1124,
-                    },
-
+                    AdmitionDate = DateTime.Now
                 };
+            student.HomeAddress ??= new Models.Address.Address() { CountryId = 1, StateId = 32, CityId = 1124 };
+
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
@@ -102,15 +104,16 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 if (student.UniqueId == 0)
                 {
-                    student.LastUpdatedDate = student.CreatedDate = DateTime.UtcNow;
+                    student.HomeAddress.CreatedDate = student.CreatedDate = DateTime.UtcNow;
                     _context.Add(student);
-
                 }
                 else
                 {
                     student.LastUpdatedDate = DateTime.UtcNow;
                     _context.Update(student);
                 }
+                student.SessionYearId = _sessionYearService.GetSelectedSession().UniqueId;
+                student.HomeAddress.LastUpdated = student.LastUpdatedDate = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
                 if (student.Aadhar != null && student.Aadhar.Length > 0)
                 {
@@ -122,11 +125,20 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     student.PhotosFileUrl = await Common.CommonFuntions.UploadFile(student.Photos, "Student", student.UniqueId, "Photos");
                     await _context.SaveChangesAsync();
                 }
-                ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-                ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-                ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-                ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-                ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
+
+                //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+                //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+                //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+                //ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
+                //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
+
+
+                //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
+                //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
+                //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
+                //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+                ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
+
                 //return RedirectToAction("Edit", student.UniqueId);
                 return RedirectToAction("Index");
             }
@@ -175,7 +187,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         {
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
-                parent = new ParentOrGuardians() { StudentUniqueId = studentId };
+                parent = new ParentOrGuardians() { StudentUniqueId = studentId, AddressSameAsStudent = true };
 
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
@@ -191,6 +203,11 @@ namespace SchoolManagement.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddParents(ParentOrGuardians parent)
         {
+            if (parent.AddressSameAsStudent)
+            {
+                var stu = await _studentService.GetStudentById(parent.StudentUniqueId);
+                parent.HomeAddress = stu.HomeAddress;
+            }
             ValidateFileUploads(parent);
             if (ModelState.IsValid)
             {

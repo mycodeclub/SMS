@@ -69,6 +69,8 @@ namespace SchoolManagement.Models.User
 
         public string Occupation { get; set; } = string.Empty;
         public int CTC { get; set; }
+        [NotMapped]
+        public bool AddressSameAsStudent { get; set; }
 
     }
 

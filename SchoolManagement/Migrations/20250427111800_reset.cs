@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class AgainNewsd : Migration
+    public partial class reset : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -95,6 +95,24 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SessionDetailsDtoRaw",
+                columns: table => new
+                {
+                    StandardId = table.Column<int>(type: "int", nullable: false),
+                    SessionId = table.Column<int>(type: "int", nullable: false),
+                    SessionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StandardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentCount = table.Column<int>(type: "int", nullable: false),
+                    FeeAmountPerMonth = table.Column<int>(type: "int", nullable: false),
+                    BillingCycle = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SessionYears",
                 columns: table => new
                 {
@@ -102,7 +120,11 @@ namespace SchoolManagement.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SessionName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAcitve = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -348,7 +370,7 @@ namespace SchoolManagement.Migrations
                     DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdmitionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    HomeAddressUniqueId = table.Column<int>(type: "int", nullable: true),
+                    AddressId = table.Column<int>(type: "int", nullable: false),
                     StandardId = table.Column<int>(type: "int", nullable: false),
                     SessionYearId = table.Column<int>(type: "int", nullable: false),
                     AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -362,10 +384,11 @@ namespace SchoolManagement.Migrations
                 {
                     table.PrimaryKey("PK_Students", x => x.UniqueId);
                     table.ForeignKey(
-                        name: "FK_Students_Addresses_HomeAddressUniqueId",
-                        column: x => x.HomeAddressUniqueId,
+                        name: "FK_Students_Addresses_AddressId",
+                        column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "UniqueId");
+                        principalColumn: "UniqueId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Students_SessionYears_SessionYearId",
                         column: x => x.SessionYearId,
@@ -495,8 +518,8 @@ namespace SchoolManagement.Migrations
 
             migrationBuilder.InsertData(
                 table: "SessionYears",
-                columns: new[] { "UniqueId", "EndDate", "SessionName", "StartDate" },
-                values: new object[] { 1, new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "2025-2026", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                columns: new[] { "UniqueId", "CreatedDate", "EndDate", "IsAcitve", "IsDeleted", "SessionName", "StartDate", "UpdatedDate" },
+                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "2025-2026", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.InsertData(
                 table: "Standards",
@@ -1862,9 +1885,9 @@ namespace SchoolManagement.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Students_HomeAddressUniqueId",
+                name: "IX_Students_AddressId",
                 table: "Students",
-                column: "HomeAddressUniqueId");
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_SessionYearId",
@@ -1900,6 +1923,9 @@ namespace SchoolManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Parents");
+
+            migrationBuilder.DropTable(
+                name: "SessionDetailsDtoRaw");
 
             migrationBuilder.DropTable(
                 name: "StaffNewModels");

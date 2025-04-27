@@ -30,6 +30,8 @@ namespace SchoolManagement.Models.User
         [Display(Name = "Admission Date")]
         public DateTime AdmitionDate { get; set; }
 
+        public int AddressId { get; set; }
+        [ForeignKey("AddressId")]
         public Address.Address? HomeAddress { get; set; }
 
         [NotMapped]

@@ -2,7 +2,7 @@
 
 @{
 	ViewData["Title"] = "Index";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
 	ViewBag.ActiveTabName = "Students";
 }
 
@@ -98,7 +98,7 @@
 			function ReloadIndex()
 			{
 				let _standardId  = $('#StandardIdDDL').val();
-				window.location.href='/Staff/Students/index/'+_standardId;
+				window.location.href='/Admin/Students/index/'+_standardId;
 			}
 		$(document).ready(function () {
 			$('#tblStudents').DataTable({

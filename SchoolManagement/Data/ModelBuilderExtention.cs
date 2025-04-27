@@ -1311,13 +1311,12 @@ namespace BpstEducation.Data
         public static void SeedSession(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SessionYear>().HasData(
-                new SessionYear()
-                {
-                    UniqueId = 1,
-                    SessionName = "2025-2026",
-                    StartDate = new DateTime(2025, 03, 01),
-                    EndDate = new DateTime(2026, 2, 2)
-                });
+                new SessionYear() { UniqueId = 1, StartDate = new DateTime(2025, 03, 01), EndDate = new DateTime(2026, 2, 2), IsAcitve = true, SessionName = "Session 2025 - 26" },
+                new SessionYear() { UniqueId = 2, StartDate = new DateTime(2024, 03, 01), EndDate = new DateTime(2025, 2, 2), IsAcitve = false, SessionName = "Session 2024 - 25" },
+                new SessionYear() { UniqueId = 3, StartDate = new DateTime(2023, 03, 01), EndDate = new DateTime(2024, 2, 2), IsAcitve = false, SessionName = "Session 2023 - 24" },
+                new SessionYear() { UniqueId = 4, StartDate = new DateTime(2022, 03, 01), EndDate = new DateTime(2023, 2, 2), IsAcitve = false, SessionName = "Session 2022 - 23" }
+                );
+
         }
         public static void SeedFeeTypeMaster(this ModelBuilder modelBuilder)
         {

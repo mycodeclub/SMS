@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250426072900_updatedSessionModule")]
-    partial class updatedSessionModule
+    [Migration("20250427112706_udatedSeedDataForSession")]
+    partial class udatedSeedDataForSession
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7953,10 +7953,43 @@ namespace SchoolManagement.Migrations
                             UniqueId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = true,
+                            IsDeleted = false,
+                            SessionName = "Session 2025 - 26",
+                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAcitve = false,
                             IsDeleted = false,
-                            SessionName = "2025-2026",
-                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SessionName = "Session 2024 - 25",
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 3,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = false,
+                            IsDeleted = false,
+                            SessionName = "Session 2023 - 24",
+                            StartDate = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = false,
+                            IsDeleted = false,
+                            SessionName = "Session 2022 - 23",
+                            StartDate = new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -8273,6 +8306,9 @@ namespace SchoolManagement.Migrations
                     b.Property<string>("AadharFileUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("AdmitionDate")
                         .HasColumnType("datetime2");
 
@@ -8291,9 +8327,6 @@ namespace SchoolManagement.Migrations
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("HomeAddressUniqueId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -8320,13 +8353,47 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.HasIndex("HomeAddressUniqueId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("SessionYearId");
 
                     b.HasIndex("StandardId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("SchoolManagement.ProcModels.SessionDetailsDto", b =>
+                {
+                    b.Property<int>("BillingCycle")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FeeAmountPerMonth")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SessionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StandardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StandardName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentCount")
+                        .HasColumnType("int");
+
+                    b.ToTable("SessionDetailsDtoRaw");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -8472,7 +8539,9 @@ namespace SchoolManagement.Migrations
                 {
                     b.HasOne("SchoolManagement.Models.Address.Address", "HomeAddress")
                         .WithMany()
-                        .HasForeignKey("HomeAddressUniqueId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SchoolManagement.Models.SessionYear", "Session")
                         .WithMany()

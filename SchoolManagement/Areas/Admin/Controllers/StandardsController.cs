@@ -55,58 +55,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             }
             return View(standard);
         }
-
-        // GET: Staff/Standards/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var standard = await _context.Standards.FindAsync(id);
-            if (standard == null)
-            {
-                return NotFound();
-            }
-            return View(standard);
-        }
-
-        // POST: Staff/Standards/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,StandardName,FeeAmountPerMonth,BillingCycle")] Standard standard)
-        {
-            if (id != standard.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(standard);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StandardExists(standard.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(standard);
-        }
-
+         
         // GET: Staff/Standards/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

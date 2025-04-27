@@ -44,11 +44,11 @@ namespace SchoolManagement.Services
             return true;
         }
 
-        public async Task<List<Student>> GetStudentById(int id)
+        public async Task<Student> GetStudentById(int id)
         {
             return await _context.Students
                 .Where(s => s.UniqueId == id && s.IsDeleted == false)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
         }
         public async Task<bool> DeleteStudent(Student student)
         {

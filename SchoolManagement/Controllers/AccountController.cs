@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
+using SchoolManagement.Models.User;
 using SchoolManagement.Services;
 
 namespace SchoolManagement.Controllers
@@ -105,8 +107,6 @@ namespace SchoolManagement.Controllers
             ViewBag.ActiveTabId = 1;
             return RedirectToAction("Index", "Home");
         }
-
-
         public async Task<IActionResult> CreateMasterUser()
         {
             var resultStr = string.Empty;
@@ -145,7 +145,6 @@ namespace SchoolManagement.Controllers
             }
             return RedirectToAction("AutoLogin");
         }
-
         public async Task<IActionResult> AutoLogin()
         {
             var result = await AutoAdminLogin();
@@ -155,14 +154,11 @@ namespace SchoolManagement.Controllers
             }
             else { return RedirectToAction("CreateMasterUser"); }
         }
-
-
         private async Task<bool> AutoAdminLogin()
         {
             var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
             return result.Succeeded;
         }
-
         private async Task<IdentityResult> RegisterOrg(AppUser appUser)
         {
             //    appUser.UserName = appUser.Email;
@@ -239,6 +235,16 @@ namespace SchoolManagement.Controllers
             var result = await _userService.UpldateLoggedInUserEmail(updateEmail);
             ViewBag.Layout = _userService.GetLayout();
             return View(updateEmail);
+        }
+
+        public async Task<IActionResult> GetAddressPartial(int addressId)
+        {
+            var _address = await _context.Addresses.Include(a => a.City).Include(a => a.Country).Include(a => a.State).Where(a => a.UniqueId == addressId).FirstOrDefaultAsync();
+            _address = new Address() { CountryId = 1, StateId = 32, CityId = 1124 };
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", _address.CountryId);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", _address.StateId);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", _address.CityId);
+            return View("_addressPartial", _address);
         }
 
 

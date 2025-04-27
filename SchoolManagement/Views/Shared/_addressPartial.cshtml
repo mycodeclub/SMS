@@ -1,0 +1,50 @@
+﻿@model SchoolManagement.Models.Address.Address
+@{
+    Layout = null;
+}
+
+<div class="card" >
+    <div class="card-header bg-light">HomeAddress Details</div>
+    <div class="card-body row">
+        <div class="form-group col-sm-12 col-md-6  col-lg-4">
+            <label asp-for="CountryId" class="text-bold">  </label><small>  </small>
+            <select name="HomeAddress.CountryId" asp-for="CountryId" asp-items="ViewBag.CountryId" style="height:2em" class="custom-select form-control"></select>
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-sm-12 com-md-6 col-lg-4">
+            <label asp-for="StateId" class="control-label"></label><small>  </small>
+            <select name="HomeAddress.StateId" asp-for="StateId" asp-items="ViewBag.StateId" style="height:2em" onchange="GetCitiesByStateId($(this).children('option:selected').val())" class="custom-select form-control"> <option id="0"> -- Select State -- </option> </select>
+            <span asp-validation-for="StateId" class="text-danger"></span>
+        </div>
+        <div class="form-group col-sm-12 com-md-6 col-lg-4">
+            <label asp-for="CityId" class="control-label"></label><small></small>
+            <select name="HomeAddress.CityId" asp-for="CityId" asp-items="ViewBag.CityId" style="height:2em" class="custom-select form-control"></select>
+            <span asp-validation-for="CityId" class="text-danger"></span>
+        </div>
+        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+            <label class="control-label" asp-for="AddressLine1"></label>
+            <input name="HomeAddress.AddressLine1" asp-for="AddressLine1" class="form-control" placeholder="HomeAddress Line 1" />
+            <span asp-validation-for="AddressLine1" class="text-danger"></span>
+        </div>
+        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+            <label class="control-label" asp-for="AddressLine2"></label>
+            <input name="HomeAddress.AddressLine2" asp-for="AddressLine2" class="form-control" placeholder="HomeAddress Line 2" />
+            <span asp-validation-for="AddressLine2" class="text-danger"></span>
+        </div>
+        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+            <label class="control-label" asp-for="AddressLine3"></label>
+            <input name="HomeAddress.AddressLine3" asp-for="AddressLine3" class="form-control" placeholder="HomeAddress Line 3" />
+            <span asp-validation-for="AddressLine3" class="text-danger"></span>
+        </div>
+        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+            <label class="control-label" asp-for="NearestLandMark"></label>
+            <input name="HomeAddress.NearestLandMark" asp-for="NearestLandMark" class="form-control" placeholder="Nearest Land Mark" />
+            <span asp-validation-for="NearestLandMark" class="text-danger"></span>
+        </div>
+        <div class="col-sm-12 col-md-6  col-lg-4 form-group">
+            <label class="control-label" asp-for="PinCode"></label>
+            <input name="HomeAddress.PinCode" asp-for="PinCode" class="form-control" placeholder="Pin Code" />
+            <span asp-validation-for="PinCode" class="text-danger"></span>
+        </div> 
+    </div>
+</div>
