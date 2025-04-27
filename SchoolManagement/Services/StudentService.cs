@@ -22,17 +22,6 @@ namespace SchoolManagement.Services
 
         public async Task<List<Student>> GetStudentByStanderd(int standerdId, bool includingParents = false)
         {
-            try
-            {
-                var dto = await _context.Set<SessionDetailsDto>()
-                   .FromSqlRaw("EXEC GetSessionDetailsByStandard @StandardId = {0}", standerdId)
-                   .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                var errorData = ex.Message;
-
-            }
             var result = _context.Students.Where(s => s.IsDeleted == false && s.StandardId == standerdId);
             if (includingParents == true)
                 result.Include(s => s.ParentOrGuardians);

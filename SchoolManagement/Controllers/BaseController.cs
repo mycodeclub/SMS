@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-using SchoolManagement.Models;
 using SchoolManagement.Services;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.Controllers
 {
@@ -15,22 +13,21 @@ namespace SchoolManagement.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-
-            var data = _sessionYearService.GetSelectedSession();
-            if (data != null)
-            {
-                TempData["SelectedSession"] = JsonConvert.SerializeObject(data);
-            }
+            SetSelectedSessionTempData();
         }
         public async Task<string> GetActiveSession()
         {
             var sessionYear = await _sessionYearService.GetActiveSessionYear();
             return "Session - " + sessionYear.SessionName;
         }
-        public string GetSelectedSessionName()
+        public void SetSelectedSessionTempData()
         {
-            var sessionYear = _sessionYearService.GetSelectedSession();
-            return "Session - " + sessionYear.SessionName;
+
+            var data = _sessionYearService.GetSelectedSession();
+            if (data != null)
+            {
+                TempData["SelectedSession"] = JsonConvert.SerializeObject(data);
+            }
         }
     }
 }

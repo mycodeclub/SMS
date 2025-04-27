@@ -1,9 +1,12 @@
-﻿@model IEnumerable<SchoolManagement.Models.SessionYear>
+﻿@using Newtonsoft.Json
+@model IEnumerable<SchoolManagement.Models.SessionYear>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "SessionYear";
+    var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
+
 }
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
@@ -17,62 +20,96 @@
                 <i class="fa fa-plus me-1"></i> Add New Session
             </a>
         </div>
+        <br />
+
+        <div class="d-flex justify-content-center my-8">
+
+            <div class="form-group row w-50">
+                <label for="staticEmail" class="col-sm-3 col-form-label">Select Session </label>
+                <select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
+                    @foreach (var item in Model)
+                    {
+                        if (selectedSession.UniqueId == item.UniqueId)
+                        {
+                            <option  selected="selected"   value="@item.UniqueId">@item.SessionName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.UniqueId">@item.SessionName</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+
+
+
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblGuestLists">
                 <thead class="table-light">
-              
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.SessionName)
-            </th>
-            <th>
-         @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAcitve)
-            </th>
-            <th>Actions</th>
-           
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionName)
-            </td>
-            <td>
-               @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-             <input type="checkbox" name="IsActiveSessionChk" checked="@item.IsAcitve"  onclick="alert()"  />
-             @* @Html.DisplayFor(modelItem => item.IsAcitve)
+
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SessionName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsAcitve)
+                        </th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SessionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+                            <td>
+                                <input type="checkbox" name="IsActiveSessionChk" checked="@item.IsAcitve" onclick="alert()" />
+                                @* @Html.DisplayFor(modelItem => item.IsAcitve)
            *@  </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
-                                  
-                  
-            </td>
-          
-        </tr>
-}
-    </tbody>
-</table>
-</div></div></div>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
+                                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
+
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 </div>
 @section Scripts {
     <!-- DataTable Scripts -->
     <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
     <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+
     <script>
+           function ReloadIndex()
+                {
+                        let _selectedSessionId  = $('#selectedSessionDDL').val();
+                    window.location.href='/Admin/SessionYears/index/'+_selectedSessionId;
+                }
         $(document).ready(function () {
             $('#tblGuestLists').DataTable({
                 "pageLength": 10,

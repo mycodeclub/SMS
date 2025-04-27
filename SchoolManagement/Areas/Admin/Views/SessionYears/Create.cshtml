@@ -13,9 +13,13 @@
             <hr />
 
             <form asp-action="Create">
+                <input asp-for="IsAcitve" hidden />
+                <input asp-for="UniqueId" hidden />
+                <input asp-for="CreatedDate" hidden />
+                <input asp-for="UpdatedDate" hidden />
+  
                 <div class="row">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
                     <div class="col-sm-6 col-md-4  form-group">
                         <label asp-for="StartDate" class="control-label"></label>
                         <input asp-for="StartDate" class="form-control" />
@@ -34,7 +38,7 @@
                     </div>
                     <div class="col-sm-6 col-md-4  form-group">
                         <label asp-for="IsAcitve" class="control-label"></label>
-                        <input type="checkbox" asp-for="IsAcitve"  />
+                        <input type="checkbox" asp-for="IsAcitve" />
                         <span asp-validation-for="IsAcitve" class="text-danger"></span>
                     </div>
                     <div class=" col-md-12 form-group align-content-center">

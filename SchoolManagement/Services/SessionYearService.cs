@@ -62,7 +62,7 @@ namespace SchoolManagement.Services
             if (!_cache.TryGetValue("GetAllSessionYears", out List<SessionYear> sessions))
                 sessions = await GetAllSessionYears();
             return sessions.FirstOrDefault(s => s.IsAcitve);
-        } 
+        }
         public SessionYear GetSelectedSession()
         {
             if (!_cache.TryGetValue("SelectedSessionYears", out SessionYear session))
@@ -76,6 +76,11 @@ namespace SchoolManagement.Services
         public void SetSelectedSession(SessionYear session)
         {
             _cache.Set("SelectedSessionYears", session, new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(24)));
+        }
+
+        public async Task SetSelectedSessionById(int id)
+        {
+            SetSelectedSession(await GetSessionYearById(id));
         }
     }
 }

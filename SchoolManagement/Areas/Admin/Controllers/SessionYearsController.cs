@@ -23,19 +23,27 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         // GET: Staff/SessionYears
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
-            var sessionyear = await _sessionService.GetAllSessionYears();
-            ViewBag.ActiveSession = await GetActiveSession();
+            if (id > 0)
+            {
+                await _sessionService.SetSelectedSessionById(id);
+                SetSelectedSessionTempData();
+            }
 
-            return View(sessionyear);
+            var sessionYearsTask = _sessionService.GetAllSessionYears();
+            var activeSessionTask = GetActiveSession();
+            await Task.WhenAll(sessionYearsTask, activeSessionTask);
+            ViewBag.ActiveSession = activeSessionTask.Result;
+            return View(sessionYearsTask.Result);
         }
+
 
         // GET: Staff/SessionYears/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var sessionYear = await _sessionService.GetSessionYearById(id);
-            ViewBag.Standards = await _standardService.GetStandards(id);
+            ViewBag.Standards = await _standardService.GetStandards(id, 0);   // getting all standers
             return View(sessionYear);
         }
 
@@ -98,40 +106,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(sessionYear);
         }
 
-        // POST: Staff/SessionYears/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,SessionName,StartDate,EndDate")] SessionYear sessionYear)
-        {
-            if (id != sessionYear.UniqueId)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(sessionYear);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SessionYearExists(sessionYear.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sessionYear);
-        }
 
         // GET: Staff/SessionYears/Delete/5
         public async Task<IActionResult> Delete(int? id)

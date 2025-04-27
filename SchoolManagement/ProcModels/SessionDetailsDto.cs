@@ -5,6 +5,7 @@ namespace SchoolManagement.ProcModels
     public class SessionDetailsDto
     {
         public int StandardId { get; set; }
+        public int SessionId { get; set; }
         public string SessionName { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

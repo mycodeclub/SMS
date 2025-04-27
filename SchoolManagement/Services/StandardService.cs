@@ -10,17 +10,22 @@ namespace SchoolManagement.Services
         private readonly AppDbContext _context = context;
         private readonly ISessionYearService _sessionService = sessionService;
         private readonly IStudentService _studentService = studentService;
-         
-        public async Task<List<SessionDetailsDto>> GetStandards(int standardId = 0)
+
+        public async Task<List<SessionDetailsDto>> GetStandards(int sessionId = 0, int standardId = 0)
         {
-             
+            if (sessionId == 0)
+            {
+                var _selectedSession = _sessionService.GetSelectedSession();
+                sessionId = _selectedSession.UniqueId;
+            }
+
             List<SessionDetailsDto> _standerd;
             _standerd = await _context.Database
-               .SqlQuery<SessionDetailsDto>($"EXEC GetSessionDetailsByStandard @StandardId = {standardId}")
+               .SqlQuery<SessionDetailsDto>($"EXEC GetSessionDetailsByStandard @SessionId = {sessionId}, @StandardId = {standardId}")
                .ToListAsync();
             return _standerd;
         }
-
+        [Obsolete]
         public async Task<List<Standard>> GetStandardBySession(int sessionId)
         {
             if (sessionId == 0)
@@ -34,6 +39,6 @@ namespace SchoolManagement.Services
         public Task<Standard> GetStandardById(int standardId, bool includeStudents = false)
         {
             throw new NotImplementedException();
-        } 
+        }
     }
 }

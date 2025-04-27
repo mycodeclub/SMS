@@ -14,5 +14,6 @@ namespace SchoolManagement.Services
 
         public SessionYear GetSelectedSession();
         public void SetSelectedSession(SessionYear session);
+        public Task SetSelectedSessionById(int id);
     }
 }
