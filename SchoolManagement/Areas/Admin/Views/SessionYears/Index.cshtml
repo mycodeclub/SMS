@@ -25,8 +25,7 @@
         <div class="d-flex justify-content-center my-8">
 
             <div class="form-group row w-50">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Select Session </label>
-                <select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
+                   <select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
                     @foreach (var item in Model)
                     {
                         if (selectedSession.UniqueId == item.UniqueId)
@@ -110,12 +109,16 @@
                         let _selectedSessionId  = $('#selectedSessionDDL').val();
                     window.location.href='/Admin/SessionYears/index/'+_selectedSessionId;
                 }
-        $(document).ready(function () {
-            $('#tblGuestLists').DataTable({
+        
+             $(document).ready(function () {
+             $('#tblGuestLists').DataTable({
                 "pageLength": 10,
                 "ordering": true,
-                "searching": true
+                "searching": true,
+                "order": [[0, "desc"]] // Sort by the first column (Session Name) descending
             });
         });
+
+
     </script>
 }
