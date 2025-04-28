@@ -184,6 +184,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // ---------------------------------- Parents 
         [HttpGet]
         public async Task<IActionResult> AddParents(int studentId, int parentId)
+        
+       
         {
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
@@ -199,16 +201,16 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(parent);
         }
 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParents(ParentOrGuardians parent)
+        public async Task<IActionResult> AddParents(ParentOrGuardians parent,int studentId)
         {
             if (parent.AddressSameAsStudent)
             {
                 var stu = await _studentService.GetStudentById(parent.StudentUniqueId);
                 parent.HomeAddress = stu.HomeAddress;
             }
-            ValidateFileUploads(parent);
+             ValidateFileUploads(parent);
             if (ModelState.IsValid)
             {
                 if (parent.UniqueId == 0)
@@ -242,10 +244,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
             return View(parent);
         }
+        
 
         [HttpGet]
-
-
 
         // GET: ParentOrGuardians/ParentDetail/5
         public async Task<IActionResult> ParentDetail(int? id)

@@ -7,8 +7,7 @@
 }
 
 <div class="card border-danger p-3">
-<form asp-action="DeleteParents" method="post">
-        <input type="hidden" asp-for="UniqueId" />
+
 <h3>Are you sure you want to delete this parent?</h3>
 <hr />
 
@@ -25,6 +24,8 @@
         <dt class="col-sm-3">Occupation</dt>
         <dd class="col-sm-9">@Model.Occupation</dd>
     </dl>
+    <form asp-action="DeleteParents" method="post">
+        <input type="hidden" asp-for="UniqueId" />
         <button type="submit" class="btn btn-danger">Delete</button>
         <a asp-action="Details" asp-controller="Students" asp-route-id="@Model.StudentUniqueId" class="btn btn-secondary">Cancel</a>
    
