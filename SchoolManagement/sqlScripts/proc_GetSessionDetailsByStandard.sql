@@ -1,4 +1,6 @@
--- exec GetSessionDetailsByStandard 2,0 
+-- exec GetSessionDetailsByStandard 1,0 
+ -- select * from Standards
+
 IF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL
 BEGIN
     DROP PROCEDURE GetSessionDetailsByStandard;
@@ -29,9 +31,9 @@ BEGIN
         COUNT(s.UniqueId) AS StudentCount
     FROM 
         Students s
-    INNER JOIN 
+    FULL JOIN 
         SessionYears sy ON sy.UniqueId = s.SessionYearId
-    INNER JOIN 
+    FULL JOIN 
         Standards c ON s.StandardId = c.UniqueId
     WHERE 
         s.SessionYearId = @SessionId -- Required Session filter
