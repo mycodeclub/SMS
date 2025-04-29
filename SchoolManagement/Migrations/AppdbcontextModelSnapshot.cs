@@ -224,7 +224,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.Address.City", b =>
@@ -246,7 +246,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
 
                     b.HasData(
                         new
@@ -7555,7 +7555,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
 
                     b.HasData(
                         new
@@ -7584,7 +7584,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("States", (string)null);
+                    b.ToTable("States");
 
                     b.HasData(
                         new
@@ -7881,7 +7881,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("FeeTypeMaster", (string)null);
+                    b.ToTable("FeeTypeMaster");
 
                     b.HasData(
                         new
@@ -7942,7 +7942,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("SessionYears", (string)null);
+                    b.ToTable("SessionYears");
 
                     b.HasData(
                         new
@@ -8040,7 +8040,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("SessionYearId");
 
-                    b.ToTable("StaffNewModels", (string)null);
+                    b.ToTable("StaffNewModels");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.Standard", b =>
@@ -8063,7 +8063,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Standards", (string)null);
+                    b.ToTable("Standards");
 
                     b.HasData(
                         new
@@ -8135,7 +8135,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentFees", (string)null);
+                    b.ToTable("StudentFees");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>
@@ -8203,7 +8203,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StudentUniqueId");
 
-                    b.ToTable("Parents", (string)null);
+                    b.ToTable("Parents");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Relation", b =>
@@ -8223,7 +8223,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.ToTable("Relations", (string)null);
+                    b.ToTable("Relations");
 
                     b.HasData(
                         new
@@ -8356,7 +8356,7 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StandardId");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("SchoolManagement.ProcModels.SessionDetailsDto", b =>
@@ -8390,7 +8390,7 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("StudentCount")
                         .HasColumnType("int");
 
-                    b.ToTable("SessionDetailsDtoRaw", (string)null);
+                    b.ToTable("SessionDetailsDtoRaw");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

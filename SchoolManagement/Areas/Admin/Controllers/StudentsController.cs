@@ -203,6 +203,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddParents(ParentOrGuardians parent,int studentId)
         {
             if (parent.AddressSameAsStudent)
@@ -245,7 +246,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(parent);
         }
         
-
         [HttpGet]
 
         // GET: ParentOrGuardians/ParentDetail/5

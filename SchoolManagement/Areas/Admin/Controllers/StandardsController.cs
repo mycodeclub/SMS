@@ -24,7 +24,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Staff/Standards
         public async Task<IActionResult> Index()
         {
-            var standards = await _standardService.GetStandardBySession(0);
+
+            var standards = await _standardService.GetStandards(_sessionService.GetSelectedSession().UniqueId);
             return View(standards);
         }
 
@@ -48,11 +49,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _standardService.GetStandards(standard.UniqueId);
-
-                {
-
-                    _context.Update(standard);
-                }
 
                 return RedirectToAction(nameof(Index));
             }
