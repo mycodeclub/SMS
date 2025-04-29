@@ -1,90 +1,87 @@
 ﻿@model SchoolManagement.Models.StaffNewModel
-
 @{
     ViewData["Title"] = "Create Staff";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "StaffNew";
 }
-
-<div class="container mt-4">
-    <div class="card shadow rounded-4">
-        <div class="card-header bg-primary text-white rounded-top-4">
-            <h4 class="mb-0">Create New Staff</h4>
-        </div>
-        <div class="card-body p-4">
-            <form asp-action="Create">
-                <input type="hidden" asp-for="Id" />
-
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-
-                <div class="row g-1">
-                    <div class="col-md-4">
-                        <label asp-for="JobRole" class="form-label"></label>
-                        <input asp-for="JobRole" class="form-control" />
-                        <span asp-validation-for="JobRole" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Experience" class="form-label"></label>
-                        <input asp-for="Experience" class="form-control" />
-                        <span asp-validation-for="Experience" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="AadhaarNumber" class="form-label"></label>
-                        <input asp-for="AadhaarNumber" class="form-control" />
-                        <span asp-validation-for="AadhaarNumber" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="SessionYearId" class="form-label"></label>
-                        <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId"></select>
-                        <span asp-validation-for="SessionYearId" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Qualification" class="form-label"></label>
-                        <input asp-for="Qualification" class="form-control" />
-                        <span asp-validation-for="Qualification" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="FirstName" class="form-label"></label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="LastName" class="form-label"></label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="DOB" class="form-label"></label>
-                        <input asp-for="DOB" type="date" class="form-control" />
-                        <span asp-validation-for="DOB" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" type="email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="PrimaryPhoneNumber" class="form-label"></label>
-                        <input asp-for="PrimaryPhoneNumber" class="form-control" />
-                        <span asp-validation-for="PrimaryPhoneNumber" class="text-danger small"></span>
-                    </div>
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow rounded-3">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create Staff</h4>
                 </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="SessionYearId" class="form-label fw-semibold"></label>
+                                <select asp-for="SessionYearId" class="form-control" asp-items="ViewBag.SessionYearId">
+                                    <option value="">-- Select Session Year --</option>
+                                </select>
+                                <span asp-validation-for="SessionYearId" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="JobRole" class="form-label fw-semibold"></label>
+                                <input asp-for="JobRole" class="form-control"/>
+                                <span asp-validation-for="JobRole" class="text-danger small"></span>
+                            </div>
 
-                <div class="mt-4 d-flex gap-3">
-                    <button type="submit" class="btn btn-primary px-4">Create</button>
-                    <br />
-                    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                            <div class="col-md-6">
+                                <label asp-for="Experience" class="form-label fw-semibold"></label>
+                                <input asp-for="Experience" class="form-control" />
+                                <span asp-validation-for="Experience" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Qualification" class="form-label fw-semibold"></label>
+                                <input asp-for="Qualification" class="form-control" />
+                                <span asp-validation-for="Qualification" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-semibold"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-semibold"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="DOB" class="form-label fw-semibold"></label>
+                                <input asp-for="DOB" class="form-control" type="date" />
+                                <span asp-validation-for="DOB" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="AadhaarNumber" class="form-label fw-semibold"></label>
+                                <input asp-for="AadhaarNumber" class="form-control" />
+                                <span asp-validation-for="AadhaarNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-semibold"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PrimaryPhoneNumber" class="form-label fw-semibold"></label>
+                                <input asp-for="PrimaryPhoneNumber" class="form-control" />
+                                <span asp-validation-for="PrimaryPhoneNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success me-2">Create</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

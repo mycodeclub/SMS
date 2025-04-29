@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -43,7 +44,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             var staffNewModel = await _context.StaffNewModels
                 .Include(s => s.SessionYear)
-                .FirstOrDefaultAsync(m => m.Id == id);
+               
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (staffNewModel == null)
             {
                 return NotFound();
@@ -52,34 +54,30 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(staffNewModel);
         }
 
-        [HttpGet]
+
         public async Task<IActionResult> Create()
         {
-            var staffNewModel = await _context.StaffNewModels.FirstOrDefaultAsync();
+           
 
-            return View(staffNewModel);
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
+            return View();
         }
 
+
+        // POST: Staff/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(StaffNewModel staffNewModel)
+        public async Task<IActionResult> Create(StaffNewModel staff)
         {
             if (ModelState.IsValid)
             {
-                if (staffNewModel == null)
-                    staffNewModel = new StaffNewModel
-                    {
-                        SessionYearId = 1,
-                        DOB = DateTime.Now.AddYears(-2)
-                    };
-                _context.Add(staffNewModel);
+                _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", staffNewModel.SessionYearId);
-            return View(staffNewModel);
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "SessionYearId", "UniqueId", staff.SessionYearId);
+            return View(staff);
         }
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -95,11 +93,12 @@ namespace SchoolManagement.Areas.Admin.Controllers
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", staffNewModel.SessionYearId);
             return View(staffNewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, StaffNewModel staffNewModel)
         {
-            if (id != staffNewModel.Id)
+            if (id != staffNewModel.UniqueId)
             {
                 return NotFound();
             }
@@ -113,7 +112,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StaffNewModelExists(staffNewModel.Id))
+                    if (!StaffNewModelExists(staffNewModel.UniqueId))
                     {
                         return NotFound();
                     }
@@ -138,7 +137,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             var staffNewModel = await _context.StaffNewModels
                 .Include(s => s.SessionYear)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (staffNewModel == null)
             {
                 return NotFound();
@@ -164,7 +163,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
         private bool StaffNewModelExists(int id)
         {
-            return _context.StaffNewModels.Any(e => e.Id == id);
+            return _context.StaffNewModels.Any(e => e.UniqueId == id);
         }
     }
 }
