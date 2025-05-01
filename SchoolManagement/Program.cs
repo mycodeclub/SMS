@@ -14,7 +14,7 @@ builder.Services.AddResponseCaching();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionDocker")));
 builder.Services.AddScoped<IUserServiceBAL, UserServiceBAL>();
 builder.Services.AddScoped<ISessionYearService, SessionYearService>();
 builder.Services.AddScoped<IStandardService, StandardService>();

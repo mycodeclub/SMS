@@ -132,6 +132,31 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Staffs",
+                columns: table => new
+                {
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JobRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Experience = table.Column<int>(type: "int", nullable: true),
+                    AadharFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhotosFileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Qualification = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrimaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SecondryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentUniqueId = table.Column<int>(type: "int", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Staffs", x => x.UniqueId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Standards",
                 columns: table => new
                 {
@@ -268,34 +293,6 @@ namespace SchoolManagement.Migrations
                         name: "FK_States_Countries_CountryId",
                         column: x => x.CountryId,
                         principalTable: "Countries",
-                        principalColumn: "UniqueId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StaffNewModels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    JobRole = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Experience = table.Column<int>(type: "int", nullable: true),
-                    AadhaarNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SessionYearId = table.Column<int>(type: "int", nullable: false),
-                    Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DOB = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PrimaryPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StaffNewModels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_StaffNewModels_SessionYears_SessionYearId",
-                        column: x => x.SessionYearId,
-                        principalTable: "SessionYears",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -519,7 +516,13 @@ namespace SchoolManagement.Migrations
             migrationBuilder.InsertData(
                 table: "SessionYears",
                 columns: new[] { "UniqueId", "CreatedDate", "EndDate", "IsAcitve", "IsDeleted", "SessionName", "StartDate", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "2025-2026", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, "Session 2025 - 26", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2024 - 25", new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2023 - 24", new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2022 - 23", new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Standards",
@@ -1870,11 +1873,6 @@ namespace SchoolManagement.Migrations
                 column: "StudentUniqueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StaffNewModels_SessionYearId",
-                table: "StaffNewModels",
-                column: "SessionYearId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
                 table: "States",
                 column: "CountryId");
@@ -1928,7 +1926,7 @@ namespace SchoolManagement.Migrations
                 name: "SessionDetailsDtoRaw");
 
             migrationBuilder.DropTable(
-                name: "StaffNewModels");
+                name: "Staffs");
 
             migrationBuilder.DropTable(
                 name: "StudentFees");
