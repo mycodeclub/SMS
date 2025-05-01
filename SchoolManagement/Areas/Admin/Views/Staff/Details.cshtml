@@ -1,14 +1,15 @@
 ﻿@model SchoolManagement.Models.User.Staff
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
-    ViewBag.ActiveTabName = "StaffNew";
+    ViewBag.ActiveTabName = "Staff";
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>StaffNewModel</h4>
+    <h4>Staff</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -24,17 +25,34 @@
             @Html.DisplayFor(model => model.Experience)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AadharFileUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AadharFileUrl)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhotosFileUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PhotosFileUrl)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AadhaarNumber)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AadhaarNumber)
         </dd>
- 
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Qualification)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Qualification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentUniqueId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentUniqueId)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -65,6 +83,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PrimaryPhoneNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SecondryPhoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SecondryPhoneNumber)
         </dd>
     </dl>
 </div>

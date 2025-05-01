@@ -1,0 +1,133 @@
+﻿@model SchoolManagement.Models.User.Staff
+@{
+    ViewData["Title"] = "StaffNew";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Staff";
+}
+
+<div class="container mt-3">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow rounded-3">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create Staff</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateStaff" method="post">
+                        <div class="row g-3">
+                            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                                <label asp-for="Aadhar" class="form-label"></label>
+                                <input asp-for="Aadhar" type="file" class="form-control" id="aadharInput" />
+                                <span asp-validation-for="Aadhar" class="text-danger"></span>
+                                <img id="aadharPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6 col-lg-3">
+                                <label asp-for="Photos" class="form-label"></label>
+                                <input asp-for="Photos" type="file" class="form-control" id="photosInput" />
+                                <span asp-validation-for="Photos" class="text-danger"></span>
+                                <img id="photoPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="JobRole" class="form-label fw-semibold"></label>
+                                <input asp-for="JobRole" class="form-control" />
+                                <span asp-validation-for="JobRole" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Experience" class="form-label fw-semibold"></label>
+                                <input asp-for="Experience" class="form-control" />
+                                <span asp-validation-for="Experience" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Qualification" class="form-label fw-semibold"></label>
+                                <input asp-for="Qualification" class="form-control" />
+                                <span asp-validation-for="Qualification" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-semibold"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-semibold"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="DOB" class="form-label fw-semibold"></label>
+                                <input asp-for="DOB" class="form-control" type="date" />
+                                <span asp-validation-for="DOB" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="AadhaarNumber" class="form-label fw-semibold"></label>
+                                <input asp-for="AadhaarNumber" class="form-control" />
+                                <span asp-validation-for="AadhaarNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-semibold"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PrimaryPhoneNumber" class="form-label fw-semibold"></label>
+                                <input asp-for="PrimaryPhoneNumber" class="form-control" />
+                                <span asp-validation-for="PrimaryPhoneNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success me-2">Save</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var aadharInput = document.getElementById('aadharInput');
+
+            var aadharPreview = document.getElementById('aadharPreview');
+
+            var photosInput = document.getElementById('photosInput');
+               var photoPreview = document.getElementById('photoPreview');
+
+            function handleFileSelect(input, preview) {
+                input.addEventListener('change', function () {
+                    var file = input.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.style.display = 'none';
+                    }
+                });
+            }
+
+            handleFileSelect(aadharInput, aadharPreview);
+            handleFileSelect(photosInput, photoPreview);
+        });
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

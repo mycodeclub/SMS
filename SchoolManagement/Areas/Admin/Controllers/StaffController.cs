@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Services;
@@ -40,29 +41,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Create()
-        {
-
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
-            return View();
-        }
-
-
-        // POST: Staff/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SchoolManagement.Models.User.Staff staff)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(staff);
-                await _context.SaveChangesAsync();
-                return View();
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,17 +53,19 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
+           
             return View(staff);
         }
 
         [HttpGet]
-        public IActionResult CreateStaff()
+
+        public async Task<IActionResult> CreateStaff(int id)
         {
+            var staff = await _context.Staffs.Where(s => s.UniqueId == id)
+                .FirstOrDefaultAsync();
 
-            return View();
+            return View(staff);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStaff(SchoolManagement.Models.User.Staff staff)
@@ -97,7 +77,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     _context.Staffs.Add(staff);
                 else
                     _context.Update(staff);
-                await _context.SaveChangesAsync();
+                
             }
             await _context.SaveChangesAsync();
             if (staff.Aadhar != null && staff.Aadhar.Length > 0)
@@ -111,12 +91,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return View(staff);
+            return RedirectToAction(nameof(Index));
         }
-
-
-
-
 
 
 
