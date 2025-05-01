@@ -1,11 +1,10 @@
-﻿@model IEnumerable<SchoolManagement.Models.Standard>
+﻿@model IEnumerable<SchoolManagement.ProcModels.SessionDetailsDto>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Standard"; 
 }
-
 
 
 <div class="content px-3">
@@ -30,7 +29,6 @@
                         <th>
                             @Html.DisplayNameFor(model => model.BillingCycle)
                         </th>
-                       
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -43,9 +41,9 @@
                             <td>@item.BillingCycle</td>
                            
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-                                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-                                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
+                                <a asp-action="Create" asp-route-id="@item.SessionId"><i class="fa fa-edit"></i></a> |
+                                <a asp-action="Details" asp-route-id="@item.SessionId"><i class="fa fa-eye"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.SessionId"><i class="fa fa-trash"></i></a> |
                             </td>
                         </tr>
                     }
@@ -70,7 +68,9 @@
             $('#tblGuestLists').DataTable({
                 "pageLength": 10,
                 "ordering": true,
-                "searching": true
+                "searching": true,
+               
+
             });
         });
     </script>

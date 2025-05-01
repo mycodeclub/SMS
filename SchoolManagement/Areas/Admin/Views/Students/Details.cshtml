@@ -5,6 +5,7 @@
     ViewBag.ActiveTabName = "Students";
 }
 
+
 <div class="card mt-1 mb-2">
     <div class="card-body" style="border:1px solid blue">
         <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
@@ -78,13 +79,10 @@
                             <td>@p.CTC</td>
                             <td>@p.Occupation</td>
                             <td>
-
-                                <a href="/Staff/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
-                              
+                                <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.RelationId"><i class="fa fa-edit"></i></a> |
                                 <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
                                     <i class="fa fa-eye"></i>
                                 </a> |
-
                                 <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
                             </td>
                         </tr>
@@ -95,7 +93,6 @@
              </div>
          }
    
-      
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

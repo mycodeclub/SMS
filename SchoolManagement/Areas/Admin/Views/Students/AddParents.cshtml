@@ -7,9 +7,53 @@
     List<ParentOrGuardians> stuParents = ViewBag.stuParents;
     List<Relation> relationMaster = ViewBag.RelationId;
 }
-@{
-    Html.RenderPartial("_ParentsPartial", stuParents);
+
+@if (stuParents != null)
+{
+    <div class="card">
+        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+            <label class="text-white" style="font-size:1.6em;">Parents Details</label>
+            <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
+        </div>
+        <div class="card-body" style="border:1px solid blue">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:lightgrey">
+                    <tr>
+                        <th>Relation</th>
+                        <th>Name</th>
+                        <th>DOB | Age</th>
+                        <th>Primary Phone</th>
+                        <th>CTC</th>
+                        <th>Occupation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in stuParents)
+                    {
+                        <tr>
+                            <td>@p.Relation.RelationName</td>
+                            <td>@p.FullName</td>
+                            <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                            <td>@p.PrimaryPhoneNumber</td>
+                            <td>@p.CTC</td>
+                            <td>@p.Occupation</td>
+                            <td>
+                                <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.RelationId"><i class="fa fa-edit"></i></a> |
+
+                                <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
+                                    <i class="fa fa-eye"></i>
+                                </a> |
+                                <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
+
 
 <form asp-action="AddParents" enctype="multipart/form-data" class="needs-validation" novalidate>
     <div class="card" style="margin-left:5px;margin-right:5px;">
@@ -100,7 +144,7 @@
             </div>
         </div>
         <div class="form-group col-12 text-center"> 
-            <button class="btn btn-primery" type="submit"> Save </button>
+            <input type="submit" value="Save" class="btn btn-primary" />
         </div>
     </div>
 </form>
