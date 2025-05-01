@@ -76,7 +76,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 .ThenInclude(s => s.Relation)
                 .Where(s => s.UniqueId == id)
                 .FirstOrDefaultAsync();
-
             if (student == null)
                 student = new Student
                 {
@@ -178,15 +177,14 @@ namespace SchoolManagement.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details));
         }
 
         // ---------------------------------- Parents 
-        [HttpGet]
+     
         public async Task<IActionResult> AddParents(int studentId, int parentId)
         
-       
-        {
+            {
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
                 parent = new ParentOrGuardians() { StudentUniqueId = studentId, AddressSameAsStudent = true };
@@ -204,7 +202,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddParents(ParentOrGuardians parent,int studentId)
+        public async Task<IActionResult> AddParents(ParentOrGuardians parent)
         {
             if (parent.AddressSameAsStudent)
             {
@@ -302,13 +300,14 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 _context.Parents.Remove(parent);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction("Admin","Details");
             }
             var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
             ViewBag.stuParents = parents;
             var _relation = await _context.Relations.ToListAsync();
             ViewBag.RelationId = _relation;
-            return View(parent);
+            return RedirectToAction("Admin", "Details");
+            return View(parents);
         }
 
         private bool StudentsExists(int id)

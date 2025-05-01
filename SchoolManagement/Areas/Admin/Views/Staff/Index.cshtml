@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolManagement.Models.StaffNewModel>
+﻿@model IEnumerable<SchoolManagement.Models.User.Staff>
 
 @{
     ViewData["Title"] = "StaffNew";
@@ -14,7 +14,7 @@
 
 
 <div class="content">
-    <a href="/Admin/StaffNew/Create" class="btn btn-success">Add New Staff</a>
+    <a href="/Admin/StaffNew/Create"  class="btn btn-success">Add New Staff</a>
 
     <div class="card">
 
@@ -28,7 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Experience)
             </th>
-           
            
             <th>
                 @Html.DisplayNameFor(model => model.Qualification)
@@ -81,9 +80,9 @@
                 @Html.DisplayFor(modelItem => item.PrimaryPhoneNumber)
             </td>
             <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i>Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-eye"></i>Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">
+                        <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i>Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i>Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.UniqueId">
                             <i class="fa fa-trash"></i>Delete
                         </a>
 

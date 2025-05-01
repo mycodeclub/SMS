@@ -39,7 +39,7 @@
                             <td>@p.CTC</td>
                             <td>@p.Occupation</td>
                             <td>
-                                <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.RelationId"><i class="fa fa-edit"></i></a> |
+                                <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
 
                                 <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
                                     <i class="fa fa-eye"></i>
@@ -55,7 +55,7 @@
 }
 
 
-<form asp-action="AddParents" enctype="multipart/form-data" class="needs-validation" novalidate>
+<form asp-action="AddParents" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
     <div class="card" style="margin-left:5px;margin-right:5px;">
         <div class="card-header bg-light">Parent Details</div>
         <div class="card-body row">

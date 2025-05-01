@@ -9,7 +9,7 @@
 }
 @{ Html.RenderPartial("_ParentsPartial", stuParents);}
 
-<form asp-action="AddParents" enctype="multipart/form-data" class="needs-validation" novalidate>
+<form asp-action="AddParents" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
     <div class="card" style="margin-left:5px;margin-right:5px;">
       <div class="card-header bg-light">Parent Details</div>
         <div class="card-body row">

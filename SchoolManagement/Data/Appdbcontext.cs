@@ -42,10 +42,10 @@ namespace SchoolManagement.Data
         public DbSet<Country> Countrys { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<StaffNewModel> StaffNewModels { get; set; }
+        public DbSet<Staff> Staffs { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet<SchoolManagement.Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
+        public DbSet< Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
 
     }
