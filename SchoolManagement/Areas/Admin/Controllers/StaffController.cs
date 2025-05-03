@@ -41,31 +41,16 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var staff = await _context.Staffs.FindAsync(id);
-            if (staff == null)
-            {
-                return NotFound();
-            }
-           
-            return View(staff);
-        }
-
+  
         [HttpGet]
-
         public async Task<IActionResult> CreateStaff(int id)
         {
             var staff = await _context.Staffs.Where(s => s.UniqueId == id)
                 .FirstOrDefaultAsync();
-
             return View(staff);
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStaff(SchoolManagement.Models.User.Staff staff)
@@ -94,8 +79,39 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var staff = await _context.Staffs
+             
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            if (staff == null)
 
+            {
+                return NotFound();
+            }
+            return View(staff);
+        }
 
+        // POST: Staff/Students/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var staff = await _context.Staffs.FindAsync(id);
+            if (staff != null)
+            {
+                _context.Staffs.Remove(staff);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Details");
+            return View(staff);
+        }
 
         // add for photos and adhaar staff
 

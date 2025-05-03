@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Staff";
 }
-
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -32,6 +31,14 @@
                                 <label asp-for="JobRole" class="form-label fw-semibold"></label>
                                 <input asp-for="JobRole" class="form-control" />
                                 <span asp-validation-for="JobRole" class="text-danger small"></span>
+                            </div>
+
+
+                                <div class="col-md-6">
+                                 <label asp-for="DateOfJoin" class="form-label fw-semibold"></label>
+                                <input asp-for="DateOfJoin" class="form-control" type="date" />
+                                <span asp-validation-for="DateOfJoin" class="text-danger small"></span>
+         
                             </div>
 
                             <div class="col-md-6">

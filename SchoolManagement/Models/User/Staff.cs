@@ -33,7 +33,7 @@ namespace SchoolManagement.Models.User
 
 
 
-
+        public DateTime DateOfJoin { get; set; } = DateTime.Now;
 
         [Required]
         [RegularExpression(@"^\d{12}$", ErrorMessage = "Invalid Aadhaar number. It must be a 12-digit number.")]

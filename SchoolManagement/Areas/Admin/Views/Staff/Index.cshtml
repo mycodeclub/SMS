@@ -17,64 +17,55 @@
     <a href="/Admin/Staff/CreateStaff"  class="btn btn-success">Add New Staff</a>
 
     <div class="card">
-
         <div class="card-body">
         <table class="table table-bordered table-striped" id="tblGuestLists">
         <thead>
         <tr>
-            <th>
+             <th>
                 @Html.DisplayNameFor(model => model.JobRole)
             </th>
-           
             <th>
-                @Html.DisplayNameFor(model => model.FullName)
+              Full Name
             </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Experience)
-                        </th>
-
-                        <th>
-                            @Html.DisplayNameFor(model => model.Qualification)
-                        </th>
-
-          
-
-          
+           <th>
+            @Html.DisplayNameFor(model => model.Experience)
+            </th>
+            <th>Date Of Joining</th>
+             <th>
+              Highest Qualification
+               </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrimaryPhoneNumber)
+               Contact Number
             </th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+     @foreach (var item in Model) {
         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.JobRole)
-                            </td>
+         <td>
+          @Html.DisplayFor(modelItem => item.JobRole)
+           </td>
 
-
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FullName)
-                            </td>
+              <td>
+               @Html.DisplayFor(modelItem => item.FullName)
+               </td>
            
             <td>
                 @Html.DisplayFor(modelItem => item.Experience)
             </td>
-          
+            <td>
+              @item.DateOfJoin.ToString("dd-MM-yyyy")
+              </td>
             
             <td>
                 @Html.DisplayFor(modelItem => item.Qualification)
             </td>
-          
+
             <td>
-                @Html.DisplayFor(modelItem => item.PrimaryPhoneNumber)
-            </td>
-                           
-
-
-
+            @Html.DisplayFor(modelItem => item.PrimaryPhoneNumber)
+          </td>
+          
             <td>
                <a asp-action="CreateStaff" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
               <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |

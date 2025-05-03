@@ -1,98 +1,67 @@
 ﻿@model SchoolManagement.Models.User.Staff
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Staff Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Staff";
 }
 
-<h1>Details</h1>
+<div class="card mt-3 mb-4">
+    <div class="card-body border border-primary rounded">
+        <h6 class="card-header bg-primary text-light mb-3">Staff Details</h6>
+        <div class="row g-3">
 
-<div>
-    <h4>Staff</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.JobRole)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.JobRole)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Experience)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Experience)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AadharFileUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AadharFileUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotosFileUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotosFileUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AadhaarNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AadhaarNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Qualification)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Qualification)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StudentUniqueId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StudentUniqueId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DOB)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DOB)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrimaryPhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrimaryPhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SecondryPhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SecondryPhoneNumber)
-        </dd>
-    </dl>
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Name</strong>
+                <div class="fs-6">@Model.FullName</div>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Email</strong>
+                <div class="fs-6">@Model.Email</div>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Job Role</strong>
+                <div class="fs-6">@Model.JobRole</div>
+            </div>
+
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">DOB</strong>
+                <div class="fs-6">@Model.DOB.ToString("dd-MM-yyyy")</div>
+            </div>
+
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Experience</strong>
+                <div class="fs-6">@Model.Experience</div>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Date Of Joining</strong>
+                <div class="fs-6">@Model.DateOfJoin.ToString("dd-MM-yyyy")</div>
+            </div>
+
+
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Aadhaar Number</strong>
+                <div class="fs-6">@Model.AadhaarNumber</div>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Qualification</strong>
+                <div class="fs-6">@Model.Qualification</div>
+            </div>
+
+            <div class="form-group col-md-4 col-lg-3">
+                <strong class="text-muted">Primary Phone</strong>
+                <div class="fs-6">@Model.PrimaryPhoneNumber</div>
+            </div>
+
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
