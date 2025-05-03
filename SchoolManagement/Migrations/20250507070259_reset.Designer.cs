@@ -12,7 +12,7 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250501114152_reset")]
+    [Migration("20250507070259_reset")]
     partial class reset
     {
         /// <inheritdoc />
@@ -8255,6 +8255,9 @@ namespace SchoolManagement.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfJoin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
