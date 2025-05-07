@@ -1,4 +1,4 @@
--- exec GetSessionDetailsByStandard 1,0 
+-- exec GetSessionDetailsByStandard 1,1
  -- select * from Standards
 
 IF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL
@@ -19,29 +19,38 @@ BEGIN
         RETURN;
     END
 
+    -- Get session details
     SELECT 
         c.UniqueId AS StandardId,
-        s.SessionYearId AS SessionId,
+        sy.UniqueId AS SessionId,
         sy.SessionName,
         sy.StartDate,
         sy.EndDate,
         c.StandardName,
         c.FeeAmountPerMonth,
         c.BillingCycle,
-        COUNT(s.UniqueId) AS StudentCount
+        ISNULL(COUNT(s.UniqueId), 0) AS StudentCount
     FROM 
-        Students s
-    FULL JOIN 
-        SessionYears sy ON sy.UniqueId = s.SessionYearId
-    FULL JOIN 
-        Standards c ON s.StandardId = c.UniqueId
+        Standards c
+    CROSS JOIN 
+        SessionYears sy
+    LEFT JOIN 
+        Students s ON s.StandardId = c.UniqueId 
+        AND s.SessionYearId = sy.UniqueId 
+        AND s.IsDeleted = 0
     WHERE 
-        s.SessionYearId = @SessionId -- Required Session filter
-        AND (@StandardId = 0 OR s.StandardId = @StandardId)
-        AND s.IsDeleted = 0 -- Only active students
+        sy.UniqueId = @SessionId
+        AND (@StandardId = 0 OR c.UniqueId = @StandardId)
     GROUP BY 
-        sy.SessionName, sy.StartDate, sy.EndDate, c.StandardName, c.UniqueId, c.FeeAmountPerMonth, c.BillingCycle,s.SessionYearId
+        sy.SessionName, 
+        sy.StartDate, 
+        sy.EndDate, 
+        c.StandardName, 
+        c.UniqueId, 
+        c.FeeAmountPerMonth, 
+        c.BillingCycle,
+        sy.UniqueId
     ORDER BY 
-        sy.StartDate;
+        c.StandardName;
 END
 GO
