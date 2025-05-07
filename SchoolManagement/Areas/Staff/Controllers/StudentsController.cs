@@ -235,8 +235,6 @@ namespace SchoolManagement.Areas.Staff
 
         [HttpGet]
 
-
-
         // GET: ParentOrGuardians/ParentDetail/5
         public async Task<IActionResult> ParentDetail(int? id)
         {

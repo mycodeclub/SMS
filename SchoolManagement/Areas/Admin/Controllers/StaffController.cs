@@ -108,9 +108,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 _context.Staffs.Remove(staff);
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction("Details");
-            return View(staff);
+ 
         }
 
         // add for photos and adhaar staff
@@ -139,17 +138,16 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 var photoFileName = Path.GetFileName(photoFile.FileName);
                 var photoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", photoFileName);
-
                 using (var stream = new FileStream(photoFilePath, FileMode.Create))
                 {
                     await photoFile.CopyToAsync(stream);
                 }
-
                 photoImagePath = "/images/" + photoFile;
             }
 
             return (aadhaarImagePath, photoImagePath);
         }
+
 
         private void ValidateFileUploads(SchoolManagement.Models.User.Staff staff)
         {

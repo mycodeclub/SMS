@@ -61,7 +61,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            
             ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
@@ -83,8 +83,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     DOB = DateTime.Now.AddYears(-2),
                     AdmitionDate = DateTime.Now
                 };
-            student.HomeAddress ??= new Models.Address.Address() { CountryId = 1, StateId = 32, CityId = 1124 };
 
+            student.HomeAddress ??= new Models.Address.Address() { CountryId = 1, StateId = 32, CityId = 1124 };
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
             ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
@@ -93,9 +93,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(student);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create(Student student)
         {
             ValidateFileUploads(student);
@@ -124,25 +124,23 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     student.PhotosFileUrl = await Common.CommonFuntions.UploadFile(student.Photos, "Student", student.UniqueId, "Photos");
                     await _context.SaveChangesAsync();
                 }
-
                 //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
                 //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
                 //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
                 //ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
                 //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
 
-
                 //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
                 //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
                 //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
                 //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
                 ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
-
                 //return RedirectToAction("Edit", student.UniqueId);
                 return RedirectToAction("Index");
             }
             return View(student);
         }
+
 
 
         public async Task<IActionResult> Delete(int? id)
@@ -183,7 +181,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // ---------------------------------- Parents 
      
         public async Task<IActionResult> AddParents(int studentId, int parentId)
-        
             {
             var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
             if (parent == null)
@@ -191,14 +188,12 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniquesId", "Name", 1056);
             ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
             ViewBag.RelationId = await _context.Relations.ToListAsync();
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", 1);
-
             return View(parent);
-        }
-
+          }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -226,6 +221,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             }
             if (parent.Photos != null && parent.Photos.Length > 0)
             {
+
                 parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Parent", parent.UniqueId, "Photos");
                 await _context.SaveChangesAsync();
             }
@@ -244,8 +240,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(parent);
         }
         
-        [HttpGet]
 
+        [HttpGet]
         // GET: ParentOrGuardians/ParentDetail/5
         public async Task<IActionResult> ParentDetail(int? id)
         {
@@ -256,7 +252,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             var parentOrGuardian = await _context.Parents
                 .Include(p => p.Relation)
-
+                .Include(p=>p.HomeAddress.City)
+                 .Include(p => p.HomeAddress.State)
+                 .Include(p => p.HomeAddress.Country)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
 
             if (parentOrGuardian == null)
@@ -290,6 +288,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(parent);
 
         }
+
 
         [HttpPost, ActionName("DeleteParents")]
         [ValidateAntiForgeryToken]

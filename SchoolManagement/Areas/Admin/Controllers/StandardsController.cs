@@ -42,6 +42,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Standard standard)

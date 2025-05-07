@@ -63,13 +63,14 @@
 							</td>
 
 							<td>
-								@Html.DisplayFor(modelItem => item.DOB)
+								@item.DOB.ToString("dd-MM-yyyy")
 							</td>
+							
 							<td>
 								@Html.DisplayFor(modelItem => item.Gender)
 							</td>
 							<td>
-								@Html.DisplayFor(modelItem => item.AdmitionDate)
+								@item.AdmitionDate.ToString("dd-MM-yyyy")
 							</td>
 							<td> 
 								@(item.ParentOrGuardians?.Count() ?? 0)
