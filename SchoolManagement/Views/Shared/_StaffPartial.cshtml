@@ -1,0 +1,41 @@
+﻿@using SchoolManagement.Models.User
+@model List<SchoolManagement.Models.User.ParentOrGuardians>
+
+
+@if (Model != null)
+{
+    <div class="card">
+        <div class="card-body" style="border:1px solid blue">
+            <table class="table table-bordered table-striped">
+                <thead style="background-color:lightgrey">
+                    <tr>
+                        <th>Relation</th>
+                        <th>Name</th>
+                        <th>DOB | Age</th>
+                        <th>Primary Phone</th>
+                        <th>CTC</th>
+                        <th>Occupation</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.Relation.RelationName</td>
+                            <td>@p.FullName</td>
+                            <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                            <td>@p.PrimaryPhoneNumber</td>
+                            <td>@p.CTC</td>
+                            <td>@p.Occupation</td>
+                            <td>
+                                <a href="/Admin/Students/AddParents?studentId=@p.StudentUniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                                <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
