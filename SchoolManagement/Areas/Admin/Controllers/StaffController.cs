@@ -60,12 +60,30 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 if (staff.UniqueId == 0)
                     _context.Staffs.Add(staff);
-                else
-                    _context.Update(staff);
-                
-            }
-            await _context.SaveChangesAsync();
-            if (staff.Aadhar != null && staff.Aadhar.Length > 0)
+                {
+                    // Existing record - fetch it first
+                    var existingStaff = await _context.Staffs.FindAsync(staff.UniqueId);
+                    if (existingStaff == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update only relevant properties
+                    existingStaff.JobRole = staff.JobRole;
+                    existingStaff.DateOfJoin = staff.DateOfJoin;
+                    existingStaff.Experience = staff.Experience;
+                    existingStaff.Qualification = staff.Qualification;
+                    existingStaff.FirstName = staff.FirstName;
+                    existingStaff.LastName = staff.LastName;
+                    existingStaff.DOB = staff.DOB;
+                    existingStaff.AadhaarNumber = staff.AadhaarNumber;
+                    existingStaff.Email = staff.Email;
+                    existingStaff.PrimaryPhoneNumber = staff.PrimaryPhoneNumber;
+
+                    await _context.SaveChangesAsync();
+                }
+
+                if (staff.Aadhar != null && staff.Aadhar.Length > 0)
             {
                 staff.AadharFileUrl = await Common.CommonFuntions.UploadFile(staff.Aadhar, "staff", staff.UniqueId, "Aadhar");
                 await _context.SaveChangesAsync();
@@ -77,6 +95,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+            return View(staff);
         }
 
         public async Task<IActionResult> Delete(int? id)

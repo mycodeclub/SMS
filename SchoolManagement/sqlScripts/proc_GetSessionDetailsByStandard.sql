@@ -1,4 +1,4 @@
--- exec GetSessionDetailsByStandard 1,1
+-- exec GetSessionDetailsByStandard 1,0
  -- select * from Standards
 
 IF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL

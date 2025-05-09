@@ -14,11 +14,7 @@ builder.Services.AddResponseCaching();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddDbContext<AppDbContext>(options =>
-<<<<<<< HEAD
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
-=======
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ConStrForAnkitMacDocker")));
->>>>>>> 3966949ed8e7296ae57a5dfa98cfc397a5cbc025
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
 builder.Services.AddScoped<IUserServiceBAL, UserServiceBAL>();
 builder.Services.AddScoped<ISessionYearService, SessionYearService>();
 builder.Services.AddScoped<IStandardService, StandardService>();
