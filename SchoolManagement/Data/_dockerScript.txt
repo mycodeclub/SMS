@@ -20,13 +20,8 @@ run migrations
   --add migration -->  dotnet ef migrations add  migrationName 
   -- run migration --> dotnet ef database update 
 
+-----------------------------------------------------------------------------------------------------------------------------------------
+  docker run --rm -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=ComplexP@ssw0rd123! -p 1433:1433 mcr.microsoft.com/mssql/server:latest
+    "ConStrForAnkitMacDocker_new": "Server=tcp:localhost,1433;Database=smsDb2;User Id=sa;Password=ComplexP@ssw0rd123!;TrustServerCertificate=True;"
 
-  I see that port 1433 is already in use. Let's clean up any existing containers and try again:
-  docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
-  ----------------------------------------------------------
-
-  7 May 2025.
-
-  docker run --rm -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=ComplexP@ssw0rd123! mcr.microsoft.com/mssql/server:latest
-  Server=localhost,1433;Database=master;User Id=sa;Password=ComplexP@ssw0rd123!;
  
