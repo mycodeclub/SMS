@@ -5,6 +5,7 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
 using SchoolManagement.Models.User;
 using SchoolManagement.ProcModels;
+using SchoolManagement.Models.Fee;
 
 namespace SchoolManagement.Data
 {
@@ -27,6 +28,17 @@ namespace SchoolManagement.Data
             modelBuilder.SeedFeeTypeMaster();
             modelBuilder.Entity<AppUser>().ToTable("AppUser"); 
             modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
+            modelBuilder.Entity<SessionFeeMaster>()
+        .HasOne(s => s.StudentFee)
+        .WithMany() // or .WithOne() if one-to-one
+        .HasForeignKey(s => s.StudentFeeId)
+        .OnDelete(DeleteBehavior.Restrict); // <== disable cascade
+
+            modelBuilder.Entity<SessionFeeMaster>()
+                .HasOne(s => s.Standard)
+                .WithMany() // or .WithOne() if one-to-one
+                .HasForeignKey(s => s.StandardId)
+                .OnDelete(DeleteBehavior.Restrict); // <== disable cascade
 
         }
 
@@ -35,6 +47,7 @@ namespace SchoolManagement.Data
             base.OnConfiguring(optionsBuilder);
         }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
+        public DbSet<Models.Fee.SessionFeeMaster> SessionFee { get; set; } 
         public DbSet<Student> Students { get; set; }       // student
         public DbSet<ParentOrGuardians> Parents { get; set; }     // parent
         public DbSet<Standard> Standards { get; set; }      //class/standards
@@ -47,6 +60,7 @@ namespace SchoolManagement.Data
         public DbSet<Relation> Relations { get; set; }
         public DbSet< Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
+        public DbSet<SchoolManagement.Models.Fee.SessionFeeMaster> SesionFeeMaster { get; set; } = default!;
 
     }
 }

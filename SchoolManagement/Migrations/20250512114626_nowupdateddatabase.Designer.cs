@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250509054551_updatedmigrationadded")]
-    partial class updatedmigrationadded
+    [Migration("20250512114626_nowupdateddatabase")]
+    partial class nowupdateddatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7913,6 +7913,29 @@ namespace SchoolManagement.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SchoolManagement.Models.Fee.SessionFeeMaster", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<int>("StandardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentFeeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("StandardId");
+
+                    b.HasIndex("StudentFeeId");
+
+                    b.ToTable("SessionFeeMaster");
+                });
+
             modelBuilder.Entity("SchoolManagement.Models.SessionYear", b =>
                 {
                     b.Property<int>("UniqueId")
@@ -8498,6 +8521,25 @@ namespace SchoolManagement.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Models.Fee.SessionFeeMaster", b =>
+                {
+                    b.HasOne("SchoolManagement.Models.Standard", "Standard")
+                        .WithMany()
+                        .HasForeignKey("StandardId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolManagement.Models.StudentFee", "StudentFee")
+                        .WithMany()
+                        .HasForeignKey("StudentFeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Standard");
+
+                    b.Navigation("StudentFee");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.StudentFee", b =>

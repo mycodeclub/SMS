@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedmigrationadded : Migration
+    public partial class nowupdateddatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -469,6 +469,32 @@ namespace SchoolManagement.Migrations
                         principalTable: "Students",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SessionFeeMaster",
+                columns: table => new
+                {
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentFeeId = table.Column<int>(type: "int", nullable: false),
+                    StandardId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionFeeMaster", x => x.UniqueId);
+                    table.ForeignKey(
+                        name: "FK_SessionFeeMaster_Standards_StandardId",
+                        column: x => x.StandardId,
+                        principalTable: "Standards",
+                        principalColumn: "UniqueId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SessionFeeMaster_StudentFees_StudentFeeId",
+                        column: x => x.StudentFeeId,
+                        principalTable: "StudentFees",
+                        principalColumn: "UniqueId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -1874,6 +1900,16 @@ namespace SchoolManagement.Migrations
                 column: "StudentUniqueId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SessionFeeMaster_StandardId",
+                table: "SessionFeeMaster",
+                column: "StandardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionFeeMaster_StudentFeeId",
+                table: "SessionFeeMaster",
+                column: "StudentFeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
                 table: "States",
                 column: "CountryId");
@@ -1927,10 +1963,10 @@ namespace SchoolManagement.Migrations
                 name: "SessionDetailsDtoRaw");
 
             migrationBuilder.DropTable(
-                name: "Staffs");
+                name: "SessionFeeMaster");
 
             migrationBuilder.DropTable(
-                name: "StudentFees");
+                name: "Staffs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -1940,6 +1976,9 @@ namespace SchoolManagement.Migrations
 
             migrationBuilder.DropTable(
                 name: "Relations");
+
+            migrationBuilder.DropTable(
+                name: "StudentFees");
 
             migrationBuilder.DropTable(
                 name: "Students");

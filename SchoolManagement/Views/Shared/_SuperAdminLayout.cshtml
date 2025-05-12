@@ -111,7 +111,8 @@
 
                     @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/Students/Index"><i class="fa fa-user"></i> Students  </a></li>
-
+                    @if (ActiveTabName.Equals("SessionFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/Admin/SessionFeeMaster/Index"><i class="fa fa-user"></i> Session Fee Master  </a></li>
 
                     @if (ActiveTabName.Equals("Staff")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/Staff/Index"><i class="fa fa-user"></i> Staff  </a></li>
