@@ -1286,10 +1286,15 @@ namespace BpstEducation.Data
         public static void SeedStandard(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Standard>().HasData(
-                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 4900 },
-                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 4900 }
+                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 5, StandardName = "Class 1st", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 6, StandardName = "Class 2nd", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 7, StandardName = "Class 3rd", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 8, StandardName = "Class 4th", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 9, StandardName = "Class 5th", BillingCycle = 2, FeeAmountPerMonth = 5000 }
 
              );
         }
