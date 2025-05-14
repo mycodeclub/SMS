@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SchoolManagement.Models.Fee.SessionFeeMaster>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create"> Add Fees By Standard</a>
+</p>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.AdmissionFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TuitionFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnnualCharges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransportFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExaminationFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SportsFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComputerFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MiscellaneousFee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.AdmissionFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TuitionFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnnualCharges)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActivityFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransportFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExaminationFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SportsFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComputerFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiscellaneousFee)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+</div>

@@ -7918,17 +7918,44 @@ namespace SchoolManagement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
 
+                    b.Property<decimal>("ActivityFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AdmissionFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AnnualCharges")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ComputerFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ExaminationFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MiscellaneousFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SessionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SportsFee")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("StandardId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentFeeId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("TransportFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TuitionFee")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("UniqueId");
 
-                    b.HasIndex("StandardId");
+                    b.HasIndex("SessionId");
 
-                    b.HasIndex("StudentFeeId");
+                    b.HasIndex("StandardId");
 
                     b.ToTable("SessionFeeMaster");
                 });
@@ -8041,29 +8068,64 @@ namespace SchoolManagement.Migrations
                         {
                             UniqueId = 1,
                             BillingCycle = 2,
-                            FeeAmountPerMonth = 4900,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "Nursery"
                         },
                         new
                         {
                             UniqueId = 2,
                             BillingCycle = 2,
-                            FeeAmountPerMonth = 4900,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "Play Group"
                         },
                         new
                         {
                             UniqueId = 3,
                             BillingCycle = 2,
-                            FeeAmountPerMonth = 4900,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "L KG"
                         },
                         new
                         {
                             UniqueId = 4,
                             BillingCycle = 2,
-                            FeeAmountPerMonth = 4900,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "U KG"
+                        },
+                        new
+                        {
+                            UniqueId = 5,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
+                            StandardName = "Class 1st"
+                        },
+                        new
+                        {
+                            UniqueId = 6,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
+                            StandardName = "Class 2nd"
+                        },
+                        new
+                        {
+                            UniqueId = 7,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
+                            StandardName = "Class 3rd"
+                        },
+                        new
+                        {
+                            UniqueId = 8,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
+                            StandardName = "Class 4th"
+                        },
+                        new
+                        {
+                            UniqueId = 9,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
+                            StandardName = "Class 5th"
                         });
                 });
 
@@ -8522,21 +8584,21 @@ namespace SchoolManagement.Migrations
 
             modelBuilder.Entity("SchoolManagement.Models.Fee.SessionFeeMaster", b =>
                 {
+                    b.HasOne("SchoolManagement.Models.SessionYear", "Session")
+                        .WithMany()
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SchoolManagement.Models.Standard", "Standard")
                         .WithMany()
                         .HasForeignKey("StandardId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SchoolManagement.Models.StudentFee", "StudentFee")
-                        .WithMany()
-                        .HasForeignKey("StudentFeeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Session");
 
                     b.Navigation("Standard");
-
-                    b.Navigation("StudentFee");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.StudentFee", b =>

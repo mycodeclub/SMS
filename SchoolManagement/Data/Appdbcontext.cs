@@ -28,11 +28,7 @@ namespace SchoolManagement.Data
             modelBuilder.SeedFeeTypeMaster();
             modelBuilder.Entity<AppUser>().ToTable("AppUser"); 
             modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
-            modelBuilder.Entity<SessionFeeMaster>()
-        .HasOne(s => s.StudentFee)
-        .WithMany() // or .WithOne() if one-to-one
-        .HasForeignKey(s => s.StudentFeeId)
-        .OnDelete(DeleteBehavior.Restrict); // <== disable cascade
+       
 
             modelBuilder.Entity<SessionFeeMaster>()
                 .HasOne(s => s.Standard)
