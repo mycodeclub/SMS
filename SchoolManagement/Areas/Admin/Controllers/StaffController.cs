@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SchoolManagement.Controllers;
 using SchoolManagement.Data;
+using SchoolManagement.Models.User;
 using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
@@ -50,52 +51,38 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(staff);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStaff(SchoolManagement.Models.User.Staff staff)
         {
-            ValidateFileUploads(staff);
             if (ModelState.IsValid)
             {
                 if (staff.UniqueId == 0)
-                    _context.Staffs.Add(staff);
                 {
-                    // Existing record - fetch it first
-                    var existingStaff = await _context.Staffs.FindAsync(staff.UniqueId);
-                    if (existingStaff == null)
-                    {
-                        return NotFound();
-                    }
-
-                    // Update only relevant properties
-                    existingStaff.JobRole = staff.JobRole;
-                    existingStaff.DateOfJoin = staff.DateOfJoin;
-                    existingStaff.Experience = staff.Experience;
-                    existingStaff.Qualification = staff.Qualification;
-                    existingStaff.FirstName = staff.FirstName;
-                    existingStaff.LastName = staff.LastName;
-                    existingStaff.DOB = staff.DOB;
-                    existingStaff.AadhaarNumber = staff.AadhaarNumber;
-                    existingStaff.Email = staff.Email;
-                    existingStaff.PrimaryPhoneNumber = staff.PrimaryPhoneNumber;
-
+                    _context.Add(staff);
+                    await _context.SaveChangesAsync(); // Save first to get UniqueId for file upload
+                }
+                else
+                {
+                    _context.Update(staff);
                     await _context.SaveChangesAsync();
                 }
 
                 if (staff.Aadhar != null && staff.Aadhar.Length > 0)
-            {
-                staff.AadharFileUrl = await Common.CommonFuntions.UploadFile(staff.Aadhar, "staff", staff.UniqueId, "Aadhar");
-                await _context.SaveChangesAsync();
-            }
-            if (staff.Photos != null && staff.Photos.Length > 0)
-            {
-                staff.PhotosFileUrl = await Common.CommonFuntions.UploadFile(staff.Photos, "staff", staff.UniqueId, "Photos");
-                await _context.SaveChangesAsync();
-            }
+                {
+                    staff.AadharFileUrl = await Common.CommonFuntions.UploadFile(staff.Aadhar, "staff", staff.UniqueId, "Aadhar");
+                }
 
-            return RedirectToAction(nameof(Index));
-        }
+                if (staff.Photos != null && staff.Photos.Length > 0)
+                {
+                    staff.PhotosFileUrl = await Common.CommonFuntions.UploadFile(staff.Photos, "staff", staff.UniqueId, "Photos");
+                }
+
+                _context.Update(staff); // Update again to store the file URLs
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
 
             return View(staff);
         }

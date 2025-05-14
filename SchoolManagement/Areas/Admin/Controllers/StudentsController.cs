@@ -85,9 +85,14 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 };
 
             student.HomeAddress ??= new Models.Address.Address() { CountryId = 1, StateId = 32, CityId = 1124 };
-            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
-            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
+            //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
+            //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
+            //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
+   
+        ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+        ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+        ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+          
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
@@ -124,9 +129,10 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     student.PhotosFileUrl = await Common.CommonFuntions.UploadFile(student.Photos, "Student", student.UniqueId, "Photos");
                     await _context.SaveChangesAsync();
                 }
-                //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-                //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-                //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+                ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+                ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+                ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+
                 //ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
                 //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
 
