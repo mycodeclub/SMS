@@ -1,86 +1,60 @@
 ﻿@model IEnumerable<SchoolManagement.Models.User.Staff>
 
 @{
-    ViewData["Title"] = "StaffNew";
+    ViewData["Title"] = "Staff List";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Staff";
-
 }
 
-<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+@section Style {
+    <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+}
 
-<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<div class="content px-3">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h4 class="mb-0">Staff List</h4>
+            <a asp-action="CreateStaff" class="btn btn-light btn-sm shadow-sm">
+                <i class="fa fa-plus me-1"></i> Add New Staff
+            </a>
+        </div>
 
-
-<div class="content">
-    <a href="/Admin/Staff/CreateStaff"  class="btn btn-success">Add New Staff</a>
-
-    <div class="card">
         <div class="card-body">
-        <table class="table table-bordered table-striped" id="tblGuestLists">
-        <thead>
-        <tr>
-             <th>
-                @Html.DisplayNameFor(model => model.JobRole)
-            </th>
-            <th>
-              Full Name
-            </th>
-           <th>
-            @Html.DisplayNameFor(model => model.Experience)
-            </th>
-
-            <th>Date Of Joining</th>
-             <th>
-              Highest Qualification
-               </th>
-
-            <th>
-               Contact Number
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-     @foreach (var item in Model) {
-        <tr>
-         <td>
-          @Html.DisplayFor(modelItem => item.JobRole)
-           </td>
-
-              <td>
-               @Html.DisplayFor(modelItem => item.FullName)
-               </td>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.Experience)
-            </td>
-            <td>
-              @item.DateOfJoin.ToString("dd-MM-yyyy")
-              </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Qualification)
-            </td>
-
-            <td>
-            @Html.DisplayFor(modelItem => item.PrimaryPhoneNumber)
-          </td>
-          
-            <td>
-               <a asp-action="CreateStaff" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-              <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-               <a asp-action="Delete" asp-route-id="@item.UniqueId">
-                            <i class="fa fa-trash"></i></a>
-
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</div>
-</div>
+            <table class="table table-bordered table-striped" id="tblStaff">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.JobRole)</th>
+                        <th>Full Name</th>
+                        <th>@Html.DisplayNameFor(model => model.Experience)</th>
+                        <th>Date Of Joining</th>
+                        <th>Highest Qualification</th>
+                        <th>Contact Number</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.JobRole)</td>
+                            <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Experience)</td>
+                            <td>@item.DateOfJoin.ToString("dd-MM-yyyy")</td>
+                            <td>@Html.DisplayFor(modelItem => item.Qualification)</td>
+                            <td>@Html.DisplayFor(modelItem => item.PrimaryPhoneNumber)</td>
+                            <td>
+                                <a asp-action="CreateStaff" asp-route-id="@item.UniqueId" title="Edit"><i class="fa fa-edit text-primary"></i></a> |
+                                <a asp-action="Details" asp-route-id="@item.UniqueId" title="Details"><i class="fa fa-eye text-info"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.UniqueId" title="Delete"><i class="fa fa-trash text-danger"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -89,7 +63,7 @@
     <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#tblGuestLists').DataTable({
+            $('#tblStaff').DataTable({
                 "pageLength": 10,
                 "ordering": true,
                 "searching": true

@@ -1,41 +1,113 @@
-﻿@model SchoolManagement.Models.Fee.FeeTypeMaster
+﻿@model SchoolManagement.Models.Fee.SessionFeeMaster
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.ActiveTabName = "FeeMaster";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
 }
 
-<h1>Edit</h1>
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-<h4>FeeTypeMaster</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="UniqueId" />
-            <div class="form-group">
-                <label asp-for="FeeType" class="control-label"></label>
-                <input asp-for="FeeType" class="form-control" />
-                <span asp-validation-for="FeeType" class="text-danger"></span>
+    <!-- Session & Standard Section (Grouped in a single frame) -->
+    <div class="row border border-3 rounded p-3">
+        <div class="card-body">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Session and Standard</h5>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Session Dropdown -->
+                    <div class="col-12 col-md-6 mb-3">
+                        <select asp-for="SessionId" class="form-select" asp-items="ViewBag.SessionList">
+                            <option value="">-- Select Session --</option>
+                        </select>
+                        <span class="text-danger small">@Html.ValidationMessage("SessionId")</span>
+                    </div>
+
+                    <!-- Standard Dropdown -->
+                    <div class="col-12 col-md-6 mb-3">
+                        <select asp-for="StandardId" class="form-select" asp-items="ViewBag.StandardList">
+                            <option value="">-- Select Standard --</option>
+                        </select>
+                        <span class="text-danger small">@Html.ValidationMessage("StandardId")</span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- Fee Input Section -->
+    <div class="container mt-3">
+        <div class="card shadow border-1">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Edit Session Fee</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="AdmissionFee" class="form-label">Admission Fee</label>
+                            <input asp-for="AdmissionFee" class="form-control" />
+                            <span asp-validation-for="AdmissionFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="AnnualCharges" class="form-label">Annual Charges</label>
+                            <input asp-for="AnnualCharges" class="form-control" />
+                            <span asp-validation-for="AnnualCharges" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TransportFee" class="form-label">Transport Fee</label>
+                            <input asp-for="TransportFee" class="form-control" />
+                            <span asp-validation-for="TransportFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SportsFee" class="form-label">Sports Fee</label>
+                            <input asp-for="SportsFee" class="form-control" />
+                            <span asp-validation-for="SportsFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MiscellaneousFee" class="form-label">Miscellaneous Fee</label>
+                            <input asp-for="MiscellaneousFee" class="form-control" />
+                            <span asp-validation-for="MiscellaneousFee" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+                    <!-- Right Column -->
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TuitionFee" class="form-label">Tuition Fee</label>
+                            <input asp-for="TuitionFee" class="form-control" />
+                            <span asp-validation-for="TuitionFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ActivityFee" class="form-label">Activity Fee</label>
+                            <input asp-for="ActivityFee" class="form-control" />
+                            <span asp-validation-for="ActivityFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ExaminationFee" class="form-label">Examination Fee</label>
+                            <input asp-for="ExaminationFee" class="form-control" />
+                            <span asp-validation-for="ExaminationFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ComputerFee" class="form-label">Computer Fee</label>
+                            <input asp-for="ComputerFee" class="form-control" />
+                            <span asp-validation-for="ComputerFee" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit & Back Buttons -->
+                <div class="d-flex flex-column flex-md-row justify-content-md-end">
+                    <button type="submit" class="btn btn-success me-md-2 mb-2 mb-md-0">
+                        <i class="bi bi-pencil"></i> Edit
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

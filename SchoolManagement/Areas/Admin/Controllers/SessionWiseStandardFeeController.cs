@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models.Fee;
+using SchoolManagement.Models.User;
 
 namespace SchoolManagement.Areas.Admin.Controllers
 {
@@ -23,7 +24,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Admin/SessionWiseStandardFee
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.SessionFee.Include(s => s.Session).Include(s => s.Standard);
+            var appDbContext = _context.SesionFeeMaster.Include(s => s.Session).Include(s => s.Standard);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,7 +36,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var sessionFeeMaster = await _context.SessionFee
+            var sessionFeeMaster = await _context.SesionFeeMaster
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
@@ -46,16 +47,18 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             return View(sessionFeeMaster);
         }
-
+        [HttpGet]
         // GET: Admin/SessionWiseStandardFee/Create
-        public IActionResult Create()
+        public  async Task<IActionResult> Create()
         {
-            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId");
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId");
+           
+            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName");
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
             return View();
         }
 
-       
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SessionFeeMaster sessionFeeMaster)
@@ -66,40 +69,37 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", sessionFeeMaster.SessionId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", sessionFeeMaster.StandardId);
-            return View(sessionFeeMaster);
+
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", sessionFeeMaster.SessionId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", sessionFeeMaster.StandardId);
+            return View();
         }
 
-        // GET: Admin/SessionWiseStandardFee/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var sessionFeeMaster = await _context.SessionFee.FindAsync(id);
-            if (sessionFeeMaster == null)
-            {
-                return NotFound();
-            }
-            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", sessionFeeMaster.SessionId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", sessionFeeMaster.StandardId);
-            return View(sessionFeeMaster);
+            var fee = await _context.SessionFee.FindAsync(id);
+            if (fee == null) return NotFound();
+
+            ViewBag.SessionList = _context.SessionYears
+                .Select(s => new SelectListItem { Value = s.UniqueId.ToString(), Text = s.SessionName })
+                .ToList();
+
+            ViewBag.StandardList = _context.Standards
+                .Select(s => new SelectListItem { Value = s.UniqueId.ToString(), Text = s.StandardName })
+                .ToList();
+
+            return View(fee);
         }
 
-        // POST: Admin/SessionWiseStandardFee/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: SessionFeeMaster/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,SessionFeeMaster sessionFeeMaster)
+        public async Task<IActionResult> Edit(int id, SessionFeeMaster sessionFeeMaster)
         {
-            if (id != sessionFeeMaster.UniqueId)
-            {
-                return NotFound();
-            }
+            if (id != sessionFeeMaster.UniqueId) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -110,53 +110,48 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SessionFeeMasterExists(sessionFeeMaster.UniqueId))
-                    {
+                    if (!_context.SessionFee.Any(e => e.UniqueId == id))
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", sessionFeeMaster.SessionId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", sessionFeeMaster.StandardId);
+
+            ViewBag.SessionList = _context.SessionYears
+                .Select(s => new SelectListItem { Value = s.UniqueId.ToString(), Text = s.SessionName })
+                .ToList();
+
+
+            ViewBag.StandardList = _context.Standards
+                .Select(s => new SelectListItem { Value = s.UniqueId.ToString(), Text = s.StandardName })
+                .ToList();
+
             return View(sessionFeeMaster);
         }
 
         // GET: Admin/SessionWiseStandardFee/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var sessionFeeMaster = await _context.SessionFee
+            var fee = await _context.SessionFee
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (sessionFeeMaster == null)
-            {
-                return NotFound();
-            }
 
-            return View(sessionFeeMaster);
+            if (fee == null) return NotFound();
+
+            return View(fee);
         }
 
-        // POST: Admin/SessionWiseStandardFee/Delete/5
+        // POST: SessionFeeMaster/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sessionFeeMaster = await _context.SessionFee.FindAsync(id);
-            if (sessionFeeMaster != null)
-            {
-                _context.SessionFee.Remove(sessionFeeMaster);
-            }
-
+            var fee = await _context.SessionFee.FindAsync(id);
+            _context.SessionFee.Remove(fee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

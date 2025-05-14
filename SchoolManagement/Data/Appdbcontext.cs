@@ -54,9 +54,9 @@ namespace SchoolManagement.Data
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet< Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; } = default!;
+        public DbSet< Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; }
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
-        public DbSet<SchoolManagement.Models.Fee.SessionFeeMaster> SesionFeeMaster { get; set; } = default!;
+        public DbSet<SchoolManagement.Models.Fee.SessionFeeMaster> SesionFeeMaster { get; set; } 
 
     }
 }

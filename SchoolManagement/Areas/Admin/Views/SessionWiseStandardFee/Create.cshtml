@@ -5,80 +5,108 @@
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
 }
 
-<h1>Create</h1>
-<div class="content">
-    <div class="card">
+<form asp-action="Create" method="post" asp-controller="SessionWiseStandardFee">
+    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+    @* <input type="hidden" asp-for="UniqueId" /> *@
+    <!-- Session & Standard Section -->
+    <div class="card border-primary border-3 rounded shadow-sm mt-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Session and Standard</h5>
+        </div>
         <div class="card-body">
-<h4>SessionFeeMaster</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SessionId" class="control-label"></label>
-                <select asp-for="SessionId" class ="form-control" asp-items="ViewBag.SessionId"></select>
+            <div class="row">
+                <!-- Session Dropdown -->
+                <div class="col-12 col-md-6 mb-3">
+                    <select asp-for="Session" name="SessionYearId" class="form-control" asp-items="ViewBag.SessionId">
+                        <option value="">-- Select Session --</option>
+                    </select>
+                    <span class="text-danger small">@Html.ValidationMessageFor(model => model.SessionId)</span>
+                </div>
+
+                <!-- Standard Dropdown -->
+                <div class="col-12 col-md-6 mb-3">
+                    <select asp-for="Standard" name="StandardId" class="form-control" asp-items="ViewBag.StandardId">
+                        <option value="">-- Select Standard --</option>
+                    </select>
+                    <span class="text-danger small">@Html.ValidationMessageFor(model => model.StandardId)</span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="StandardId" class="control-label"></label>
-                <select asp-for="StandardId" class ="form-control" asp-items="ViewBag.StandardId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AdmissionFee" class="control-label"></label>
-                <input asp-for="AdmissionFee" class="form-control" />
-                <span asp-validation-for="AdmissionFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TuitionFee" class="control-label"></label>
-                <input asp-for="TuitionFee" class="form-control" />
-                <span asp-validation-for="TuitionFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AnnualCharges" class="control-label"></label>
-                <input asp-for="AnnualCharges" class="form-control" />
-                <span asp-validation-for="AnnualCharges" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ActivityFee" class="control-label"></label>
-                <input asp-for="ActivityFee" class="form-control" />
-                <span asp-validation-for="ActivityFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TransportFee" class="control-label"></label>
-                <input asp-for="TransportFee" class="form-control" />
-                <span asp-validation-for="TransportFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ExaminationFee" class="control-label"></label>
-                <input asp-for="ExaminationFee" class="form-control" />
-                <span asp-validation-for="ExaminationFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SportsFee" class="control-label"></label>
-                <input asp-for="SportsFee" class="form-control" />
-                <span asp-validation-for="SportsFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ComputerFee" class="control-label"></label>
-                <input asp-for="ComputerFee" class="form-control" />
-                <span asp-validation-for="ComputerFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MiscellaneousFee" class="control-label"></label>
-                <input asp-for="MiscellaneousFee" class="form-control" />
-                <span asp-validation-for="MiscellaneousFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-</div>
-</div>
-</div>
+    <!-- Fee Input Section -->
+    <div class="container mt-3">
+        <div class="card shadow border-1">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Add Session Fee</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="AdmissionFee" class="form-label">Admission Fee</label>
+                            <input asp-for="AdmissionFee" class="form-control" />
+                            <span asp-validation-for="AdmissionFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="AnnualCharges" class="form-label">Annual Charges</label>
+                            <input asp-for="AnnualCharges" class="form-control" />
+                            <span asp-validation-for="AnnualCharges" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="TransportFee" class="form-label">Transport Fee</label>
+                            <input asp-for="TransportFee" class="form-control" />
+                            <span asp-validation-for="TransportFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SportsFee" class="form-label">Sports Fee</label>
+                            <input asp-for="SportsFee" class="form-control" />
+                            <span asp-validation-for="SportsFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="MiscellaneousFee" class="form-label">Miscellaneous Fee</label>
+                            <input asp-for="MiscellaneousFee" class="form-control" />
+                            <span asp-validation-for="MiscellaneousFee" class="text-danger small"></span>
+                        </div>
+                    </div>
 
+                    <!-- Right Column -->
+                    <div class="col-12 col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TuitionFee" class="form-label">Tuition Fee</label>
+                            <input asp-for="TuitionFee" class="form-control" />
+                            <span asp-validation-for="TuitionFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ActivityFee" class="form-label">Activity Fee</label>
+                            <input asp-for="ActivityFee" class="form-control" />
+                            <span asp-validation-for="ActivityFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ExaminationFee" class="form-label">Examination Fee</label>
+                            <input asp-for="ExaminationFee" class="form-control" />
+                            <span asp-validation-for="ExaminationFee" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ComputerFee" class="form-label">Computer Fee</label>
+                            <input asp-for="ComputerFee" class="form-control" />
+                            <span asp-validation-for="ComputerFee" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit & Back Buttons -->
+                <div class="d-flex flex-column flex-md-row justify-content-md-end">
+                    <input type="submit" class="btn btn-success me-md-2 mb-2 mb-md-0">
+                        <i class="bi bi-plus-circle"></i> Save
+                    </input>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
