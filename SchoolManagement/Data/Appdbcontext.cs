@@ -18,6 +18,19 @@ namespace SchoolManagement.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+                    // Path to the SQL script file
+        var sqlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "sqlScripts", "proc_GetSessionDetailsByStandard.sql");
+            // Check if the file exists
+            if (File.Exists(sqlFilePath))
+            {
+                var sqlScript = File.ReadAllText(sqlFilePath);
+                modelBuilder.HasAnnotation("Relational:ExecuteSql", sqlScript);
+            }
+            else
+            { 
+                            throw new FileNotFoundException($"SQL script file not found: {sqlFilePath}");
+             }
+ 
             modelBuilder.SeedRoles();
             modelBuilder.SeedSession();
             modelBuilder.SeedStandard();
@@ -26,9 +39,9 @@ namespace SchoolManagement.Data
             modelBuilder.SeedCities();
             modelBuilder.SeedRelation();
             modelBuilder.SeedFeeTypeMaster();
-            modelBuilder.Entity<AppUser>().ToTable("AppUser"); 
+            modelBuilder.Entity<AppUser>().ToTable("AppUser");
             modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
-       
+
 
             modelBuilder.Entity<SessionFeeMaster>()
                 .HasOne(s => s.Standard)

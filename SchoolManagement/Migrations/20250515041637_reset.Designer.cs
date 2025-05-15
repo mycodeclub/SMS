@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250514051042_UpdatedDatabases")]
-    partial class UpdatedDatabases
+    [Migration("20250515041637_reset")]
+    partial class reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,7 @@ namespace SchoolManagement.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("Relational:ExecuteSql", "-- exec GetSessionDetailsByStandard 1,0\n -- select * from Standards\n\nIF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL\nBEGIN\n    DROP PROCEDURE GetSessionDetailsByStandard;\nEND\nGO\n\nCREATE PROCEDURE GetSessionDetailsByStandard\n    @SessionId INT, -- new required parameter\n    @StandardId INT  -- optional parameter\nAS\nBEGIN\n    -- Check if SessionId is 0, raise an error\n    IF (@SessionId = 0)\n    BEGIN\n        RAISERROR ('SessionId is required and cannot be zero.', 16, 1);\n        RETURN;\n    END\n\n    -- Get session details\n    SELECT \n        c.UniqueId AS StandardId,\n        sy.UniqueId AS SessionId,\n        sy.SessionName,\n        sy.StartDate,\n        sy.EndDate,\n        c.StandardName,\n        c.FeeAmountPerMonth,\n        c.BillingCycle,\n        ISNULL(COUNT(s.UniqueId), 0) AS StudentCount\n    FROM \n        Standards c\n    CROSS JOIN \n        SessionYears sy\n    LEFT JOIN \n        Students s ON s.StandardId = c.UniqueId \n        AND s.SessionYearId = sy.UniqueId \n        AND s.IsDeleted = 0\n    WHERE \n        sy.UniqueId = @SessionId\n        AND (@StandardId = 0 OR c.UniqueId = @StandardId)\n    GROUP BY \n        sy.SessionName, \n        sy.StartDate, \n        sy.EndDate, \n        c.StandardName, \n        c.UniqueId, \n        c.FeeAmountPerMonth, \n        c.BillingCycle,\n        sy.UniqueId\n    ORDER BY \n        c.StandardName;\nEND\nGO\n")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
