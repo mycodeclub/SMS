@@ -55,7 +55,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,FeeType,Description")] FeeTypeMaster feeTypeMaster)
+        public async Task<IActionResult> Create(SessionFeeMaster feeTypeMaster)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,FeeType,Description")] FeeTypeMaster feeTypeMaster)
+        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,FeeType,Description")] SessionFeeMaster feeTypeMaster)
         {
             if (id != feeTypeMaster.UniqueId)
             {

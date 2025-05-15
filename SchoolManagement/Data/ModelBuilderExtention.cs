@@ -1325,11 +1325,11 @@ namespace BpstEducation.Data
         }
         public static void SeedFeeTypeMaster(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FeeTypeMaster>().HasData(
-                new FeeTypeMaster() { UniqueId = 1, FeeType = "Admission Fee", },
-                new FeeTypeMaster() { UniqueId = 2, FeeType = "Tuition Fee", },
-                new FeeTypeMaster() { UniqueId = 3, FeeType = "Semester Fee", },
-                new FeeTypeMaster() { UniqueId = 4, FeeType = "Other Fee", }
+            modelBuilder.Entity<SessionFeeMaster>().HasData(
+                new SessionFeeMaster() { UniqueId = 1, FeeType = "Admission Fee", },
+                new SessionFeeMaster() { UniqueId = 2, FeeType = "Tuition Fee", },
+                new SessionFeeMaster() { UniqueId = 3, FeeType = "Semester Fee", },
+                new SessionFeeMaster() { UniqueId = 4, FeeType = "Other Fee", }
                 );
         }
 

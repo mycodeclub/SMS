@@ -43,12 +43,7 @@ namespace SchoolManagement.Data
             modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
 
 
-            modelBuilder.Entity<SessionFeeMaster>()
-                .HasOne(s => s.Standard)
-                .WithMany() // or .WithOne() if one-to-one
-                .HasForeignKey(s => s.StandardId)
-                .OnDelete(DeleteBehavior.Restrict); // <== disable cascade
-
+          
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -56,7 +51,6 @@ namespace SchoolManagement.Data
             base.OnConfiguring(optionsBuilder);
         }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
-        public DbSet<Models.Fee.SessionFeeMaster> SessionFee { get; set; } 
         public DbSet<Student> Students { get; set; }       // student
         public DbSet<ParentOrGuardians> Parents { get; set; }     // parent
         public DbSet<Standard> Standards { get; set; }      //class/standards
@@ -67,7 +61,7 @@ namespace SchoolManagement.Data
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet< Models.Fee.FeeTypeMaster> FeeTypeMaster { get; set; }
+        public DbSet< Models.Fee.SessionFeeMaster> FeeTypeMaster { get; set; }
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
         public DbSet<SchoolManagement.Models.Fee.SessionFeeMaster> SesionFeeMaster { get; set; } 
 
