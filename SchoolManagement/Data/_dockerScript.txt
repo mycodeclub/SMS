@@ -21,7 +21,7 @@ run migrations
   -- run migration --> dotnet ef database update 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-  docker run --rm -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=ComplexP@ssw0rd123! -p 1433:1433 mcr.microsoft.com/mssql/server:latest
-    "ConStrForAnkitMacDocker_new": "Server=tcp:localhost,1433;Database=smsDb2;User Id=sa;Password=ComplexP@ssw0rd123!;TrustServerCertificate=True;"
+  docker run --rm -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=ComplexP@ssw0rd123! -p 1433:1433 mcr.microsoft.com/mssql/server:latest   
+     "ConStrForAnkitMacDocker_new": "Server=tcp:localhost,1433;Database=smsDb2;User Id=sa;Password=ComplexP@ssw0rd123!;TrustServerCertificate=True;"
 
  
