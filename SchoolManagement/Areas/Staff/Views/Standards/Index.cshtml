@@ -26,12 +26,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.StandardName)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.FeeAmountPerMonth)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.BillingCycle)
-                        </th>
+                       
                        
                         <th>Actions</th>
                     </tr>
@@ -41,8 +36,6 @@
                     {
                         <tr>
                             <td>@item.StandardName</td>
-                            <td>@item.FeeAmountPerMonth</td>
-                            <td>@item.BillingCycle</td>
                            
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
