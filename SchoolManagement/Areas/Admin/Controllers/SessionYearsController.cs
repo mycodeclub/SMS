@@ -43,7 +43,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var sessionYear = await _sessionService.GetSessionYearById(id);
-            ViewBag.Standards = await _standardService.GetStandards(id, 0);   // getting all standers
+           // ViewBag.Standards = await _standardService.GetStandardsByProc(id);   // getting all standers
+            ViewBag.Standards = await _standardService.GetStandardsBySession(id);   // getting all standers
             return View(sessionYear);
         }
 

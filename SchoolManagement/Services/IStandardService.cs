@@ -13,7 +13,8 @@ namespace SchoolManagement.Services
         /// <returns></returns>
         Task<List<Standard>> GetStandardBySession(int uniqueId);
         Task<Standard> GetStandardById(int standardId, bool includeStudents = false);
-        Task<List<SessionDetailsDto>> GetStandards(int sessionId=0, int standardId = 0);
-     
+        Task<List<SessionDetailsDto>> GetStandardsByProc(int sessionId = 0, int standardId = 0);
+        Task<List<Standard>> GetStandardsBySession(int sessionId = 0);
+
     }
 }
