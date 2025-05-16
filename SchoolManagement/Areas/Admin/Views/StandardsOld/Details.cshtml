@@ -1,0 +1,41 @@
+﻿@model SchoolManagement.ProcModels.SessionDetailsDto
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Standard";
+}
+<div class="content">
+    <div class="card">
+        <div class="card-body">
+<h1>Details</h1>
+
+<div>
+    <h4>Standard</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StandardName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StandardName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FeeAmountPerMonth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FeeAmountPerMonth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BillingCycle)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BillingCycle)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.StandardId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+</div></div></div>

@@ -43,8 +43,7 @@
                         <thead>
                             <tr>
                                 <th>Class Name </th>
-                                <th>Fee Amount</th>
-                                <th>Billing Cycle </th>
+                             
                                 <th>Students </th>
                                 <th>View Details </th>
                             </tr>
@@ -54,8 +53,8 @@
                             {
                                 <tr>
                                     <td>@standard.StandardName</td>
-                                    <td>@standard.FeeAmountPerMonth</td>
-                                    <td>@standard.BillingCycle - Month</td>
+                                 @*    <td>@standard.FeeAmountPerMonth</td>
+                                    <td>@standard.BillingCycle - Month</td> *@
                                     <td> <a href="/Admin/Students/index/@standard.UniqueId"> N/A </a> </td>
                                     <td>
                                         <a asp-action="Details" asp-controller="Standards" asp-route-id="@standard.UniqueId">@standard.StandardName</a>
