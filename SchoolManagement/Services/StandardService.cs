@@ -11,7 +11,14 @@ namespace SchoolManagement.Services
         private readonly ISessionYearService _sessionService = sessionService;
         private readonly IStudentService _studentService = studentService;
 
-        public async Task<List<SessionDetailsDto>> GetStandards(int sessionId = 0, int standardId = 0)
+        public async Task<List<Standard>> GetStandardsBySession(int sessionId = 0)
+        {
+            if (sessionId == 0)
+                sessionId = _sessionService.GetSelectedSession().UniqueId; 
+            return await _context.Standards.Where(s => s.SessionYearId == sessionId).ToListAsync();
+        }
+
+        public async Task<List<SessionDetailsDto>> GetStandardsByProc(int sessionId = 0, int standardId = 0)
         {
             if (sessionId == 0)
             {

@@ -25,14 +25,14 @@ namespace SchoolManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var standards = await _standardService.GetStandards(_sessionService.GetSelectedSession().UniqueId);
+            var standards = await _standardService.GetStandardsByProc(_sessionService.GetSelectedSession().UniqueId);
             return View(standards);
         }
 
         // GET: Staff/Standards/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var standard = await _standardService.GetStandards(id);
+            var standard = await _standardService.GetStandardsByProc(id);
             return View(standard.FirstOrDefault());
         }
 
@@ -49,7 +49,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _standardService.GetStandards(standard.UniqueId);
+                await _standardService.GetStandardsByProc(standard.UniqueId);
 
                 return RedirectToAction(nameof(Index));
             }
