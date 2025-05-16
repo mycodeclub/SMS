@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SchoolManagement.Models.Fee.FeeType>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRecurring)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Frequency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DueDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOptional)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicableFromMonth)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRecurring)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DueDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOptional)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicableFromMonth)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FeeTypeId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FeeTypeId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FeeTypeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
