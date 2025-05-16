@@ -1,0 +1,53 @@
+name: FTP Deploy
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install Dependencies
+      run: npm install
+      
+    - name: Build
+      run: npm run build
+      
+    - name: Check Build Output
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "Build output directory 'dist' not found!"
+          exit 1
+        fi
+        echo "Build output found in dist directory"
+        
+    - name: Clean FTP Directory
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: /sms/  # Using forward slashes for FTP path
+        dangerous-clean-slate: true  # This will clean the directory before upload
+        log-level: verbose  # Added for better debugging
+        
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist/
+        server-dir: /sms/  # Using forward slashes for FTP path
+        log-level: verbose  # Added for better debugging 
