@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class reset : Migration
+    public partial class rest : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,20 +64,6 @@ namespace SchoolManagement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.UniqueId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FeeTypeMaster",
-                columns: table => new
-                {
-                    UniqueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FeeType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FeeTypeMaster", x => x.UniqueId);
                 });
 
             migrationBuilder.CreateTable(
@@ -299,13 +285,13 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SessionFeeMaster",
+                name: "SessionFee",
                 columns: table => new
                 {
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SessionId = table.Column<int>(type: "int", nullable: false),
-                    StandardId = table.Column<int>(type: "int", nullable: false),
+                    StandardId = table.Column<int>(type: "int", nullable: true),
                     AdmissionFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TuitionFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AnnualCharges = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -314,23 +300,24 @@ namespace SchoolManagement.Migrations
                     ExaminationFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SportsFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ComputerFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MiscellaneousFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    MiscellaneousFee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FeeType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SessionFeeMaster", x => x.UniqueId);
+                    table.PrimaryKey("PK_SessionFee", x => x.UniqueId);
                     table.ForeignKey(
-                        name: "FK_SessionFeeMaster_SessionYears_SessionId",
+                        name: "FK_SessionFee_SessionYears_SessionId",
                         column: x => x.SessionId,
                         principalTable: "SessionYears",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SessionFeeMaster_Standards_StandardId",
+                        name: "FK_SessionFee_Standards_StandardId",
                         column: x => x.StandardId,
                         principalTable: "Standards",
-                        principalColumn: "UniqueId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "UniqueId");
                 });
 
             migrationBuilder.CreateTable(
@@ -479,33 +466,6 @@ namespace SchoolManagement.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "StudentFees",
-                columns: table => new
-                {
-                    UniqueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    TotalFee = table.Column<int>(type: "int", nullable: false),
-                    DiscountFee = table.Column<int>(type: "int", nullable: false),
-                    MonthFee = table.Column<int>(type: "int", nullable: false),
-                    SubmittedFeesAmount = table.Column<int>(type: "int", nullable: false),
-                    SubmittedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AnnuallyFee = table.Column<int>(type: "int", nullable: false),
-                    Quarentely = table.Column<int>(type: "int", nullable: false),
-                    HalfYearly = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentFees", x => x.UniqueId);
-                    table.ForeignKey(
-                        name: "FK_StudentFees_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "UniqueId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -520,17 +480,6 @@ namespace SchoolManagement.Migrations
                 table: "Countries",
                 columns: new[] { "UniqueId", "Name" },
                 values: new object[] { 1, "India" });
-
-            migrationBuilder.InsertData(
-                table: "FeeTypeMaster",
-                columns: new[] { "UniqueId", "Description", "FeeType" },
-                values: new object[,]
-                {
-                    { 1, "", "Admission Fee" },
-                    { 2, "", "Tuition Fee" },
-                    { 3, "", "Semester Fee" },
-                    { 4, "", "Other Fee" }
-                });
 
             migrationBuilder.InsertData(
                 table: "Relations",
@@ -554,10 +503,10 @@ namespace SchoolManagement.Migrations
                 columns: new[] { "UniqueId", "CreatedDate", "EndDate", "IsAcitve", "IsDeleted", "SessionName", "StartDate", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, "Session 2025 - 26", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2024 - 25", new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2023 - 24", new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2022 - 23", new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2022 - 23", new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2023 - 24", new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2024 - 25", new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, "Session 2025 - 26", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -568,12 +517,18 @@ namespace SchoolManagement.Migrations
                     { 1, 2, 5000, "Nursery" },
                     { 2, 2, 5000, "Play Group" },
                     { 3, 2, 5000, "L KG" },
-                    { 4, 2, 5000, "U KG" },
-                    { 5, 2, 5000, "Class 1st" },
-                    { 6, 2, 5000, "Class 2nd" },
-                    { 7, 2, 5000, "Class 3rd" },
-                    { 8, 2, 5000, "Class 4th" },
-                    { 9, 2, 5000, "Class 5th" }
+                    { 4, 2, 5000, "U KG" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SessionFee",
+                columns: new[] { "UniqueId", "ActivityFee", "AdmissionFee", "AnnualCharges", "ComputerFee", "Description", "ExaminationFee", "FeeType", "MiscellaneousFee", "SessionId", "SportsFee", "StandardId", "TransportFee", "TuitionFee" },
+                values: new object[,]
+                {
+                    { 1, 0m, 0m, 0m, 0m, "", 0m, "Admission Fee", 0m, 4, 0m, null, 0m, 0m },
+                    { 2, 0m, 0m, 0m, 0m, "", 0m, "Tuition Fee", 0m, 4, 0m, null, 0m, 0m },
+                    { 3, 0m, 0m, 0m, 0m, "", 0m, "Semester Fee", 0m, 4, 0m, null, 0m, 0m },
+                    { 4, 0m, 0m, 0m, 0m, "", 0m, "Other Fee", 0m, 4, 0m, null, 0m, 0m }
                 });
 
             migrationBuilder.InsertData(
@@ -1914,24 +1869,19 @@ namespace SchoolManagement.Migrations
                 column: "StudentUniqueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionFeeMaster_SessionId",
-                table: "SessionFeeMaster",
+                name: "IX_SessionFee_SessionId",
+                table: "SessionFee",
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionFeeMaster_StandardId",
-                table: "SessionFeeMaster",
+                name: "IX_SessionFee_StandardId",
+                table: "SessionFee",
                 column: "StandardId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
                 table: "States",
                 column: "CountryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentFees_StudentId",
-                table: "StudentFees",
-                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_AddressId",
@@ -1968,22 +1918,16 @@ namespace SchoolManagement.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "FeeTypeMaster");
-
-            migrationBuilder.DropTable(
                 name: "Parents");
 
             migrationBuilder.DropTable(
                 name: "SessionDetailsDtoRaw");
 
             migrationBuilder.DropTable(
-                name: "SessionFeeMaster");
+                name: "SessionFee");
 
             migrationBuilder.DropTable(
                 name: "Staffs");
-
-            migrationBuilder.DropTable(
-                name: "StudentFees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

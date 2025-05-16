@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
-using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 
 namespace BpstEducation.Data
@@ -1283,21 +1282,7 @@ namespace BpstEducation.Data
                 new IdentityRole() { Id = "3", Name = "Parent", NormalizedName = "PARENT" }// , ConcurrencyStamp = "1" }
                 );
         }
-        public static void SeedStandard(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Standard>().HasData(
-                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 5, StandardName = "Class 1st", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 6, StandardName = "Class 2nd", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 7, StandardName = "Class 3rd", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 8, StandardName = "Class 4th", BillingCycle = 2, FeeAmountPerMonth = 5000 },
-                new Standard() { UniqueId = 9, StandardName = "Class 5th", BillingCycle = 2, FeeAmountPerMonth = 5000 }
 
-             );
-        }
         public static void SeedRelation(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Relation>().HasData(
@@ -1316,22 +1301,33 @@ namespace BpstEducation.Data
         public static void SeedSession(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SessionYear>().HasData(
-                new SessionYear() { UniqueId = 1, StartDate = new DateTime(2025, 03, 01), EndDate = new DateTime(2026, 2, 2), IsAcitve = true, SessionName = "Session 2025 - 26" },
-                new SessionYear() { UniqueId = 2, StartDate = new DateTime(2024, 03, 01), EndDate = new DateTime(2025, 2, 2), IsAcitve = false, SessionName = "Session 2024 - 25" },
-                new SessionYear() { UniqueId = 3, StartDate = new DateTime(2023, 03, 01), EndDate = new DateTime(2024, 2, 2), IsAcitve = false, SessionName = "Session 2023 - 24" },
-                new SessionYear() { UniqueId = 4, StartDate = new DateTime(2022, 03, 01), EndDate = new DateTime(2023, 2, 2), IsAcitve = false, SessionName = "Session 2022 - 23" }
-                );
+                new SessionYear() { UniqueId = 1, StartDate = new DateTime(2022, 03, 01), EndDate = new DateTime(2023, 2, 2), IsAcitve = false, SessionName = "Session 2022 - 23" },
+                new SessionYear() { UniqueId = 2, StartDate = new DateTime(2023, 03, 01), EndDate = new DateTime(2024, 2, 2), IsAcitve = false, SessionName = "Session 2023 - 24" },
+                new SessionYear() { UniqueId = 3, StartDate = new DateTime(2024, 03, 01), EndDate = new DateTime(2025, 2, 2), IsAcitve = false, SessionName = "Session 2024 - 25" },
+                new SessionYear() { UniqueId = 4, StartDate = new DateTime(2025, 03, 01), EndDate = new DateTime(2026, 2, 2), IsAcitve = true, SessionName = "Session 2025 - 26" }
+                 );
 
         }
-        public static void SeedFeeTypeMaster(this ModelBuilder modelBuilder)
+        public static void SeedSessionFee(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<SessionFeeMaster>().HasData(
-                new SessionFeeMaster() { UniqueId = 1, FeeType = "Admission Fee", },
-                new SessionFeeMaster() { UniqueId = 2, FeeType = "Tuition Fee", },
-                new SessionFeeMaster() { UniqueId = 3, FeeType = "Semester Fee", },
-                new SessionFeeMaster() { UniqueId = 4, FeeType = "Other Fee", }
+            modelBuilder.Entity<SessionFee>().HasData(
+                new SessionFee() { UniqueId = 1, FeeType = "Admission Fee", SessionId = 4 },
+                new SessionFee() { UniqueId = 2, FeeType = "Tuition Fee", SessionId = 4 },
+                new SessionFee() { UniqueId = 3, FeeType = "Semester Fee", SessionId = 4 },
+                new SessionFee() { UniqueId = 4, FeeType = "Other Fee", SessionId = 4 }
                 );
         }
+
+        public static void SeedStandard(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Standard>().HasData(
+                 new Standard() { UniqueId = 1, StandardName = "Nursery", BillingCycle = 2, FeeAmountPerMonth = 5000, },
+                new Standard() { UniqueId = 2, StandardName = "Play Group", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 3, StandardName = "L KG", BillingCycle = 2, FeeAmountPerMonth = 5000 },
+                new Standard() { UniqueId = 4, StandardName = "U KG", BillingCycle = 2, FeeAmountPerMonth = 5000 }
+             );
+        }
+
 
     }
 }

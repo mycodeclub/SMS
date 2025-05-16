@@ -12,8 +12,8 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250515041637_reset")]
-    partial class reset
+    [Migration("20250516034624_rest")]
+    partial class rest
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace SchoolManagement.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.3")
-                .HasAnnotation("Relational:ExecuteSql", "-- exec GetSessionDetailsByStandard 1,0\n -- select * from Standards\n\nIF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL\nBEGIN\n    DROP PROCEDURE GetSessionDetailsByStandard;\nEND\nGO\n\nCREATE PROCEDURE GetSessionDetailsByStandard\n    @SessionId INT, -- new required parameter\n    @StandardId INT  -- optional parameter\nAS\nBEGIN\n    -- Check if SessionId is 0, raise an error\n    IF (@SessionId = 0)\n    BEGIN\n        RAISERROR ('SessionId is required and cannot be zero.', 16, 1);\n        RETURN;\n    END\n\n    -- Get session details\n    SELECT \n        c.UniqueId AS StandardId,\n        sy.UniqueId AS SessionId,\n        sy.SessionName,\n        sy.StartDate,\n        sy.EndDate,\n        c.StandardName,\n        c.FeeAmountPerMonth,\n        c.BillingCycle,\n        ISNULL(COUNT(s.UniqueId), 0) AS StudentCount\n    FROM \n        Standards c\n    CROSS JOIN \n        SessionYears sy\n    LEFT JOIN \n        Students s ON s.StandardId = c.UniqueId \n        AND s.SessionYearId = sy.UniqueId \n        AND s.IsDeleted = 0\n    WHERE \n        sy.UniqueId = @SessionId\n        AND (@StandardId = 0 OR c.UniqueId = @StandardId)\n    GROUP BY \n        sy.SessionName, \n        sy.StartDate, \n        sy.EndDate, \n        c.StandardName, \n        c.UniqueId, \n        c.FeeAmountPerMonth, \n        c.BillingCycle,\n        sy.UniqueId\n    ORDER BY \n        c.StandardName;\nEND\nGO\n")
+                .HasAnnotation("Relational:ExecuteSql", "-- exec GetSessionDetailsByStandard 1,0\r\n -- select * from Standards\r\n\r\nIF OBJECT_ID('GetSessionDetailsByStandard', 'P') IS NOT NULL\r\nBEGIN\r\n    DROP PROCEDURE GetSessionDetailsByStandard;\r\nEND\r\nGO\r\n\r\nCREATE PROCEDURE GetSessionDetailsByStandard\r\n    @SessionId INT, -- new required parameter\r\n    @StandardId INT  -- optional parameter\r\nAS\r\nBEGIN\r\n    -- Check if SessionId is 0, raise an error\r\n    IF (@SessionId = 0)\r\n    BEGIN\r\n        RAISERROR ('SessionId is required and cannot be zero.', 16, 1);\r\n        RETURN;\r\n    END\r\n\r\n    -- Get session details\r\n    SELECT \r\n        c.UniqueId AS StandardId,\r\n        sy.UniqueId AS SessionId,\r\n        sy.SessionName,\r\n        sy.StartDate,\r\n        sy.EndDate,\r\n        c.StandardName,\r\n        c.FeeAmountPerMonth,\r\n        c.BillingCycle,\r\n        ISNULL(COUNT(s.UniqueId), 0) AS StudentCount\r\n    FROM \r\n        Standards c\r\n    CROSS JOIN \r\n        SessionYears sy\r\n    LEFT JOIN \r\n        Students s ON s.StandardId = c.UniqueId \r\n        AND s.SessionYearId = sy.UniqueId \r\n        AND s.IsDeleted = 0\r\n    WHERE \r\n        sy.UniqueId = @SessionId\r\n        AND (@StandardId = 0 OR c.UniqueId = @StandardId)\r\n    GROUP BY \r\n        sy.SessionName, \r\n        sy.StartDate, \r\n        sy.EndDate, \r\n        c.StandardName, \r\n        c.UniqueId, \r\n        c.FeeAmountPerMonth, \r\n        c.BillingCycle,\r\n        sy.UniqueId\r\n    ORDER BY \r\n        c.StandardName;\r\nEND\r\nGO\r\n")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -7868,53 +7868,7 @@ namespace SchoolManagement.Migrations
                     b.ToTable("AppUser", (string)null);
                 });
 
-            modelBuilder.Entity("SchoolManagement.Models.Fee.FeeTypeMaster", b =>
-                {
-                    b.Property<int>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FeeType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UniqueId");
-
-                    b.ToTable("FeeTypeMaster");
-
-                    b.HasData(
-                        new
-                        {
-                            UniqueId = 1,
-                            Description = "",
-                            FeeType = "Admission Fee"
-                        },
-                        new
-                        {
-                            UniqueId = 2,
-                            Description = "",
-                            FeeType = "Tuition Fee"
-                        },
-                        new
-                        {
-                            UniqueId = 3,
-                            Description = "",
-                            FeeType = "Semester Fee"
-                        },
-                        new
-                        {
-                            UniqueId = 4,
-                            Description = "",
-                            FeeType = "Other Fee"
-                        });
-                });
-
-            modelBuilder.Entity("SchoolManagement.Models.Fee.SessionFeeMaster", b =>
+            modelBuilder.Entity("SchoolManagement.Models.SessionFee", b =>
                 {
                     b.Property<int>("UniqueId")
                         .ValueGeneratedOnAdd()
@@ -7934,8 +7888,15 @@ namespace SchoolManagement.Migrations
                     b.Property<decimal>("ComputerFee")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("ExaminationFee")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("FeeType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("MiscellaneousFee")
                         .HasColumnType("decimal(18,2)");
@@ -7946,7 +7907,7 @@ namespace SchoolManagement.Migrations
                     b.Property<decimal>("SportsFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("StandardId")
+                    b.Property<int?>("StandardId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TransportFee")
@@ -7961,7 +7922,73 @@ namespace SchoolManagement.Migrations
 
                     b.HasIndex("StandardId");
 
-                    b.ToTable("SessionFeeMaster");
+                    b.ToTable("SessionFee");
+
+                    b.HasData(
+                        new
+                        {
+                            UniqueId = 1,
+                            ActivityFee = 0m,
+                            AdmissionFee = 0m,
+                            AnnualCharges = 0m,
+                            ComputerFee = 0m,
+                            Description = "",
+                            ExaminationFee = 0m,
+                            FeeType = "Admission Fee",
+                            MiscellaneousFee = 0m,
+                            SessionId = 4,
+                            SportsFee = 0m,
+                            TransportFee = 0m,
+                            TuitionFee = 0m
+                        },
+                        new
+                        {
+                            UniqueId = 2,
+                            ActivityFee = 0m,
+                            AdmissionFee = 0m,
+                            AnnualCharges = 0m,
+                            ComputerFee = 0m,
+                            Description = "",
+                            ExaminationFee = 0m,
+                            FeeType = "Tuition Fee",
+                            MiscellaneousFee = 0m,
+                            SessionId = 4,
+                            SportsFee = 0m,
+                            TransportFee = 0m,
+                            TuitionFee = 0m
+                        },
+                        new
+                        {
+                            UniqueId = 3,
+                            ActivityFee = 0m,
+                            AdmissionFee = 0m,
+                            AnnualCharges = 0m,
+                            ComputerFee = 0m,
+                            Description = "",
+                            ExaminationFee = 0m,
+                            FeeType = "Semester Fee",
+                            MiscellaneousFee = 0m,
+                            SessionId = 4,
+                            SportsFee = 0m,
+                            TransportFee = 0m,
+                            TuitionFee = 0m
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            ActivityFee = 0m,
+                            AdmissionFee = 0m,
+                            AnnualCharges = 0m,
+                            ComputerFee = 0m,
+                            Description = "",
+                            ExaminationFee = 0m,
+                            FeeType = "Other Fee",
+                            MiscellaneousFee = 0m,
+                            SessionId = 4,
+                            SportsFee = 0m,
+                            TransportFee = 0m,
+                            TuitionFee = 0m
+                        });
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.SessionYear", b =>
@@ -8003,27 +8030,16 @@ namespace SchoolManagement.Migrations
                         {
                             UniqueId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsAcitve = true,
+                            EndDate = new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = false,
                             IsDeleted = false,
-                            SessionName = "Session 2025 - 26",
-                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SessionName = "Session 2022 - 23",
+                            StartDate = new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             UniqueId = 2,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsAcitve = false,
-                            IsDeleted = false,
-                            SessionName = "Session 2024 - 25",
-                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            UniqueId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAcitve = false,
@@ -8034,13 +8050,24 @@ namespace SchoolManagement.Migrations
                         },
                         new
                         {
-                            UniqueId = 4,
+                            UniqueId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndDate = new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAcitve = false,
                             IsDeleted = false,
-                            SessionName = "Session 2022 - 23",
-                            StartDate = new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SessionName = "Session 2024 - 25",
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsAcitve = true,
+                            IsDeleted = false,
+                            SessionName = "Session 2025 - 26",
+                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -8095,84 +8122,7 @@ namespace SchoolManagement.Migrations
                             BillingCycle = 2,
                             FeeAmountPerMonth = 5000,
                             StandardName = "U KG"
-                        },
-                        new
-                        {
-                            UniqueId = 5,
-                            BillingCycle = 2,
-                            FeeAmountPerMonth = 5000,
-                            StandardName = "Class 1st"
-                        },
-                        new
-                        {
-                            UniqueId = 6,
-                            BillingCycle = 2,
-                            FeeAmountPerMonth = 5000,
-                            StandardName = "Class 2nd"
-                        },
-                        new
-                        {
-                            UniqueId = 7,
-                            BillingCycle = 2,
-                            FeeAmountPerMonth = 5000,
-                            StandardName = "Class 3rd"
-                        },
-                        new
-                        {
-                            UniqueId = 8,
-                            BillingCycle = 2,
-                            FeeAmountPerMonth = 5000,
-                            StandardName = "Class 4th"
-                        },
-                        new
-                        {
-                            UniqueId = 9,
-                            BillingCycle = 2,
-                            FeeAmountPerMonth = 5000,
-                            StandardName = "Class 5th"
                         });
-                });
-
-            modelBuilder.Entity("SchoolManagement.Models.StudentFee", b =>
-                {
-                    b.Property<int>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
-
-                    b.Property<int>("AnnuallyFee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DiscountFee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HalfYearly")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MonthFee")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quarentely")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SubmittedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("SubmittedFeesAmount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalFee")
-                        .HasColumnType("int");
-
-                    b.HasKey("UniqueId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentFees");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>
@@ -8586,7 +8536,7 @@ namespace SchoolManagement.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("SchoolManagement.Models.Fee.SessionFeeMaster", b =>
+            modelBuilder.Entity("SchoolManagement.Models.SessionFee", b =>
                 {
                     b.HasOne("SchoolManagement.Models.SessionYear", "Session")
                         .WithMany()
@@ -8596,24 +8546,11 @@ namespace SchoolManagement.Migrations
 
                     b.HasOne("SchoolManagement.Models.Standard", "Standard")
                         .WithMany()
-                        .HasForeignKey("StandardId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StandardId");
 
                     b.Navigation("Session");
 
                     b.Navigation("Standard");
-                });
-
-            modelBuilder.Entity("SchoolManagement.Models.StudentFee", b =>
-                {
-                    b.HasOne("SchoolManagement.Models.User.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.ParentOrGuardians", b =>

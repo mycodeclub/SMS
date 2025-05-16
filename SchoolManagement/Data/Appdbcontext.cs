@@ -5,7 +5,6 @@ using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
 using SchoolManagement.Models.User;
 using SchoolManagement.ProcModels;
-using SchoolManagement.Models.Fee;
 
 namespace SchoolManagement.Data
 {
@@ -18,8 +17,8 @@ namespace SchoolManagement.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-                    // Path to the SQL script file
-        var sqlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "sqlScripts", "proc_GetSessionDetailsByStandard.sql");
+            // Path to the SQL script file
+            var sqlFilePath = Path.Combine(Directory.GetCurrentDirectory(), "sqlScripts", "proc_GetSessionDetailsByStandard.sql");
             // Check if the file exists
             if (File.Exists(sqlFilePath))
             {
@@ -27,23 +26,23 @@ namespace SchoolManagement.Data
                 modelBuilder.HasAnnotation("Relational:ExecuteSql", sqlScript);
             }
             else
-            { 
-                            throw new FileNotFoundException($"SQL script file not found: {sqlFilePath}");
-             }
- 
+            {
+                throw new FileNotFoundException($"SQL script file not found: {sqlFilePath}");
+            }
+
             modelBuilder.SeedRoles();
             modelBuilder.SeedSession();
+            modelBuilder.SeedSessionFee();
             modelBuilder.SeedStandard();
             modelBuilder.SeedCountry();
             modelBuilder.SeedState();
             modelBuilder.SeedCities();
             modelBuilder.SeedRelation();
-            modelBuilder.SeedFeeTypeMaster();
             modelBuilder.Entity<AppUser>().ToTable("AppUser");
             modelBuilder.Entity<SessionDetailsDto>().HasNoKey();
 
 
-          
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -54,16 +53,13 @@ namespace SchoolManagement.Data
         public DbSet<Student> Students { get; set; }       // student
         public DbSet<ParentOrGuardians> Parents { get; set; }     // parent
         public DbSet<Standard> Standards { get; set; }      //class/standards
-        public DbSet<StudentFee> StudentFees { get; set; }     //feestructure
-        public DbSet<Country> Countrys { get; set; }
+         public DbSet<Country> Countrys { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Relation> Relations { get; set; }
-        public DbSet< Models.Fee.SessionFeeMaster> FeeTypeMaster { get; set; }
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
-        public DbSet<SchoolManagement.Models.Fee.SessionFeeMaster> SesionFeeMaster { get; set; } 
-
+        public DbSet<SessionFee> SessionFee { get; internal set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SchoolManagement.Models.Fee.SessionFeeMaster
+﻿@model SessionFee
 
 @{
     ViewData["Title"] = "Delete";
@@ -69,16 +69,16 @@
             @Html.DisplayFor(model => model.SportsFee)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ComputerFee)
+            @Html.DisplayFor(model => model.SportsFee)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ComputerFee)
+            @Html.DisplayNameFor(model => model.ComputerFee)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MiscellaneousFee)
+            @Html.DisplayFor(model => model.ComputerFee)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MiscellaneousFee)
+            @Html.DisplayNameFor(model => model.MiscellaneousFee)
         </dd>
     </dl>
     

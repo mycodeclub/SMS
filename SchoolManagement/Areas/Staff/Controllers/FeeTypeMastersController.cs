@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
-using SchoolManagement.Models.Fee;
+using SchoolManagement.Models;
 
 namespace SchoolManagement.Areas.Staff.Controllers
 {
@@ -23,7 +23,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
         // GET: Staff/FeeTypeMasters
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FeeTypeMaster.ToListAsync());
+            return View(await _context.SessionFee.ToListAsync());
         }
 
         // GET: Staff/FeeTypeMasters/Details/5
@@ -34,7 +34,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
                 return NotFound();
             }
 
-            var feeTypeMaster = await _context.FeeTypeMaster
+            var feeTypeMaster = await _context.SessionFee
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (feeTypeMaster == null)
             {
@@ -55,7 +55,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SessionFeeMaster feeTypeMaster)
+        public async Task<IActionResult> Create(SessionFee feeTypeMaster)
         {
             if (ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
                 return NotFound();
             }
 
-            var feeTypeMaster = await _context.FeeTypeMaster.FindAsync(id);
+            var feeTypeMaster = await _context.SessionFee.FindAsync(id);
             if (feeTypeMaster == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,FeeType,Description")] SessionFeeMaster feeTypeMaster)
+        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,FeeType,Description")] SessionFee feeTypeMaster)
         {
             if (id != feeTypeMaster.UniqueId)
             {
@@ -125,7 +125,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
                 return NotFound();
             }
 
-            var feeTypeMaster = await _context.FeeTypeMaster
+            var feeTypeMaster = await _context.SessionFee
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
             if (feeTypeMaster == null)
             {
@@ -140,10 +140,10 @@ namespace SchoolManagement.Areas.Staff.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var feeTypeMaster = await _context.FeeTypeMaster.FindAsync(id);
+            var feeTypeMaster = await _context.SessionFee.FindAsync(id);
             if (feeTypeMaster != null)
             {
-                _context.FeeTypeMaster.Remove(feeTypeMaster);
+                _context.SessionFee.Remove(feeTypeMaster);
             }
 
             await _context.SaveChangesAsync();
@@ -152,7 +152,7 @@ namespace SchoolManagement.Areas.Staff.Controllers
 
         private bool FeeTypeMasterExists(int id)
         {
-            return _context.FeeTypeMaster.Any(e => e.UniqueId == id);
+            return _context.SessionFee.Any(e => e.UniqueId == id);
         }
     }
 }

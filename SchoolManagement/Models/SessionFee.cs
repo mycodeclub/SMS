@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolManagement.Models.Fee
+namespace SchoolManagement.Models
 {
-    public class SessionFeeMaster
+    public class SessionFee
     {
         [Key]
         public int UniqueId { get; set; }
@@ -13,11 +13,12 @@ namespace SchoolManagement.Models.Fee
         [ForeignKey("SessionId")]
         public SessionYear Session { get; set; }
 
-     
 
-        public int StandardId { get; set; }
-        [ForeignKey(nameof(StandardId))]
-        public Standard Standard { get; set; } = default!;
+        [Obsolete]
+        public int? StandardId { get; set; }
+        //        [ForeignKey(nameof(StandardId))]
+        [Obsolete]
+        public Standard? Standard { get; set; } = default!;
 
         public decimal AdmissionFee { get; set; }
         public decimal TuitionFee { get; set; }
@@ -28,13 +29,14 @@ namespace SchoolManagement.Models.Fee
         public decimal SportsFee { get; set; }
         public decimal ComputerFee { get; set; }
         public decimal MiscellaneousFee { get; set; }
-        [NotMapped]
-        public decimal TotalFee =>
-    AdmissionFee + TuitionFee + AnnualCharges + ActivityFee +
-    TransportFee + ExaminationFee + SportsFee  + ComputerFee + MiscellaneousFee;
 
 
+
+
+
+        [Display(Name = "Fee Type")]
+        public string FeeType { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
     }
-
 }

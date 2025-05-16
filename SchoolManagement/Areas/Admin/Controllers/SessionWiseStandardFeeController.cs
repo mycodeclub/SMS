@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
-using SchoolManagement.Models.Fee;
+using SchoolManagement.Models;
 using SchoolManagement.Models.User;
 
 namespace SchoolManagement.Areas.Admin.Controllers
@@ -24,7 +24,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Admin/SessionWiseStandardFee
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.SesionFeeMaster.Include(s => s.Session).Include(s => s.Standard);
+            var appDbContext = _context.SessionFee.Include(s => s.Session).Include(s => s.Standard);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -36,7 +36,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var sessionFeeMaster = await _context.SesionFeeMaster
+            var sessionFeeMaster = await _context.SessionFee
                 .Include(s => s.Session)
                 .Include(s => s.Standard)
                 .FirstOrDefaultAsync(m => m.UniqueId == id);
@@ -61,7 +61,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SessionFeeMaster sessionFeeMaster)
+        public async Task<IActionResult> Create(SessionFee sessionFeeMaster)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // POST: SessionFeeMaster/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SessionFeeMaster sessionFeeMaster)
+        public async Task<IActionResult> Edit(int id, SessionFee sessionFeeMaster)
         {
             if (id != sessionFeeMaster.UniqueId) return NotFound();
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolManagement.Models.Fee.SessionFeeMaster>
+﻿@model IEnumerable<SessionFee>
 @{
     ViewData["Title"] = "Session Fee Master";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
@@ -27,9 +27,9 @@
                         <th>@Html.DisplayNameFor(model => model.First().ActivityFee)</th>
                         <th>@Html.DisplayNameFor(model => model.First().TransportFee)</th>
                         <th>@Html.DisplayNameFor(model => model.First().ExaminationFee)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ExaminationFee)</th>
                         <th>@Html.DisplayNameFor(model => model.First().SportsFee)</th>
                         <th>@Html.DisplayNameFor(model => model.First().ComputerFee)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().MiscellaneousFee)</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -45,7 +45,7 @@
                             <td>@item.ExaminationFee</td>
                             <td>@item.SportsFee</td>
                             <td>@item.ComputerFee</td>
-                            <td>@item.MiscellaneousFee</td>
+                            <td>@item.ComputerFee</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a asp-action="Edit" asp-route-id="@item.UniqueId" class="btn btn-sm btn-warning">
