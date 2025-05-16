@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Address;
+using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 
 namespace BpstEducation.Data
@@ -1301,23 +1302,12 @@ namespace BpstEducation.Data
         public static void SeedSession(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SessionYear>().HasData(
-                new SessionYear() { UniqueId = 1, StartDate = new DateTime(2022, 03, 01), EndDate = new DateTime(2023, 2, 2), IsAcitve = false, SessionName = "Session 2022 - 23" },
-                new SessionYear() { UniqueId = 2, StartDate = new DateTime(2023, 03, 01), EndDate = new DateTime(2024, 2, 2), IsAcitve = false, SessionName = "Session 2023 - 24" },
-                new SessionYear() { UniqueId = 3, StartDate = new DateTime(2024, 03, 01), EndDate = new DateTime(2025, 2, 2), IsAcitve = false, SessionName = "Session 2024 - 25" },
-                new SessionYear() { UniqueId = 4, StartDate = new DateTime(2025, 03, 01), EndDate = new DateTime(2026, 2, 2), IsAcitve = true, SessionName = "Session 2025 - 26" }
+                new SessionYear() { UniqueId = 1, StartDate = new DateTime(2022, 04, 02), EndDate = new DateTime(2023, 03, 01), IsAcitve = false, SessionName = "Session 2022 - 23" },
+                new SessionYear() { UniqueId = 2, StartDate = new DateTime(2023, 04, 02), EndDate = new DateTime(2024, 03, 01), IsAcitve = false, SessionName = "Session 2023 - 24" },
+                new SessionYear() { UniqueId = 3, StartDate = new DateTime(2024, 04, 02), EndDate = new DateTime(2025, 03, 01), IsAcitve = false, SessionName = "Session 2024 - 25" },
+                new SessionYear() { UniqueId = 4, StartDate = new DateTime(2025, 04, 02), EndDate = new DateTime(2026, 03, 01), IsAcitve = true, SessionName = "Session 2025 - 26" }
                  );
-
         }
-        public static void SeedSessionFee(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<SessionFee>().HasData(
-                new SessionFee() { UniqueId = 1, FeeType = "Admission Fee", SessionId = 4 },
-                new SessionFee() { UniqueId = 2, FeeType = "Tuition Fee", SessionId = 4 },
-                new SessionFee() { UniqueId = 3, FeeType = "Semester Fee", SessionId = 4 },
-                new SessionFee() { UniqueId = 4, FeeType = "Other Fee", SessionId = 4 }
-                );
-        }
-
         public static void SeedStandard(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Standard>().HasData(
@@ -1328,6 +1318,25 @@ namespace BpstEducation.Data
              );
         }
 
+        public static void SeedFeeType(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FeeType>().HasData(
+                new FeeType { FeeTypeId = 1, Name = "Admission Fee", IsRecurring = false, Frequency = 12, DueDate = 7, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 2, Name = "Tuition Fee", IsRecurring = true, Frequency = 1, DueDate = 7, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 3, Name = "Semester Fee", IsRecurring = true, Frequency = 6, DueDate = 7, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 4, Name = "Stationery Fee", IsRecurring = false, Frequency = 12, DueDate = 7, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 5, Name = "Day Care", IsRecurring = true, IsOptional = true, Frequency = 1, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 6, Name = "Summer Camping", IsRecurring = false, IsOptional = true, Frequency = 12, ApplicableFromMonth = 6 }
+                );
+        }
+        public static void SeedStandardFee(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StandardFee>().HasData(
+                new StandardFee() { UniqueId = 1, FeeTypeId = 1, StandardId = 2, Amount = 4000, },
+                new StandardFee() { UniqueId = 2, FeeTypeId = 2, StandardId = 2, Amount = 4000, },
+                new StandardFee() { UniqueId = 3, FeeTypeId = 3, StandardId = 2, Amount = 4000, },
+                new StandardFee() { UniqueId = 4, FeeTypeId = 4, StandardId = 2, Amount = 4000, });
+        }
 
     }
 }

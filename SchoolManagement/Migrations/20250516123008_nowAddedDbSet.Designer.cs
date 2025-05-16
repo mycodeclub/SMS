@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516123008_nowAddedDbSet")]
+    partial class nowAddedDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7976,6 +7979,9 @@ namespace SchoolManagement.Migrations
                     b.Property<int>("FeeTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Frequency")
+                        .HasColumnType("int");
+
                     b.Property<int>("StandardId")
                         .HasColumnType("int");
 
@@ -7993,6 +7999,7 @@ namespace SchoolManagement.Migrations
                             UniqueId = 1,
                             Amount = 4000m,
                             FeeTypeId = 1,
+                            Frequency = 4,
                             StandardId = 2
                         },
                         new
@@ -8000,6 +8007,7 @@ namespace SchoolManagement.Migrations
                             UniqueId = 2,
                             Amount = 4000m,
                             FeeTypeId = 2,
+                            Frequency = 1,
                             StandardId = 2
                         },
                         new
@@ -8007,6 +8015,7 @@ namespace SchoolManagement.Migrations
                             UniqueId = 3,
                             Amount = 4000m,
                             FeeTypeId = 3,
+                            Frequency = 3,
                             StandardId = 2
                         },
                         new
@@ -8014,6 +8023,7 @@ namespace SchoolManagement.Migrations
                             UniqueId = 4,
                             Amount = 4000m,
                             FeeTypeId = 4,
+                            Frequency = 4,
                             StandardId = 2
                         });
                 });
