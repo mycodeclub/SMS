@@ -105,8 +105,12 @@
                     @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/Standards/Index"><i class="fa fa-book"></i> Standard  </a></li>
 
-                    @if (ActiveTabName.Equals("SessionFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    @if (ActiveTabName.Equals("SessionFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/SessionFee/Index"><i class="fa fa-rupee"></i>  Fees </a></li>
+
+                    @if (ActiveTabName.Equals("standardFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab"><a href="/Admin/StandardFees/Index"><i class="fa fa-rupee"></i>  Standard Fees </a></li>
+              
 
                      @if (ActiveTabName.Equals("SessionFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab"><a href="/Admin/SessionWiseStandardFee/Index"><i class="fa fa-user"></i>Session StandardFee </a></li>

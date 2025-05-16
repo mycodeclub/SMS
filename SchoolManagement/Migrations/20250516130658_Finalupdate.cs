@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolManagement.Migrations
 {
     /// <inheritdoc />
-    public partial class rest : Migration
+    public partial class Finalupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,24 @@ namespace SchoolManagement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.UniqueId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeeTypes",
+                columns: table => new
+                {
+                    FeeTypeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRecurring = table.Column<bool>(type: "bit", nullable: false),
+                    Frequency = table.Column<int>(type: "int", nullable: false),
+                    DueDate = table.Column<int>(type: "int", nullable: false),
+                    IsOptional = table.Column<bool>(type: "bit", nullable: false),
+                    ApplicableFromMonth = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeeTypes", x => x.FeeTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,21 +159,6 @@ namespace SchoolManagement.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Staffs", x => x.UniqueId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Standards",
-                columns: table => new
-                {
-                    UniqueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StandardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FeeAmountPerMonth = table.Column<int>(type: "int", nullable: false),
-                    BillingCycle = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Standards", x => x.UniqueId);
                 });
 
             migrationBuilder.CreateTable(
@@ -285,6 +288,45 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Standards",
+                columns: table => new
+                {
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StandardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SessionYearId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Standards", x => x.UniqueId);
+                    table.ForeignKey(
+                        name: "FK_Standards_SessionYears_SessionYearId",
+                        column: x => x.SessionYearId,
+                        principalTable: "SessionYears",
+                        principalColumn: "UniqueId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.UniqueId);
+                    table.ForeignKey(
+                        name: "FK_Cities_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "UniqueId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SessionFee",
                 columns: table => new
                 {
@@ -321,21 +363,29 @@ namespace SchoolManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cities",
+                name: "StandardFees",
                 columns: table => new
                 {
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StandardId = table.Column<int>(type: "int", nullable: false),
+                    FeeTypeId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cities", x => x.UniqueId);
+                    table.PrimaryKey("PK_StandardFees", x => x.UniqueId);
                     table.ForeignKey(
-                        name: "FK_Cities_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
+                        name: "FK_StandardFees_FeeTypes_FeeTypeId",
+                        column: x => x.FeeTypeId,
+                        principalTable: "FeeTypes",
+                        principalColumn: "FeeTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StandardFees_Standards_StandardId",
+                        column: x => x.StandardId,
+                        principalTable: "Standards",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -482,6 +532,19 @@ namespace SchoolManagement.Migrations
                 values: new object[] { 1, "India" });
 
             migrationBuilder.InsertData(
+                table: "FeeTypes",
+                columns: new[] { "FeeTypeId", "ApplicableFromMonth", "DueDate", "Frequency", "IsOptional", "IsRecurring", "Name" },
+                values: new object[,]
+                {
+                    { 1, 3, 7, 12, false, false, "Admission Fee" },
+                    { 2, 3, 7, 1, false, true, "Tuition Fee" },
+                    { 3, 3, 7, 6, false, true, "Semester Fee" },
+                    { 4, 3, 7, 12, false, false, "Stationery Fee" },
+                    { 5, 3, 0, 1, true, true, "Day Care" },
+                    { 6, 6, 0, 12, true, false, "Summer Camping" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Relations",
                 columns: new[] { "UniqueId", "AllowMultiple", "RelationName" },
                 values: new object[,]
@@ -503,32 +566,21 @@ namespace SchoolManagement.Migrations
                 columns: new[] { "UniqueId", "CreatedDate", "EndDate", "IsAcitve", "IsDeleted", "SessionName", "StartDate", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2022 - 23", new DateTime(2022, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2023 - 24", new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2024 - 25", new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, "Session 2025 - 26", new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2022 - 23", new DateTime(2022, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2023 - 24", new DateTime(2023, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), false, false, "Session 2024 - 25", new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, false, "Session 2025 - 26", new DateTime(2025, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Standards",
-                columns: new[] { "UniqueId", "BillingCycle", "FeeAmountPerMonth", "StandardName" },
+                columns: new[] { "UniqueId", "SessionYearId", "StandardName" },
                 values: new object[,]
                 {
-                    { 1, 2, 5000, "Nursery" },
-                    { 2, 2, 5000, "Play Group" },
-                    { 3, 2, 5000, "L KG" },
-                    { 4, 2, 5000, "U KG" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "SessionFee",
-                columns: new[] { "UniqueId", "ActivityFee", "AdmissionFee", "AnnualCharges", "ComputerFee", "Description", "ExaminationFee", "FeeType", "MiscellaneousFee", "SessionId", "SportsFee", "StandardId", "TransportFee", "TuitionFee" },
-                values: new object[,]
-                {
-                    { 1, 0m, 0m, 0m, 0m, "", 0m, "Admission Fee", 0m, 4, 0m, null, 0m, 0m },
-                    { 2, 0m, 0m, 0m, 0m, "", 0m, "Tuition Fee", 0m, 4, 0m, null, 0m, 0m },
-                    { 3, 0m, 0m, 0m, 0m, "", 0m, "Semester Fee", 0m, 4, 0m, null, 0m, 0m },
-                    { 4, 0m, 0m, 0m, 0m, "", 0m, "Other Fee", 0m, 4, 0m, null, 0m, 0m }
+                    { 1, 4, "Nursery" },
+                    { 2, 4, "Play Group" },
+                    { 3, 4, "L KG" },
+                    { 4, 4, "U KG" }
                 });
 
             migrationBuilder.InsertData(
@@ -1794,6 +1846,17 @@ namespace SchoolManagement.Migrations
                     { 1216, "Zamania", 32 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "StandardFees",
+                columns: new[] { "UniqueId", "Amount", "DueDate", "FeeTypeId", "StandardId" },
+                values: new object[,]
+                {
+                    { 1, 4000m, null, 1, 2 },
+                    { 2, 4000m, null, 2, 2 },
+                    { 3, 4000m, null, 3, 2 },
+                    { 4, 4000m, null, 4, 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CityId",
                 table: "Addresses",
@@ -1879,6 +1942,21 @@ namespace SchoolManagement.Migrations
                 column: "StandardId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StandardFees_FeeTypeId",
+                table: "StandardFees",
+                column: "FeeTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StandardFees_StandardId",
+                table: "StandardFees",
+                column: "StandardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Standards_SessionYearId",
+                table: "Standards",
+                column: "SessionYearId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_States_CountryId",
                 table: "States",
                 column: "CountryId");
@@ -1930,6 +2008,9 @@ namespace SchoolManagement.Migrations
                 name: "Staffs");
 
             migrationBuilder.DropTable(
+                name: "StandardFees");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -1942,16 +2023,19 @@ namespace SchoolManagement.Migrations
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "FeeTypes");
 
             migrationBuilder.DropTable(
-                name: "SessionYears");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Standards");
 
             migrationBuilder.DropTable(
                 name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "SessionYears");
 
             migrationBuilder.DropTable(
                 name: "States");

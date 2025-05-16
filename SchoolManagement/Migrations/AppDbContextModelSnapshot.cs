@@ -8618,7 +8618,7 @@ namespace SchoolManagement.Migrations
             modelBuilder.Entity("SchoolManagement.Models.Fee.StandardFee", b =>
                 {
                     b.HasOne("SchoolManagement.Models.Fee.FeeType", "FeeType")
-                        .WithMany()
+                        .WithMany("StandardFees")
                         .HasForeignKey("FeeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -8708,6 +8708,11 @@ namespace SchoolManagement.Migrations
                     b.Navigation("Session");
 
                     b.Navigation("Standard");
+                });
+
+            modelBuilder.Entity("SchoolManagement.Models.Fee.FeeType", b =>
+                {
+                    b.Navigation("StandardFees");
                 });
 
             modelBuilder.Entity("SchoolManagement.Models.User.Student", b =>

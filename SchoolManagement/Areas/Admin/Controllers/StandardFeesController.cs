@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
 using SchoolManagement.Models.Fee;
+using SchoolManagement.Models.User;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SchoolManagement.Areas.Admin.Controllers
 {
@@ -23,8 +25,25 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Admin/StandardFees
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.StandardFees.Include(s => s.FeeType).Include(s => s.Standard);
-            return View(await appDbContext.ToListAsync());
+            var appDbContext = await _context.StandardFees
+                .Include(s => s.FeeType)
+                .Include(s => s.Standard)
+                .ToListAsync();
+
+            foreach (var item in appDbContext)
+            {
+                if (item.FeeType != null)
+                {
+                    Console.WriteLine(item.FeeType.Name);
+                }
+                else
+                {
+                    Console.WriteLine("FeeType is null for StandardFee ID: " + item.UniqueId);
+                }
+            }
+
+
+            return View(appDbContext);
         }
 
         // GET: Admin/StandardFees/Details/5
@@ -50,8 +69,8 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // GET: Admin/StandardFees/Create
         public IActionResult Create()
         {
-            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "FeeTypeId");
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId");
+            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "Name");
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
             return View();
         }
 
@@ -64,9 +83,21 @@ namespace SchoolManagement.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(standardFee);
+                if (standardFee.UniqueId == 0)
+                {
+                    _context.Add(standardFee);
+                    await _context.SaveChangesAsync(); // Save first to get UniqueId for file upload
+                }
+                else
+                {
+                    _context.Update(standardFee);
+                    await _context.SaveChangesAsync();
+                }
+               
+                _context.Update(standardFee); // Update again to store the file URLs
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Index");
             }
             ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "FeeTypeId", standardFee.FeeTypeId);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", standardFee.StandardId);

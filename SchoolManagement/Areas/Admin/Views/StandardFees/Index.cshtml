@@ -3,15 +3,18 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "standardFee";
+
 }
 
-<h1>Index</h1>
 
+<div class="card">
+<div class="card-body">
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+        <table class="table table-bordered table-striped" >
+            <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Standard)
@@ -32,10 +35,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Standard.UniqueId)
+                @Html.DisplayFor(modelItem => item.Standard.StandardName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FeeType.FeeTypeId)
+                @Html.DisplayFor(modelItem => item.FeeType.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)
@@ -44,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.DueDate)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
             </td>
@@ -52,3 +55,6 @@
 }
     </tbody>
 </table>
+</div>
+</div>
+ 
