@@ -23,7 +23,12 @@ namespace SchoolManagement.Models
         [Obsolete]
         [Display(Name = "Billing Cycle")]
         public int BillingCycle { get; set; }
-         
+
+
+        public int? SessionYearId { get; set; }
+        [ForeignKey(nameof(SessionYearId))]
+        public SessionYear ?SessionYear { get; set; } 
+
 
     }
 }

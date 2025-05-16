@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagement.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagement.Data;
 namespace SchoolManagement.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516065654_addedSessionIdInStandard")]
+    partial class addedSessionIdInStandard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -8100,33 +8103,29 @@ namespace SchoolManagement.Migrations
                         new
                         {
                             UniqueId = 1,
-                            BillingCycle = 0,
-                            FeeAmountPerMonth = 0,
-                            SessionYearId = 4,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "Nursery"
                         },
                         new
                         {
                             UniqueId = 2,
-                            BillingCycle = 0,
-                            FeeAmountPerMonth = 0,
-                            SessionYearId = 4,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "Play Group"
                         },
                         new
                         {
                             UniqueId = 3,
-                            BillingCycle = 0,
-                            FeeAmountPerMonth = 0,
-                            SessionYearId = 4,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "L KG"
                         },
                         new
                         {
                             UniqueId = 4,
-                            BillingCycle = 0,
-                            FeeAmountPerMonth = 0,
-                            SessionYearId = 4,
+                            BillingCycle = 2,
+                            FeeAmountPerMonth = 5000,
                             StandardName = "U KG"
                         });
                 });
