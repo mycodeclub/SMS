@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Models.Fee;
 using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
@@ -149,6 +150,103 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Admin/Standards/ManageFees/5
+        public async Task<IActionResult> ManageFees(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var standard = await _context.Standards
+                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            if (standard == null)
+            {
+                return NotFound();
+            }
+
+            // Get all fee types
+            var feeTypes = await _context.FeeTypes.ToListAsync();
+            
+            // Get existing standard fees
+            var standardFees = await _context.StandardFees
+                .Where(sf => sf.StandardId == id)
+                .ToListAsync();
+
+            var viewModel = new StandardFeeViewModel
+            {
+                StandardId = standard.UniqueId,
+                StandardName = standard.StandardName,
+                FeeTypes = feeTypes.Select(ft => new FeeTypeViewModel
+                {
+                    FeeTypeId = ft.FeeTypeId,
+                    Name = ft.Name,
+                    IsRecurring = ft.IsRecurring,
+                    Frequency = ft.Frequency,
+                  //  DueDate = ft.DueDate,
+                    IsOptional = ft.IsOptional,
+                    ApplicableFromMonth = ft.ApplicableFromMonth,
+                    Amount = standardFees.FirstOrDefault(sf => sf.FeeTypeId == ft.FeeTypeId)?.Amount ?? 0,
+                    DueDate = standardFees.FirstOrDefault(sf => sf.FeeTypeId == ft.FeeTypeId)?.DueDate,
+                    IsSelected = standardFees.Any(sf => sf.FeeTypeId == ft.FeeTypeId)
+                }).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Admin/Standards/ManageFees/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageFees(int id, StandardFeeViewModel viewModel)
+        {
+            if (id != viewModel.StandardId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Remove existing fees
+                    var existingFees = await _context.StandardFees
+                        .Where(sf => sf.StandardId == id)
+                        .ToListAsync();
+                    _context.StandardFees.RemoveRange(existingFees);
+
+                    // Add new fees
+                    var newFees = viewModel.FeeTypes
+                        .Where(ft => ft.IsSelected)
+                        .Select(ft => new StandardFee
+                        {
+                            StandardId = id,
+                            FeeTypeId = ft.FeeTypeId,
+                            Amount = ft.Amount,
+                            DueDate = ft.DueDate
+                        });
+
+                    await _context.StandardFees.AddRangeAsync(newFees);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!StandardExists(viewModel.StandardId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return View(viewModel);
         }
 
         private bool StandardExists(int id)

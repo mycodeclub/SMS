@@ -1,0 +1,111 @@
+@model SchoolManagement.Models.Fee.StandardFeeViewModel
+@{
+     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Standard";
+    ViewData["Title"] = "Manage Fees - " + Model.StandardName;
+}
+
+@section Style {
+    <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+}
+  
+<div class="container-fluid">
+    <h2>Manage Fees for @Model.StandardName</h2>
+    <hr />
+
+    <form asp-action="ManageFees">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="StandardId" />
+        <input type="hidden" asp-for="StandardName" />
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Fee Type</th>
+                                <th>Amount</th>
+                                <th>Due Date</th>
+                                <th>Recurring</th>
+                                <th>Frequency</th>
+                                <th>Optional</th>
+                                <th>Apply</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.FeeTypes.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].FeeTypeId" />
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].Name" />
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].IsRecurring" />
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].Frequency" />
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].IsOptional" />
+                                        <input type="hidden" asp-for="@Model.FeeTypes[i].ApplicableFromMonth" />
+                                        @Model.FeeTypes[i].Name
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            <input asp-for="@Model.FeeTypes[i].Amount" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="@Model.FeeTypes[i].Amount" class="text-danger"></span>
+                                    </td>
+                                    <td>
+                                        @if (Model.FeeTypes[i].IsRecurring)
+                                        {
+                                            <span>Day @Model.FeeTypes[i].DueDate of every @Model.FeeTypes[i].Frequency months</span>
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.FeeTypes[i].DueDate" class="form-control" type="date" />
+                                        }
+                                    </td>
+                                    <td>@(Model.FeeTypes[i].IsRecurring ? "Yes" : "No")</td>
+                                    <td>@(Model.FeeTypes[i].IsRecurring ? $"{Model.FeeTypes[i].Frequency} months" : "One-time")</td>
+                                    <td>@(Model.FeeTypes[i].IsOptional ? "Yes" : "No")</td>
+                                    <td>
+                                        <div class="form-check">
+                                            <input asp-for="@Model.FeeTypes[i].IsSelected" class="form-check-input" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            // Enable/disable amount and due date inputs based on selection
+            $('.form-check-input').change(function () {
+                var row = $(this).closest('tr');
+                var amountInput = row.find('input[type="number"]');
+                var dateInput = row.find('input[type="date"]');
+                
+                if ($(this).is(':checked')) {
+                    amountInput.prop('disabled', false);
+                    dateInput.prop('disabled', false);
+                } else {
+                    amountInput.prop('disabled', true);
+                    dateInput.prop('disabled', true);
+                }
+            }).trigger('change');
+        });
+    </script>
+} 

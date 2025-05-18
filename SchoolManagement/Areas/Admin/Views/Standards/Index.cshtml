@@ -39,9 +39,20 @@
                             <td>@Html.DisplayFor(modelItem => item.StandardName)</td>
                         
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.UniqueId" ><i class="fa fa-edit"></i></a>
-                                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.UniqueId" class="btn btn-primary btn-sm" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.UniqueId" class="btn btn-info btn-sm" title="Details">
+                                        <i class="fa fa-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.UniqueId" class="btn btn-danger btn-sm" title="Delete">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                    <a asp-action="ManageFees" asp-route-id="@item.UniqueId" class="btn btn-success btn-sm" title="Manage Fees">
+                                        <i class="fa fa-rupee-sign"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
