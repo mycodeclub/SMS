@@ -1,25 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
+using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class StandardsController : Controller
+    public class StandardsController(AppDbContext context, ISessionYearService sessionYearService) : BaseController(sessionYearService)
     {
-        private readonly AppDbContext _context;
-
-        public StandardsController(AppDbContext context)
-        {
-            _context = context;
-        }
+        private readonly AppDbContext _context = context;
 
         // GET: Admin/Standards
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Standards.Include(s => s.SessionYear);
+            var _selectedSession = _sessionYearService.GetSelectedSession();
+            var appDbContext = _context.Standards.Where(s => s.SessionYearId == _selectedSession.UniqueId);
             return View(await appDbContext.ToListAsync());
         }
 

@@ -3,7 +3,7 @@ name: FTP Deploy
 on:
   push:
     branches:
-      - primary  # Updated to match your current branch name
+      - primary
 
 jobs:
   deploy:
@@ -12,24 +12,27 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        node-version: '18'
+        dotnet-version: '9.0.x'
         
-    - name: Install Dependencies
-      run: npm install
+    - name: Restore dependencies
+      run: dotnet restore SchoolManagement/SchoolManagement.csproj
       
     - name: Build
-      run: npm run build
+      run: dotnet build SchoolManagement/SchoolManagement.csproj --configuration Release --no-restore
       
-    - name: Check Build Output
+    - name: Publish
+      run: dotnet publish SchoolManagement/SchoolManagement.csproj --configuration Release --output publish --no-restore
+      
+    - name: Check Publish Output
       run: |
-        if [ ! -d "dist" ]; then
-          echo "Build output directory 'dist' not found!"
+        if [ ! -d "publish" ]; then
+          echo "Publish output directory not found!"
           exit 1
         fi
-        echo "Build output found in dist directory"
+        echo "Publish output found in publish directory"
         
     - name: Clean FTP Directory
       uses: SamKirkland/FTP-Deploy-Action@4.3.4
@@ -37,10 +40,10 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: /sms/  # Using forward slashes for FTP path
-        dangerous-clean-slate: true  # This will clean the directory before upload
-        log-level: verbose  # Added for better debugging
+        local-dir: ./publish/
+        server-dir: /sms/
+        dangerous-clean-slate: true
+        log-level: verbose
         
     - name: Deploy to FTP
       uses: SamKirkland/FTP-Deploy-Action@4.3.4
@@ -48,6 +51,6 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: /sms/  # Using forward slashes for FTP path
-        log-level: verbose  # Added for better debugging 
+        local-dir: ./publish/
+        server-dir: /sms/
+        log-level: verbose 

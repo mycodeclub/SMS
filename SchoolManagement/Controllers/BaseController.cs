@@ -8,7 +8,7 @@ namespace SchoolManagement.Controllers
 
     public class BaseController(ISessionYearService sessionYearService) : Controller
     {
-        private readonly ISessionYearService _sessionYearService = sessionYearService;
+        public readonly ISessionYearService _sessionYearService = sessionYearService;
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
