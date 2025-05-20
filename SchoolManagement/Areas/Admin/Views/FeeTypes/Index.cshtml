@@ -1,66 +1,80 @@
 ﻿@model IEnumerable<SchoolManagement.Models.Fee.FeeType>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Fee Type Master";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "FeeTypes";
 }
 
-<h1>Index</h1>
+<!-- Styles -->
+<link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsRecurring)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Frequency)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsOptional)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicableFromMonth)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRecurring)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Frequency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsOptional)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicableFromMonth)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FeeTypeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FeeTypeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FeeTypeId">Delete</a>
-            </td>
-        </tr>
+<div class="content px-3">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h4 class="mb-0">Fee Type Master</h4>
+            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
+                <i class="fa fa-plus me-1"></i> Add Fee Type
+            </a>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-hover table-striped border shadow-sm rounded" id="tblFeeTypeList">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().IsRecurring)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Frequency)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().DueDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().IsOptional)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ApplicableFromMonth)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.IsRecurring</td>
+                            <td>@item.Frequency</td>
+                            <td>@item.DueDate</td>
+                            <td>@item.IsOptional</td>
+                            <td>@item.ApplicableFromMonth</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Create" asp-route-id="@item.FeeTypeId" title="Edit">
+                                        <i class="fa fa-edit"></i> |
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.FeeTypeId" title="Details">
+                                        <i class="fa fa-eye"></i>|
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.FeeTypeId" title="Delete">
+                                        <i class="fa fa-trash"></i>|
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
+    <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tblFeeTypeList').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "searching": true,
+                "order": [[0, "asc"]]
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>
