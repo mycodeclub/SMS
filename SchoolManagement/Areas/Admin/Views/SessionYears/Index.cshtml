@@ -2,123 +2,148 @@
 @model IEnumerable<SchoolManagement.Models.SessionYear>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
-    ViewBag.ActiveTabName = "SessionYear";
-    var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
-
+	ViewData["Title"] = "Index";
+	Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+	ViewBag.ActiveTabName = "SessionYear";
+	var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
 }
+
+<!-- Styles -->
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<style>
+	.checkbox-container.active-row {
+		background-color: #d4edda !important; /* light green */
+	}
+</style>
 
 <div class="content px-3">
-    <div class="card shadow rounded-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
-            <h4 class="mb-0"><i class="fa-solid fa-layer-group me-2"></i>Session of Standard</h4>
-            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
-                <i class="fa fa-plus me-1"></i> Add New Session
-            </a>
-        </div>
-        <br />
+	<div class="card shadow rounded-4">
+		<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+			<h4 class="mb-0"><i class="fa-solid fa-layer-group me-2"></i>Session of Standard</h4>
+			<a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
+				<i class="fa fa-plus me-1"></i> Add New Session
+			</a>
+		</div>
+		<br />
 
-        <div class="d-flex justify-content-center my-8">
+		<!-- Dropdown -->
+		<div class="d-flex justify-content-center my-8">
+			<div class="form-group row w-50">
+				<select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
+					@foreach (var item in Model)
+					{
+						if (selectedSession.UniqueId == item.UniqueId)
+						{
+							<option selected="selected" value="@item.UniqueId">@item.SessionName</option>
+						}
+						else
+						{
+							<option value="@item.UniqueId">@item.SessionName</option>
+						}
+					}
+				</select>
+			</div>
+		</div>
 
-            <div class="form-group row w-50">
-                   <select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
-                    @foreach (var item in Model)
-                    {
-                        if (selectedSession.UniqueId == item.UniqueId)
-                        {
-                            <option  selected="selected"   value="@item.UniqueId">@item.SessionName</option>
-                        }
-                        else
-                        {
-                            <option value="@item.UniqueId">@item.SessionName</option>
-                        }
-                    }
-                </select>
-            </div>
-        </div>
-
-
-
-
-        <div class="card-body">
-            <table class="table table-hover table-striped border shadow-sm rounded" id="tblGuestLists">
-                <thead class="table-light">
-
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.SessionName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.StartDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.EndDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IsAcitve)
-                        </th>
-                        <th>Actions</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.SessionName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StartDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EndDate)
-                            </td>
-                            <td>
-                                <input type="radio" name="IsActiveSessionChk" checked="@item.IsAcitve" onclick="alert()" />
-                                @* @Html.DisplayFor(modelItem => item.IsAcitve)
-           *@  </td>
-                            <td>
-                                <a asp-action="Create" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-                                <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-                                <a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a> |
-
-
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+		<!-- Table -->
+		<div class="card-body">
+			<table class="table table-hover table-striped border shadow-sm rounded" id="tblGuestLists">
+				<thead class="table-light">
+					<tr>
+						<th>@Html.DisplayNameFor(model => model.SessionName)</th>
+						<th>@Html.DisplayNameFor(model => model.StartDate)</th>
+						<th>@Html.DisplayNameFor(model => model.EndDate)</th>
+						<th>@Html.DisplayNameFor(model => model.IsAcitve)</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						var rowClass = item.IsAcitve ? "active-row" : "";
+						<tr class="checkbox-container @rowClass" data-id="@item.UniqueId">
+							<td>@Html.DisplayFor(modelItem => item.SessionName)</td>
+							<td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+							<td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+							<td>
+								<input type="checkbox"
+									   class="session-checkbox"
+									   data-id="@item.UniqueId"
+								@(item.IsAcitve ? "checked" : "")
+									   onclick="onCheckboxClick(this)" />
+							</td>
+							<td>
+								<a asp-action="Create" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
+								<a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
+								<a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash"></i></a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
-</div>
+
 @section Scripts {
-    <!-- DataTable Scripts -->
-    <script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
-    <script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
+	<script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
+	<script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
 
-    <script>
-           function ReloadIndex()
-                {
-                        let _selectedSessionId  = $('#selectedSessionDDL').val();
-                    window.location.href='/Admin/SessionYears/index/'+_selectedSessionId;
-                }
-        
-             $(document).ready(function () {
-             $('#tblGuestLists').DataTable({
-                "pageLength": 10,
-                "ordering": true,
-                "searching": true,
-                "order": [[0, "desc"]] // Sort by the first column (Session Name) descending
-            });
-        });
+	<script>
+		$(document).ready(function () {
+			$('#tblGuestLists').DataTable({
+				"pageLength": 10,
+				"ordering": true,
+				"searching": true,
+				"order": [[0, "desc"]]
+			});
+		});
 
+		function onCheckboxClick(checkbox) {
+			const selectedId = $(checkbox).data('id');
 
-    </script>
+			// Uncheck all checkboxes
+			$('.session-checkbox').not(checkbox).prop('checked', false);
+
+			// Sync dropdown
+			$('#selectedSessionDDL').val(selectedId);
+
+			// Send to server
+			updateSession(selectedId);
+		}
+
+		function onDropdownChange() {
+			const selectedId = $('#selectedSessionDDL').val();
+
+			// Check matching checkbox
+			$('.session-checkbox').each(function () {
+				const isCurrent = $(this).data('id') == selectedId;
+				$(this).prop('checked', isCurrent);
+			});
+
+			updateSession(selectedId);
+		}
+
+		function updateSession(sessionId) {
+			$.ajax({
+				url: '/Admin/SessionYears/SetActiveSession',
+				type: 'POST',
+				data: { id: sessionId },
+				success: function (result) {
+					if(result==true)
+					{
+						$('.checkbox-container').each(function () {
+							const isMatch = $(this).data('id') == sessionId;
+							$(this).toggleClass('active-row', isMatch);
+						}); 
+					}
+				 },
+				error: function () {
+					alert('Failed to update session.');
+				}
+			});
+		}
+	</script>
 }

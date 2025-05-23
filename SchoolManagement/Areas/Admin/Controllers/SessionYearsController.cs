@@ -43,7 +43,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var sessionYear = await _sessionService.GetSessionYearById(id);
-           // ViewBag.Standards = await _standardService.GetStandardsByProc(id);   // getting all standers
+            // ViewBag.Standards = await _standardService.GetStandardsByProc(id);   // getting all standers
             ViewBag.Standards = await _standardService.GetStandardsBySession(id);   // getting all standers
             return View(sessionYear);
         }
@@ -131,6 +131,26 @@ namespace SchoolManagement.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SetActiveSession(int id)
+        {
+            var isUpdated = false;
+            try
+            {
+                var sessions = await _context.SessionYears.ToListAsync();
+                sessions.ForEach(s =>
+                {
+                    s.IsAcitve = s.UniqueId == id;
+                    if (s.IsAcitve) s.UpdatedDate = DateTime.UtcNow;
+                });
+                await _context.SaveChangesAsync();
+                isUpdated = true;
+            }
+            catch { }
+            return Ok(isUpdated);
+        }
+
 
         private bool SessionYearExists(int id)
         {
