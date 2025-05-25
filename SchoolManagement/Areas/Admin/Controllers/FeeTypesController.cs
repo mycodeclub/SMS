@@ -102,37 +102,18 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       
 
-        // GET: Admin/FeeTypes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var feeType = await _context.FeeTypes
-                .FirstOrDefaultAsync(m => m.FeeTypeId == id);
-            if (feeType == null)
-            {
-                return NotFound();
-            }
-
-            return View(feeType);
-        }
-
-        // POST: Admin/FeeTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        // POST: Admin/FeeTypes/Delete/5 (for AJAX)
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
         {
             var feeType = await _context.FeeTypes.FindAsync(id);
             if (feeType != null)
             {
                 _context.FeeTypes.Remove(feeType);
+                await _context.SaveChangesAsync();
+                return Json(new { success = true });
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = false, error = "Not found" });
         }
 
         private bool FeeTypeExists(int id)
