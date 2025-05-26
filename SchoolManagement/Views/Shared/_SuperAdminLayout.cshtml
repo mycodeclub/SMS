@@ -96,55 +96,97 @@
                     </div>
                 </div>
 
-                <!-- sidebar menu -->
+             
                 <ul class="sidebar-menu" data-widget="tree">
 
                     @if (ActiveTabName.Equals("SessionYear")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/SessionYears/Index"><i class="fa fa-calendar"></i> Session Year  </a></li>
-
+                    <li class="@activeTab">
+                        <a href="/Admin/SessionYears/Index">
+                            <i class="fa fa-calendar-alt"></i> Session Year
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("FeeTypes")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/FeeTypes/Index"><i class="fa fa-money"></i> Fee Types  </a></li>
+                    <li class="@activeTab">
+                        <a href="/Admin/FeeTypes/Index">
+                            <i class="fa fa-file-invoice-dollar"></i> Fee Types
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/Standards/Index"><i class="fa fa-book"></i> Standard  </a></li>
+                    <li class="@activeTab">
+                        <a href="/Admin/Standards/Index">
+                            <i class="fa fa-book"></i> Standard
+                        </a>
+                    </li>
 
-                    @* @if (ActiveTabName.Equals("StandardOld")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/StandardsOld/Index"><i class="fa fa-book"></i> StandardOld  </a></li>
- *@
+                    @* Example commented out old standard, kept if needed *@
+                    @* 
+    @if (ActiveTabName.Equals("StandardOld")) { activeTab = "active"; } else { activeTab = string.Empty; }
+    <li class="@activeTab">
+        <a href="/Admin/StandardsOld/Index">
+            <i class="fa fa-book"></i> Standard Old
+        </a>
+    </li>
+    *@
+
                     @if (ActiveTabName.Equals("SessionFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/SessionFee/Index"><i class="fa fa-rupee"></i>  Fees </a></li>
-
-                    @if (ActiveTabName.Equals("FeeTypes")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/FeeTypes/Index"><i class="fa fa-rupee"></i>  Fees Type </a></li>
-
+                    <li class="@activeTab">
+                        <a href="/Admin/SessionFee/Index">
+                            <i class="fa fa-coins"></i> Fees
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("standardFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/StandardFees/Index"><i class="fa fa-rupee"></i>  Standard Fees </a></li>
-              
+                    <li class="@activeTab">
+                        <a href="/Admin/StandardFees/Index">
+                            <i class="fa fa-wallet"></i> Standard Fees
+                        </a>
+                    </li>
 
-                     @if (ActiveTabName.Equals("SessionFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/SessionWiseStandardFee/Index"><i class="fa fa-user"></i>Session StandardFee </a></li>
-
-
+                    @if (ActiveTabName.Equals("SessionFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab">
+                        <a href="/Admin/SessionWiseStandardFee/Index">
+                            <i class="fa fa-layer-group"></i> Session Standard Fee
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/Students/Index"><i class="fa fa-user"></i> Students  </a></li>
-
+                    <li class="@activeTab">
+                        <a href="/Admin/Students/Index">
+                            <i class="fa fa-user-graduate"></i> Students
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("Staff")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Admin/Staff/Index"><i class="fa fa-user"></i> Staff  </a></li>
+                    <li class="@activeTab">
+                        <a href="/Admin/Staff/Index">
+                            <i class="fa fa-chalkboard-teacher"></i> Staff
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li><a href="/Account/ChangeEmail"><i class="fa fa-user"></i>Change Email</a></li>
+                    <li class="@activeTab">
+                        <a href="/Account/ChangeEmail">
+                            <i class="fa fa-envelope"></i> Change Email
+                        </a>
+                    </li>
 
                     @if (ActiveTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li><a href="/Account/ChangePassword"><i class="fa fa-user"></i>Change Password</a></li>
+                    <li class="@activeTab">
+                        <a href="/Account/ChangePassword">
+                            <i class="fa fa-key"></i> Change Password
+                        </a>
+                    </li>
 
-
-                    <li><a href="/Account/LogOut"><i class="fa fa-power-off"></i> Logout</a></li>
+                    <li>
+                        <a href="/Account/LogOut">
+                            <i class="fa fa-power-off"></i> Logout
+                        </a>
+                    </li>
 
                 </ul>
+
             </div>
         </aside>
 

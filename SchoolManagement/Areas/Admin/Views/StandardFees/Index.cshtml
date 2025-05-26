@@ -28,7 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.DueDate)
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -47,9 +47,15 @@
                 @Html.DisplayFor(modelItem => item.DueDate)
             </td>
             <td>
-                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                            <a asp-action="Create" asp-route-id="@item.UniqueId">
+                                                              <i class="fa fa-edit"></i> |
+                            </a> |
+                            <a asp-action="Details" asp-route-id="@item.UniqueId">
+                                                                 <i class="fa fa-eye"></i>|
+                            </a> |
+                            <a asp-action="Delete" asp-route-id="@item.UniqueId">
+                                                               <i class="fa fa-trash text-danger"></i>
+                            </a>
             </td>
         </tr>
 }
