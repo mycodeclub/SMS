@@ -28,10 +28,10 @@
 		</div>
 		<br />
 
-		<!-- Dropdown -->
-		<div class="d-flex justify-content-center my-8">
-			<div class="form-group row w-50">
-				<select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control col-sm-9" asp-items="ViewBag.StandardId">
+		<div class="d-flex justify-content-center my-2">
+			<div class="d-flex align-items-center  p-4 rounded w-50 justify-content-center">
+				<label for="selectedSessionDDL" class="me-3 mb-0 fw-bold  text-dark">Change Session Year:</label>
+				<select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control w-50" asp-items="ViewBag.StandardId">
 					@foreach (var item in Model)
 					{
 						if (selectedSession.UniqueId == item.UniqueId)
@@ -46,6 +46,7 @@
 				</select>
 			</div>
 		</div>
+
 
 		<!-- Table -->
 		<div class="card-body">
