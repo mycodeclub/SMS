@@ -9,10 +9,10 @@
     {
         return frequency switch
         {
-            1 => "Annually (1 time)",
+            12 => "Annually (1 time)",
             3 => "Quarterly (every 3 months)",
-            6 => "Half-Yearly (every 6 months)",
-            12 => "Monthly",
+            2 => "Half-Yearly (every 6 months)",
+            1 => "Monthly",
             _ => $"Every {frequency} months"
         };
     }

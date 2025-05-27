@@ -9,50 +9,55 @@
 <div class="content">
     <div class="card">
         <div class="card-body">
-            <div class="content">
-                <div class="card shadow-sm">
-                    <div class="card-body" style="border: 1px solid #0d6efd;">
-                        <h5 class="card-header  text-black mb-3">Create Fee Type</h5>
-                        <hr />
-                        <form asp-action="Create" class="needs-validation" novalidate>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label asp-for="Name" class="form-label">Fee Type Name</label>
-                                    <input asp-for="Name" class="form-control" />
-                                    <span asp-validation-for="Name" class="text-danger"></span>
-                                </div>
+            <div class="card shadow-sm">
+                <div class="card-body border border-primary">
+                    <h5 class="card-header text-black">Create Fee Type</h5>
 
+                    <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                        <div class="row">
 
-                                <div class="form-group col-md-6 mt-3">
-                                    <label asp-for="Frequency" class="form-label">Frequency</label>
-                                    <input asp-for="Frequency" class="form-control" />
-                                    <span asp-validation-for="Frequency" class="text-danger"></span>
-                                </div>
-                                <div class="form-group col-md-6 mt-2">
-                                    <div class="form-check mt-4">
-                                        <input class="form-check-input" asp-for="IsRecurring" />
-                                        <label class="form-check-label" asp-for="IsRecurring">Is Recurring?</label>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6 mt-3">
-                                    <div class="form-check mt-4">
-                                        <input class="form-check-input" asp-for="IsOptional" />
-                                        <label class="form-check-label" asp-for="IsOptional">Is Optional?</label>
-                                    </div>
-                                </div>
+                            <!-- Fee Type Name Field -->
+                            <div class="col-3 mb-3">
+                                <label asp-for="Name" class="form-label">Fee Type Name</label>
+                                <input asp-for="Name" class="form-control" aria-label="Fee Type Name" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
 
+                            <!-- Frequency Field -->
+                            <div class="col-3 mb-3">
+                                <label asp-for="Frequency" class="form-label">Frequency</label>
+                                <select asp-for="Frequency" class="form-control" aria-label="Frequency">
+                                    <option value="">-Select Frequency-</option>
+                                    <option value="12">Annually (1 time)</option>
+                                    <option value="3">Quarterly (every 3 months)</option>
+                                    <option value="2">Half-Yearly (every 6 months)</option>
+                                    <option value="1">Monthly</option>
+                                </select>
+                                <span asp-validation-for="Frequency" class="text-danger"></span>
+                            </div>
 
-                                <div class="form-group col-md-6 mt-3">
-                                    <label asp-for="DueDate" class="form-label">Due Date</label>
-                                    <input asp-for="DueDate" class="form-control" />
-                                    <span asp-validation-for="DueDate" class="text-danger"></span>
-                                </div>
-
-
-                                <div class="form-group col-md-6 mt-3">
-                                    <label for="ApplicableFromMonth" class="form-label">Applicable From Month</label>
-                                    <select id="ApplicableFromMonth" name="ApplicableFromMonth" class="form-control">
-                                        <option value="">-- Select Month --</option>
+                            <!-- Due Date Field and Applicable From Month Field -->
+                            <div class="col-4 mb-3">
+                                <label asp-for="DueDate" class="form-label">Due Date</label>
+                                <div class="d-flex align-items-center">
+                                    <select asp-for="DueDate" class="form-control" aria-label="Due Date">
+                                        <option value="">-Select Date-</option>
+                                        @for (int i = 1; i <= 31; i++)
+                                        {
+                                            string suffix = "th";
+                                            if (i % 100 != 11 && i % 10 == 1) suffix = "st";
+                                            else if (i % 100 != 12 && i % 10 == 2) suffix = "nd";
+                                            else if (i % 100 != 13 && i % 10 == 3) suffix = "rd";
+                                            <option value="@i">@i@suffix</option>
+                                        }
+                                    </select>
+                                            <span class="input-group-text">Of</span>
+                                   
+                                    <select asp-for="ApplicableFromMonth" class="form-control" aria-label="Applicable From Month">
+                                        <option value="">-Select Month-</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
                                         <option value="4">April</option>
                                         <option value="5">May</option>
                                         <option value="6">June</option>
@@ -61,27 +66,27 @@
                                         <option value="9">September</option>
                                         <option value="10">October</option>
                                         <option value="11">November</option>
-                                        <option value="12">Decemeber</option>
-                                        <option value="1">January</option>
-                                        <option value="2">Feburary</option>
-                                        <option value="3">March</option>
-
-                                        <!-- Add more months if needed -->
+                                        <option value="12">December</option>
                                     </select>
-                                    <span asp-validation-for="ApplicableFromMonth" class="text-danger"></span>
                                 </div>
-
+                                <span asp-validation-for="DueDate" class="text-danger"></span>
+                                <span asp-validation-for="ApplicableFromMonth" class="text-danger"></span>
                             </div>
 
-                            <div class="form-group mt-4 text-center">
+                            <!-- Is Optional Field -->
+                            <div class="col-2 mt-4 ">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="IsOptional" />
+                                    <label class="form-check-label" asp-for="IsOptional">Is Optional?</label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-12 text-center mt-4">
                                 <input type="submit" value="Create" class="btn btn-primary px-5" />
                             </div>
-                        </form>
-
-                        <div class="mt-3 text-center">
-                            <a asp-action="Index" class="btn btn-link">← Back to List</a>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
