@@ -1,9 +1,11 @@
 ﻿@model SchoolManagement.Models.User.Staff
+
 @{
     ViewData["Title"] = "StaffNew";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Staff";
 }
+
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -13,8 +15,8 @@
                 </div>
                 <div class="card-body">
                     <form asp-action="CreateStaff" method="post" enctype="multipart/form-data">
-                     @*    <input type="hidden" asp-for="UniqueId" />
- *@
+                        <input type="hidden" asp-for="UniqueId" />  @* Hidden field to track update vs create *@
+
                         <div class="row g-3">
                             <div class="form-group col-md-4 col-sm-6 col-lg-3">
                                 <label asp-for="Aadhar" class="form-label"></label>
@@ -29,18 +31,17 @@
                                 <span asp-validation-for="Photos" class="text-danger"></span>
                                 <img id="photoPreview" style="display: none; max-width: 100px; margin-top: 10px;" />
                             </div>
+
                             <div class="col-md-6">
                                 <label asp-for="JobRole" class="form-label fw-semibold"></label>
                                 <input asp-for="JobRole" class="form-control" />
                                 <span asp-validation-for="JobRole" class="text-danger small"></span>
                             </div>
 
-
-                                <div class="col-md-6">
-                                 <label asp-for="DateOfJoin" class="form-label fw-semibold"></label>
+                            <div class="col-md-6">
+                                <label asp-for="DateOfJoin" class="form-label fw-semibold"></label>
                                 <input asp-for="DateOfJoin" class="form-control" type="date" />
                                 <span asp-validation-for="DateOfJoin" class="text-danger small"></span>
-         
                             </div>
 
                             <div class="col-md-6">
@@ -103,22 +104,18 @@
     </div>
 </div>
 
-
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var aadharInput = document.getElementById('aadharInput');
-
             var aadharPreview = document.getElementById('aadharPreview');
-
             var photosInput = document.getElementById('photosInput');
-               var photoPreview = document.getElementById('photoPreview');
+            var photoPreview = document.getElementById('photoPreview');
 
             function handleFileSelect(input, preview) {
                 input.addEventListener('change', function () {
                     var file = input.files[0];
                     if (file) {
-                        var reader = new FileReader();
                         var reader = new FileReader();
                         reader.onload = function (e) {
                             preview.src = e.target.result;
@@ -134,8 +131,8 @@
             handleFileSelect(aadharInput, aadharPreview);
             handleFileSelect(photosInput, photoPreview);
         });
-
     </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
