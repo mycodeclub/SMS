@@ -1317,74 +1317,38 @@ namespace BpstEducation.Data
                 new Standard() { UniqueId = 4, StandardName = "U KG", SessionYearId = 4 }
              );
         }
-
         public static void SeedFeeType(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FeeType>().HasData(
                 // Regular Fees
                 new FeeType { FeeTypeId = 1, Name = "Admission Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
                 new FeeType { FeeTypeId = 2, Name = "Tuition Fee", IsRecurring = true, Frequency = 1, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 3, Name = "Development Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 4, Name = "Computer Lab Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 5, Name = "Library Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 6, Name = "Sports Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 7, Name = "Activity Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                
-                // One-time Fees
-                new FeeType { FeeTypeId = 8, Name = "Registration Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 9, Name = "Examination Fee", IsRecurring = false, Frequency = 6, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 10, Name = "Stationery Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 11, Name = "Uniform Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                
-                // Optional Fees
-                new FeeType { FeeTypeId = 12, Name = "Day Care", IsRecurring = true, Frequency = 1, DueDate = 7, IsOptional = true, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 13, Name = "Transportation Fee", IsRecurring = true, Frequency = 1, DueDate = 7, IsOptional = true, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 14, Name = "Summer Camp", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = true, ApplicableFromMonth = 6 },
-                new FeeType { FeeTypeId = 15, Name = "Special Classes", IsRecurring = true, Frequency = 1, DueDate = 7, IsOptional = true, ApplicableFromMonth = 3 },
-                
-                // Annual Events
-                new FeeType { FeeTypeId = 16, Name = "Annual Function Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 17, Name = "Sports Day Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
-                new FeeType { FeeTypeId = 18, Name = "Cultural Program Fee", IsRecurring = false, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 }
-            );
+                new FeeType { FeeTypeId = 3, Name = "Stationery Fee", IsRecurring = true, Frequency = 12, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 4, Name = "Uniform Fee", IsRecurring = true, Frequency = 2, DueDate = 7, IsOptional = true, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 5, Name = "Semester Fee", IsRecurring = true, Frequency = 2, DueDate = 7, IsOptional = false, ApplicableFromMonth = 3 },
+                new FeeType { FeeTypeId = 6, Name = "DayBoarding Fee", IsRecurring = true, Frequency = 3, DueDate = 7, IsOptional = true, ApplicableFromMonth = 3 }
+               );
         }
 
         public static void SeedStandardFee(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StandardFee>().HasData(
-                // Nursery Fees
-                new StandardFee { UniqueId = 1, StandardId = 1, FeeTypeId = 1, Amount = 5000 }, // Admission
-                new StandardFee { UniqueId = 2, StandardId = 1, FeeTypeId = 2, Amount = 3000 }, // Tuition
-                new StandardFee { UniqueId = 3, StandardId = 1, FeeTypeId = 3, Amount = 1000 }, // Development
-                new StandardFee { UniqueId = 4, StandardId = 1, FeeTypeId = 4, Amount = 500 },  // Computer
-                new StandardFee { UniqueId = 5, StandardId = 1, FeeTypeId = 5, Amount = 300 },  // Library
-                new StandardFee { UniqueId = 6, StandardId = 1, FeeTypeId = 6, Amount = 500 },  // Sports
-                new StandardFee { UniqueId = 7, StandardId = 1, FeeTypeId = 7, Amount = 500 },  // Activity
-                new StandardFee { UniqueId = 8, StandardId = 1, FeeTypeId = 8, Amount = 1000 }, // Registration
-                new StandardFee { UniqueId = 9, StandardId = 1, FeeTypeId = 9, Amount = 500 },  // Exam
-                new StandardFee { UniqueId = 10, StandardId = 1, FeeTypeId = 10, Amount = 1000 }, // Stationery
-                new StandardFee { UniqueId = 11, StandardId = 1, FeeTypeId = 11, Amount = 2000 }, // Uniform
-                new StandardFee { UniqueId = 12, StandardId = 1, FeeTypeId = 12, Amount = 2000 }, // Day Care
-                new StandardFee { UniqueId = 13, StandardId = 1, FeeTypeId = 13, Amount = 1500 }, // Transport
-                new StandardFee { UniqueId = 14, StandardId = 1, FeeTypeId = 16, Amount = 1000 }, // Annual Function
-                
-                // Play Group Fees
-                new StandardFee { UniqueId = 15, StandardId = 2, FeeTypeId = 1, Amount = 5500 }, // Admission
-                new StandardFee { UniqueId = 16, StandardId = 2, FeeTypeId = 2, Amount = 3500 }, // Tuition
-                new StandardFee { UniqueId = 17, StandardId = 2, FeeTypeId = 3, Amount = 1200 }, // Development
-                new StandardFee { UniqueId = 18, StandardId = 2, FeeTypeId = 4, Amount = 600 },  // Computer
-                new StandardFee { UniqueId = 19, StandardId = 2, FeeTypeId = 5, Amount = 400 },  // Library
-                new StandardFee { UniqueId = 20, StandardId = 2, FeeTypeId = 6, Amount = 600 },  // Sports
-                new StandardFee { UniqueId = 21, StandardId = 2, FeeTypeId = 7, Amount = 600 },  // Activity
-                new StandardFee { UniqueId = 22, StandardId = 2, FeeTypeId = 8, Amount = 1200 }, // Registration
-                new StandardFee { UniqueId = 23, StandardId = 2, FeeTypeId = 9, Amount = 600 },  // Exam
-                new StandardFee { UniqueId = 24, StandardId = 2, FeeTypeId = 10, Amount = 1200 }, // Stationery
-                new StandardFee { UniqueId = 25, StandardId = 2, FeeTypeId = 11, Amount = 2200 }, // Uniform
-                new StandardFee { UniqueId = 26, StandardId = 2, FeeTypeId = 12, Amount = 2200 }, // Day Care
-                new StandardFee { UniqueId = 27, StandardId = 2, FeeTypeId = 13, Amount = 1700 }, // Transport
-                new StandardFee { UniqueId = 28, StandardId = 2, FeeTypeId = 16, Amount = 1200 }  // Annual Function
+                // Standard 1 Fees
+                new StandardFee { UniqueId = 1, StandardId = 1, FeeTypeId = 1, Amount = 5000 }, // Admission Fee
+                new StandardFee { UniqueId = 2, StandardId = 1, FeeTypeId = 2, Amount = 3000 }, // Tuition Fee
+                new StandardFee { UniqueId = 3, StandardId = 1, FeeTypeId = 3, Amount = 1000 }, // Stationery Fee
+                new StandardFee { UniqueId = 4, StandardId = 1, FeeTypeId = 4, Amount = 1500 }, // Uniform Fee
+                new StandardFee { UniqueId = 5, StandardId = 1, FeeTypeId = 5, Amount = 2500 }, // Semester Fee
+                new StandardFee { UniqueId = 6, StandardId = 1, FeeTypeId = 6, Amount = 1200 }, // DayBoarding Fee
+
+                // Standard 2 Fees
+                new StandardFee { UniqueId = 7, StandardId = 2, FeeTypeId = 1, Amount = 5500 }, // Admission Fee
+                new StandardFee { UniqueId = 8, StandardId = 2, FeeTypeId = 2, Amount = 3200 }, // Tuition Fee
+                new StandardFee { UniqueId = 9, StandardId = 2, FeeTypeId = 3, Amount = 1100 }, // Stationery Fee
+                new StandardFee { UniqueId = 10, StandardId = 2, FeeTypeId = 4, Amount = 1600 }, // Uniform Fee
+                new StandardFee { UniqueId = 11, StandardId = 2, FeeTypeId = 5, Amount = 2700 }, // Semester Fee
+                new StandardFee { UniqueId = 12, StandardId = 2, FeeTypeId = 6, Amount = 1300 }  // DayBoarding Fee
             );
         }
-
     }
 }
