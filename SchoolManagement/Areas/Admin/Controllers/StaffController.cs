@@ -42,15 +42,24 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
 
-  
-        [HttpGet]
-        public async Task<IActionResult> CreateStaff(int id)
+
+
+        public async Task<IActionResult> CreateStaff(int? id)
         {
-            var staff = await _context.Staffs.Where(s => s.UniqueId == id)
-                .FirstOrDefaultAsync();
-            return View(staff);
+            if (id == null || id == 0)
+            {
+                return View(new SchoolManagement.Models.User.Staff()); // For Create
+            }
+            var staff = await _context.Staffs.FindAsync(id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            return View(staff); // For Edit
         }
 
+        // POST: Create or Edit Staff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStaff(SchoolManagement.Models.User.Staff staff)
@@ -59,33 +68,36 @@ namespace SchoolManagement.Areas.Admin.Controllers
             {
                 if (staff.UniqueId == 0)
                 {
+                    // New staff - Add
                     _context.Add(staff);
-                    await _context.SaveChangesAsync(); // Save first to get UniqueId for file upload
+                    await _context.SaveChangesAsync(); // Save to get generated UniqueId (if DB generated)
                 }
                 else
                 {
+                    // Existing staff - Update
                     _context.Update(staff);
                     await _context.SaveChangesAsync();
                 }
 
+                // Handle file uploads after save (UniqueId should be set now)
                 if (staff.Aadhar != null && staff.Aadhar.Length > 0)
                 {
                     staff.AadharFileUrl = await Common.CommonFuntions.UploadFile(staff.Aadhar, "staff", staff.UniqueId, "Aadhar");
                 }
-
                 if (staff.Photos != null && staff.Photos.Length > 0)
                 {
                     staff.PhotosFileUrl = await Common.CommonFuntions.UploadFile(staff.Photos, "staff", staff.UniqueId, "Photos");
                 }
 
-                _context.Update(staff); // Update again to store the file URLs
+                // Save file URL changes
+                _context.Update(staff);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index");
             }
-
             return View(staff);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {

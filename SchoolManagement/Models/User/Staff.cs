@@ -7,7 +7,7 @@ namespace SchoolManagement.Models.User
     {
 
         [Display(Name = "Job Role")]
-        public required string JobRole { get; set; }
+        public string JobRole { get; set; }
 
         public int? Experience { get; set; }
 

@@ -130,13 +130,6 @@
     </li>
     *@
 
-                    @if (ActiveTabName.Equals("SessionFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
-                        <a href="/Admin/SessionFee/Index">
-                            <i class="fa fa-coins"></i> Fees
-                        </a>
-                    </li>
-
                     @if (ActiveTabName.Equals("standardFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/StandardFees/Index">

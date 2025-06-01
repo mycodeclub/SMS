@@ -45,53 +45,50 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(feeType);
         }
 
-        // GET: Admin/FeeTypes/Create
+
+        // GET: FeeType/Create or Edit
         public async Task<IActionResult> Create(int? id)
         {
-            FeeType feeType;
-
             if (id == null || id == 0)
             {
-                feeType = new FeeType();
-            }
-            else
-            {
-                feeType = await _context.FeeTypes.FindAsync(id);
-                if (feeType == null)
-                {
-                    return NotFound();
-                }
+                return View(new FeeType()); // For Create
             }
 
-            return View(feeType);
+            var feeType = await _context.FeeTypes.FindAsync(id);
+            if (feeType == null)
+            {
+                return NotFound();
+            }
+
+            return View(feeType); // For Edit
         }
 
-
+        // POST: FeeType/Create (Handles both Create & Edit)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(FeeType feeType)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (feeType.FeeTypeId == 0)
-                {
-                    // Create new
-                    _context.Add(feeType);
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    // Update existing
-                    _context.Update(feeType);
-                    await _context.SaveChangesAsync();
-                }
-
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                return View(feeType);
             }
 
-            return View(feeType);
+            if (feeType.FeeTypeId == 0)
+            {
+                _context.FeeTypes.Add(feeType); // Create
+            }
+            else
+            {
+                if (!_context.FeeTypes.Any(x => x.FeeTypeId == feeType.FeeTypeId))
+                {
+                    return NotFound();
+                }
+
+                _context.FeeTypes.Update(feeType); // Update
+
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -100,7 +97,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         // POST: Admin/FeeTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-      
+
 
         // POST: Admin/FeeTypes/Delete/5 (for AJAX)
         [HttpPost]
