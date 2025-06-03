@@ -1,33 +1,33 @@
 ﻿@model SchoolManagement.Models.Standard
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Standard Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Standard";
-
 }
 
-<h1>Details</h1>
+<div class="card mt-1 mb-2">
+    <div class="card-body" style="border:1px solid blue">
+        <h6 class="card-header bg-primary text-light mb-3">Standard Info</h6>
+        <div class="row">
+            <div class="form-group col-md-4 col-sm-6 col-lg-3 col-xl-2">
+                <div><strong class="text-muted">Standard Name</strong></div>
+                <div class="fs-6">@Model.StandardName</div>
+            </div>
 
-<div>
-    <h4>Standard</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StandardName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StandardName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SessionYear)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SessionYear.UniqueId)
-        </dd>
-    </dl>
+            <div class="form-group col-md-4 col-sm-6 col-lg-3 col-xl-2">
+                <div><strong class="text-muted">Session Year</strong></div>
+                <div class="fs-6">@Model.SessionYear?.UniqueId</div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 px-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

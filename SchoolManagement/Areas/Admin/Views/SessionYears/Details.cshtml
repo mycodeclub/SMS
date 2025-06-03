@@ -1,74 +1,93 @@
 ﻿@model SchoolManagement.Models.SessionYear
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Session Year Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "SessionYear";
     List<SchoolManagement.Models.Standard> Standards = ViewBag.Standards;
 }
-<div class="content">
-    <div class="card">
+
+<div class="content py-4">
+    <div class="card shadow-sm border-3 rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h4 class="mb-0">Session Year Details - @Model.SessionName</h4>
+        </div>
+
         <div class="card-body">
-            <h1></h1>
-
-            <div>
-                <h4>
-                    Session Year Details | @Model.SessionName
-                </h4>
-                <hr />
-                <div class="row">
-                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        <label class="text-bold">  Session Name</label>
-                        <p> @Model.SessionName</p>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        <label class="text-bold"> Start Date</label>
-                        <p> @Model.StartDate.ToShortDateString()</p>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        <label class="text-bold">End Date</label>
-                        <p> @Model.EndDate.ToShortDateString()</p>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        <label class="text-bold"> Is Acitve </label>
-                        <p> @Model.IsAcitve</p>
-                    </div>
+            <div class="row g-4">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <label class="form-label text-bold">Session Name</label>
+                    <p class="form-control-plaintext">@Model.SessionName</p>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-header">Standards</div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Class Name </th>
-                             
-                                <th>Students </th>
-                                <th>View Details </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var standard in Standards)
-                            {
-                                <tr>
-                                    <td>@standard.StandardName</td>
-                                 @*    <td>@standard.FeeAmountPerMonth</td>
-                                    <td>@standard.BillingCycle - Month</td> *@
-                                    <td> <a href="/Admin/Students/index/@standard.UniqueId"> N/A </a> </td>
-                                    <td>
-                                        <a asp-action="Details" asp-controller="Standards" asp-route-id="@standard.UniqueId">@standard.StandardName</a>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <label class="form-label text-bold">Start Date</label>
+                    <p class="form-control-plaintext">@Model.StartDate.ToShortDateString()</p>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <label class="form-label text-bold" >End Date</label>
+                    <p class="form-control-plaintext">@Model.EndDate.ToShortDateString()</p>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <label class="form-label text-bold">Active</label>
+                    <p class="form-control-plaintext">
+                        @(Model.IsAcitve ? "Yes" : "No")
+                    </p>
                 </div>
             </div>
         </div>
-        <div>
-            <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-            <a asp-action="Index">Back to List</a>
+        <div class="card-footer bg-light border-top">
+            <a asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm border-3 rounded-4 mt-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h5 class="mb-0">Associated Standards</h5>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Class Name</th>
+                        <th>Students</th>
+                        <th>View Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Standards != null && Standards.Any())
+                    {
+                        foreach (var standard in Standards)
+                        {
+                            <tr>
+                                <td>@standard.StandardName</td>
+                                <td>
+                                    <a href="/Admin/Students/index/@standard.UniqueId"><i class="fa fa-eye"></i>
+                                   
+                                    </a>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-controller="Standards" asp-route-id="@standard.UniqueId" class="btn btn-sm btn-outline-primary">
+                                        Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No standards found for this session year.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

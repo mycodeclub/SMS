@@ -185,21 +185,27 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         // ---------------------------------- Parents 
-     
         public async Task<IActionResult> AddParents(int studentId, int parentId)
-            {
-            var parent = await _context.Parents.Where(p => p.UniqueId == parentId).FirstOrDefaultAsync();
+        {
+            var parent = await _context.Parents.FirstOrDefaultAsync(p => p.UniqueId == parentId);
             if (parent == null)
-                parent = new ParentOrGuardians() { StudentUniqueId = studentId, AddressSameAsStudent = true };
+            {
+                parent = new ParentOrGuardians
+                {
+                    StudentUniqueId = studentId,
+                    AddressSameAsStudent = true
+                };
+            }
 
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniquesId", "Name", 1056);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId == 32), "UniqueId", "Name", 1056);
             ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
             ViewBag.RelationId = await _context.Relations.ToListAsync();
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", 1);
+
             return View(parent);
-          }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -210,44 +216,47 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 var stu = await _studentService.GetStudentById(parent.StudentUniqueId);
                 parent.HomeAddress = stu.HomeAddress;
             }
-             ValidateFileUploads(parent);
+
+            ValidateFileUploads(parent);
+
             if (ModelState.IsValid)
             {
                 if (parent.UniqueId == 0)
                     _context.Parents.Add(parent);
                 else
-                    _context.Update(parent);
-                await _context.SaveChangesAsync();
-            }
-            await _context.SaveChangesAsync();
-            if (parent.Aadhar != null && parent.Aadhar.Length > 0)
-            {
-                parent.AadharFileUrl = await Common.CommonFuntions.UploadFile(parent.Aadhar, "Parent", parent.UniqueId, "Aadhar");
-                await _context.SaveChangesAsync();
-            }
-            if (parent.Photos != null && parent.Photos.Length > 0)
-            {
+                    _context.Parents.Update(parent);
 
-                parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Parent", parent.UniqueId, "Photos");
+                await _context.SaveChangesAsync();
+
+                if (parent.Aadhar != null && parent.Aadhar.Length > 0)
+                {
+                    parent.AadharFileUrl = await Common.CommonFuntions.UploadFile(parent.Aadhar, "Parent", parent.UniqueId, "Aadhar");
+                }
+
+                if (parent.Photos != null && parent.Photos.Length > 0)
+                {
+                    parent.PhotosFileUrl = await Common.CommonFuntions.UploadFile(parent.Photos, "Parent", parent.UniqueId, "Photos");
+                }
+
                 await _context.SaveChangesAsync();
             }
+
             var student = await _context.Students
-            .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
-            .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
+                .Include(s => s.ParentOrGuardians).ThenInclude(p => p.Relation)
+                .FirstOrDefaultAsync(s => s.UniqueId == parent.StudentUniqueId);
+
             ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
             ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId == 32), "UniqueId", "Name", 1056);
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
-            var parents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
-            ViewBag.stuParents = parents;
-            var _relation = await _context.Relations.ToListAsync();
-            ViewBag.RelationId = _relation;
+            ViewBag.stuParents = await _context.Parents.Include(r => r.Relation).Where(p => p.StudentUniqueId == parent.StudentUniqueId).ToListAsync();
+            ViewBag.RelationId = await _context.Relations.ToListAsync();
             ViewBag.SessionYearId = new SelectList(_context.SessionYears, "UniqueId", "SessionName", student.SessionYearId);
+
             return View(parent);
         }
-        
 
-        [HttpGet]
+
         // GET: ParentOrGuardians/ParentDetail/5
         public async Task<IActionResult> ParentDetail(int? id)
         {
