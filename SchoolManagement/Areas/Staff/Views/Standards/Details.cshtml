@@ -1,31 +1,37 @@
 ﻿@model SchoolManagement.Models.Standard
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Standard Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Standard";
 }
-<div class="content">
-    <div class="card">
-        <div class="card-body">
-<h1>Details</h1>
 
-<div>
-    <h4>Standard</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StandardName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StandardName)
-        </dd>
-       
-       
-    </dl>
+<div class="content py-4">
+    <div class="card shadow rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-info-circle me-2"></i> Standard Details
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 text-muted fw-bold">
+                    @Html.DisplayNameFor(model => model.StandardName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.StandardName)
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between bg-light">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model?.UniqueId" class="btn btn-primary">
+                <i class="bi bi-pencil-square"></i> Edit
+            </a>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.UniqueId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
-</div></div></div>
