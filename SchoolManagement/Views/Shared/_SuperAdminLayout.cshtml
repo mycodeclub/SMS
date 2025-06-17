@@ -31,9 +31,9 @@
     <link rel="stylesheet" href="~/AdminTemp/dist/css/et-line-font/et-line-font.css">
     <link rel="stylesheet" href="~/AdminTemp/dist/css/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="~/AdminTemp/dist/css/simple-lineicon/simple-line-icons.css">
-
     @RenderSection("Style", required: false)
 </head>
+
 <body class="skin-blue sidebar-mini">
     <div class="wrapper boxed-wrapper">
         <header class="main-header">
@@ -43,7 +43,7 @@
             </a>
             <nav class="navbar blue-bg navbar-static-top">
                 <ul class="nav navbar-nav pull-left">
-                    <li><a class="sidebar-toggle" data-toggle="push-menu" href=""></a> </li>
+                    <li><a class="sidebar-toggle" data-toggle="push-menu" href=""></a></li>
                 </ul>
                 <div class="pull-left search-box">
                     <form action="#" method="get" class="search-form">
@@ -102,14 +102,14 @@
                     @if (ActiveTabName.Equals("SessionYear")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/SessionYears/Index">
-                            <i class="fa fa-calendar-alt"></i> Session Year
+                            <i class="fa fa-calendar"></i> Session Year
                         </a>
                     </li>
 
                     @if (ActiveTabName.Equals("FeeTypes")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/FeeTypes/Index">
-                            <i class="fa fa-file-invoice-dollar"></i> Fee Types
+                            <i class="fa fa-money"></i> Fee Types
                         </a>
                     </li>
 
@@ -120,36 +120,24 @@
                         </a>
                     </li>
 
-                    @* Example commented out old standard, kept if needed *@
-                    @* 
-    @if (ActiveTabName.Equals("StandardOld")) { activeTab = "active"; } else { activeTab = string.Empty; }
-    <li class="@activeTab">
-        <a href="/Admin/StandardsOld/Index">
-            <i class="fa fa-book"></i> Standard Old
-        </a>
-    </li>
-    *@
-
-                    @if (ActiveTabName.Equals("standardFee")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    @if (ActiveTabName.Equals("StandardFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/StandardFees/Index">
-                            <i class="fa fa-wallet"></i> Standard Fees
+                            <i class="fa fa-money"></i> Standard Fees
                         </a>
                     </li>
-
-                  
 
                     @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/Students/Index">
-                            <i class="fa fa-user-graduate"></i> Students
+                            <i class="fa fa-user"></i> Students
                         </a>
                     </li>
 
                     @if (ActiveTabName.Equals("Staff")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/Staff/Index">
-                            <i class="fa fa-chalkboard-teacher"></i> Staff
+                            <i c<i class=" fa fa-users"></i>Staff
                         </a>
                     </li>
 
@@ -189,6 +177,8 @@
     </div>
     <!-- ./wrapper -->
     <!-- jQuery 3 -->
+   @*  <link rel="stylesheet" href="~/AdminTemp/dist/css/font-awesome/css/font-awesome.min.css"> *@
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
