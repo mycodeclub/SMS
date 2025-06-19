@@ -14,13 +14,19 @@
 
 <div class="content px-3">
     <div class="card shadow rounded-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+        <!-- Header Title Only -->
+        <div class="card-header bg-primary text-white rounded-top-4">
             <h4 class="mb-0">Student</h4>
-            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
+        </div>
+
+        <!-- Add Staff Button Below Header -->
+        <div class="px-3 py-2 bg-light border-bottom d-flex justify-content-end">
+            <a asp-action="Create" class="btn btn-primary btn-sm shadow">
                 <i class="fa fa-plus me-1"></i> New Admission
             </a>
         </div>
 
+        <!-- Standard Filter -->
         <div class="d-flex justify-content-center my-3">
             <div class="w-50">
                 <select id="StandardIdDDL" class="form-select" asp-items="ViewBag.StandardId" onchange="ReloadIndex()">
@@ -28,6 +34,8 @@
                 </select>
             </div>
         </div>
+
+        <!-- Table -->
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblStudents">
                 <thead class="table-light text-center">
@@ -52,10 +60,10 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Actions">
                                     <a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit">
-                                        <i class="fa fa-edit text-primary"></i>|
+                                        <i class="fa fa-edit text-primary"></i> |
                                     </a>
                                     <a asp-action="Details" asp-route-id="@item.UniqueId" title="Details">
-                                        <i class="fa fa-eye text-info"></i>|
+                                        <i class="fa fa-eye text-info"></i> |
                                     </a>
                                     <a href="#" class="delete-student" data-id="@item.UniqueId" title="Delete">
                                         <i class="fa fa-trash text-danger"></i>

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
@@ -21,6 +22,18 @@ namespace SchoolManagement.Areas.Admin.Controllers
             _sessionService = service;
             _standardService = standardService;
         }
+        [HttpPost]
+        public IActionResult SetActiveSession(int id)
+        {
+            var session = _context.SessionYears.FirstOrDefault(s => s.UniqueId == id);
+            if (session != null)
+            {
+                TempData["SelectedSession"] = JsonConvert.SerializeObject(session);
+                return Json(true);
+            }
+            return Json(false);
+        }
+
 
         // GET: Staff/SessionYears
         public async Task<IActionResult> Index(int id)
@@ -98,37 +111,17 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(sessionYear);
         }
 
-
-        // GET: Staff/SessionYears/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sessionYear = await _context.SessionYears
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (sessionYear == null)
-            {
-                return NotFound();
-            }
-
-            return View(sessionYear);
-        }
-
         [HttpPost]
-        public IActionResult Delete(int id)
+        public JsonResult DeleteConfirmed(int id)
         {
             try
             {
                 var session = _context.SessionYears.Find(id);
                 if (session == null)
-                    return Json(new { success = false, error = "Not found" });
+                    return Json(new { success = false, error = "Session not found." });
 
                 _context.SessionYears.Remove(session);
                 _context.SaveChanges();
-
                 return Json(new { success = true });
             }
             catch (Exception ex)
@@ -137,24 +130,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SetActiveSession(int id)
-        {
-            var isUpdated = false;
-            try
-            {
-                var sessions = await _context.SessionYears.ToListAsync();
-                sessions.ForEach(s =>
-                {
-                    s.IsAcitve = s.UniqueId == id;
-                    if (s.IsAcitve) s.UpdatedDate = DateTime.UtcNow;
-                });
-                await _context.SaveChangesAsync();
-                isUpdated = true;
-            }
-            catch { }
-            return Ok(isUpdated);
-        }
 
 
         private bool SessionYearExists(int id)
