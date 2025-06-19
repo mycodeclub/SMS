@@ -108,7 +108,7 @@
             $('#confirmDeleteBtn').on('click', function () {
                 if (deleteId) {
                     $.ajax({
-                        url: '/SuperAdmin/Staff/Delete',
+                        url: '/Admin/Staff/Delete',
                         type: 'POST',
                         data: { id: deleteId },
                         success: function (result) {

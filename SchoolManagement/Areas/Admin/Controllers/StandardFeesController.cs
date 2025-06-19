@@ -66,133 +66,90 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(standardFee);
         }
 
-        // GET: Admin/StandardFees/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create(int? id)
         {
-            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "Name");
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName");
-            return View();
+            StandardFee model = new StandardFee();
+
+            if (id.HasValue && id.Value > 0)
+            {
+                model = await _context.StandardFees.FindAsync(id.Value);
+                if (model == null)
+                {
+                    return NotFound();
+                }
+            }
+
+            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "Name", model?.FeeTypeId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", model?.StandardId);
+
+            return View(model);
         }
 
-        // POST: Admin/StandardFees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: StandardFees/Create or Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(StandardFee standardFee)
+        public async Task<IActionResult> Create(StandardFee model)
         {
+            ModelState.Remove("Standard");
+            ModelState.Remove("FeeType");
             if (ModelState.IsValid)
             {
-                if (standardFee.UniqueId == 0)
+                if (model.UniqueId == 0)
                 {
-                    _context.Add(standardFee);
-                    await _context.SaveChangesAsync(); // Save first to get UniqueId for file upload
+                    // Create
+                    _context.StandardFees.Add(model);
                 }
                 else
                 {
-                    _context.Update(standardFee);
-                    await _context.SaveChangesAsync();
+                    // Update
+                    try
+                    {
+                        _context.StandardFees.Update(model);
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!StandardFeeExists(model.UniqueId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
                 }
-               
-                _context.Update(standardFee); // Update again to store the file URLs
+
                 await _context.SaveChangesAsync();
-
-                return RedirectToAction("Index");
-            }
-            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "FeeTypeId", standardFee.FeeTypeId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", standardFee.StandardId);
-            return View(standardFee);
-        }
-
-        // GET: Admin/StandardFees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var standardFee = await _context.StandardFees.FindAsync(id);
-            if (standardFee == null)
-            {
-                return NotFound();
-            }
-            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "FeeTypeId", standardFee.FeeTypeId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", standardFee.StandardId);
-            return View(standardFee);
-        }
-
-        // POST: Admin/StandardFees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, StandardFee standardFee)
-        {
-            if (id != standardFee.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(standardFee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StandardFeeExists(standardFee.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "FeeTypeId", standardFee.FeeTypeId);
-            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", standardFee.StandardId);
-            return View(standardFee);
+
+            ViewData["FeeTypeId"] = new SelectList(_context.FeeTypes, "FeeTypeId", "Name", model.FeeTypeId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", model.StandardId);
+
+            return View(model);
         }
-
-        // GET: Admin/StandardFees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var standardFee = await _context.StandardFees
-                .Include(s => s.FeeType)
-                .Include(s => s.Standard)
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            var standardFee = _context.StandardFees.Find(id);
             if (standardFee == null)
             {
-                return NotFound();
+                return Json(new { success = false, error = "Standard Fee not found." });
             }
 
-            return View(standardFee);
-        }
-
-        // POST: Admin/StandardFees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var standardFee = await _context.StandardFees.FindAsync(id);
-            if (standardFee != null)
+            try
             {
                 _context.StandardFees.Remove(standardFee);
+                _context.SaveChanges();
+                return Json(new { success = true });
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
         }
+
 
         private bool StandardFeeExists(int id)
         {

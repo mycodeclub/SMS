@@ -35,7 +35,7 @@
                             <td>@Html.DisplayFor(modelItem => item.StandardName)</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a asp-action="Edit" asp-route-id="@item.UniqueId" title="Edit">
+                                    <a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit">
                                         <i class="fa fa-edit text-primary"></i> |
                                     </a>
                                     <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
@@ -99,7 +99,7 @@
             $('#confirmDeleteBtn').on('click', function () {
                 if (deleteId) {
                     $.ajax({
-                        url: '/SuperAdmin/Standard/Delete',
+                        url: '/Admin/StandardFees/Delete',
                         type: 'POST',
                         data: { id: deleteId },
                         success: function (result) {

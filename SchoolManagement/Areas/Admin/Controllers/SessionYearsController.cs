@@ -117,19 +117,24 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(sessionYear);
         }
 
-        // POST: Staff/SessionYears/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
-            var sessionYear = await _context.SessionYears.FindAsync(id);
-            if (sessionYear != null)
+            try
             {
-                _context.SessionYears.Remove(sessionYear);
-            }
+                var session = _context.SessionYears.Find(id);
+                if (session == null)
+                    return Json(new { success = false, error = "Not found" });
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                _context.SessionYears.Remove(session);
+                _context.SaveChanges();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
         }
 
         [HttpPost]

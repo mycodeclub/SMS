@@ -133,13 +133,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
                 ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
 
-                //ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", student.SessionYearId);
-                //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "UniqueId", student.StandardId);
-
-                //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
-                //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
-                //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
-                //ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
                 ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
                 //return RedirectToAction("Edit", student.UniqueId);
                 return RedirectToAction("Index");
@@ -147,41 +140,25 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(student);
         }
 
-
-
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var student = await _context.Students
-                .Include(s => s.Session)
-                .Include(s => s.Standard)
-                .Include(s => s.ParentOrGuardians)
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            var student = _context.Students.Find(id);
             if (student == null)
             {
-                return NotFound();
+                return Json(new { success = false, error = "Student not found." });
             }
 
-            return View(student);
-        }
-
-        // POST: Staff/Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            if (student != null)
+            try
             {
                 _context.Students.Remove(student);
+                _context.SaveChanges();
+                return Json(new { success = true });
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details));
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
         }
 
         // ---------------------------------- Parents 

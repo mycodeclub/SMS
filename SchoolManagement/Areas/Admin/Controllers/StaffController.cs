@@ -41,6 +41,27 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(staff);
         }
 
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            var staff = _context.Staffs.Find(id); // Your DbSet might be _context.Staff instead
+            if (staff == null)
+            {
+                return Json(new { success = false, error = "Staff member not found." });
+            }
+
+            try
+            {
+                _context.Staffs.Remove(staff);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
 
 
 
@@ -98,39 +119,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(staff);
         }
 
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var staff = await _context.Staffs
-             
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
-            if (staff == null)
-
-            {
-                return NotFound();
-            }
-            return View(staff);
-        }
-
-        // POST: Staff/Students/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var staff = await _context.Staffs.FindAsync(id);
-            if (staff != null)
-            {
-                _context.Staffs.Remove(staff);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction("Details");
- 
-        }
 
         // add for photos and adhaar staff
 

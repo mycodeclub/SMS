@@ -39,7 +39,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="DateOfJoin" class="form-label fw-semibold"></label>
+                                <label asp-for="DateOfJoin" class="form-label fw-semibold">Date Of Join</label>
                                 <input asp-for="DateOfJoin" class="form-control" type="date" />
                                 <span asp-validation-for="DateOfJoin" class="text-danger small"></span>
                             </div>
@@ -50,12 +50,7 @@
                                 <span asp-validation-for="Experience" class="text-danger small"></span>
                             </div>
 
-                            <div class="col-md-6">
-                                <label asp-for="Qualification" class="form-label fw-semibold"></label>
-                                <input asp-for="Qualification" class="form-control" />
-                                <span asp-validation-for="Qualification" class="text-danger small"></span>
-                            </div>
-
+                          
                             <div class="col-md-6">
                                 <label asp-for="FirstName" class="form-label fw-semibold"></label>
                                 <input asp-for="FirstName" class="form-control" />
@@ -67,6 +62,12 @@
                                 <input asp-for="LastName" class="form-control" />
                                 <span asp-validation-for="LastName" class="text-danger small"></span>
                             </div>
+                          
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-semibold"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
 
                             <div class="col-md-6">
                                 <label asp-for="DOB" class="form-label fw-semibold"></label>
@@ -75,26 +76,26 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="AadhaarNumber" class="form-label fw-semibold"></label>
+                                <label asp-for="AadhaarNumber" class="form-label fw-semibold"> Adhaar Number</label>
                                 <input asp-for="AadhaarNumber" class="form-control" />
                                 <span asp-validation-for="AadhaarNumber" class="text-danger small"></span>
                             </div>
-
-                            <div class="col-md-6">
-                                <label asp-for="Email" class="form-label fw-semibold"></label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger small"></span>
-                            </div>
-
+                          
                             <div class="col-md-6">
                                 <label asp-for="PrimaryPhoneNumber" class="form-label fw-semibold"></label>
                                 <input asp-for="PrimaryPhoneNumber" class="form-control" />
                                 <span asp-validation-for="PrimaryPhoneNumber" class="text-danger small"></span>
                             </div>
-                        </div>
 
+                            <div class="col-md-6">
+                                <label asp-for="Qualification" class="form-label fw-semibold"></label>
+                                <input asp-for="Qualification" class="form-control" />
+                                <span asp-validation-for="Qualification" class="text-danger small"></span>
+                            </div>
+
+                        </div>
                         <div class="mt-4 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success me-2">Save</button>
+                            <button type="submit" class="btn btn-primary me-2">Save</button>
                             <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
                         </div>
                     </form>

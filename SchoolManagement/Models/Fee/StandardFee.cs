@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolManagement.Models.Fee
@@ -8,10 +9,13 @@ namespace SchoolManagement.Models.Fee
         [Key]
         public int UniqueId { get; set; }
 
-        public int StandardId { get; set; }
+        [ValidateNever]
+        public int? StandardId { get; set; }
+
         [ForeignKey("StandardId")]
         public Standard Standard { get; set; }
 
+        [ValidateNever]
         public int FeeTypeId { get; set; }
         [ForeignKey("FeeTypeId")]
         public FeeType FeeType { get; set; }

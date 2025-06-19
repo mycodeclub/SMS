@@ -42,28 +42,50 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         // GET: Admin/Standards/Create
-        public IActionResult Create()
+        // GET: Create or Edit Standard
+        public async Task<IActionResult> Create(int? id)
         {
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId");
-            return View();
+            var standard = new Standard();
+
+            if (id.HasValue && id.Value > 0)
+            {
+                standard = await _context.Standards.FindAsync(id);
+                if (standard == null)
+                {
+                    return NotFound();
+                }
+            }
+
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", standard.SessionYearId);
+            return View(standard);
         }
 
-        // POST: Admin/Standards/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Create or Edit Standard
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,StandardName,SessionYearId")] Standard standard)
+        public async Task<IActionResult> Create(Standard standard)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(standard);
+                if (standard.UniqueId == 0)
+                {
+                    // CREATE
+                    _context.Add(standard);
+                }
+                else
+                {
+                    // UPDATE
+                    _context.Update(standard);
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "UniqueId", standard.SessionYearId);
+
+            ViewData["SessionYearId"] = new SelectList(_context.SessionYears, "UniqueId", "SessionName", standard.SessionYearId);
             return View(standard);
         }
+
 
         // GET: Admin/Standards/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -82,9 +104,6 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(standard);
         }
 
-        // POST: Admin/Standards/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UniqueId,StandardName,SessionYearId")] Standard standard)
@@ -119,38 +138,20 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
         // GET: Admin/Standards/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var standard = await _context.Standards
-                .Include(s => s.SessionYear)
-                .FirstOrDefaultAsync(m => m.UniqueId == id);
+            var standard = _context.Standards.FirstOrDefault(s => s.UniqueId == id);
             if (standard == null)
             {
-                return NotFound();
+                return Json(new { success = false, error = "Standard not found" });
             }
 
-            return View(standard);
+            _context.Standards.Remove(standard);
+            _context.SaveChanges();
+            return Json(new { success = true });
         }
 
-        // POST: Admin/Standards/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var standard = await _context.Standards.FindAsync(id);
-            if (standard != null)
-            {
-                _context.Standards.Remove(standard);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         // GET: Admin/Standards/ManageFees/5
         public async Task<IActionResult> ManageFees(int? id)

@@ -11,15 +11,14 @@
     <div class="card">
         <div class="card-body">
             <div class="card shadow-sm">
-                <div class="card-body border border-primary">
-                    <h5 class="card-header text-black">@ViewData["Title"]</h5>
+                <div class="card-body border  border-primary">
+                    <h5 class="card-header text-white bg-primary">@ViewData["Title"]</h5>
 
                     <form asp-action="Create" method="post" class="needs-validation" novalidate>
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(model => model.FeeTypeId)
 
                         <div class="row">
-
                             <!-- Fee Type Name Field -->
                             <div class="col-3 mb-3">
                                 <label asp-for="Name" class="form-label">Fee Type Name</label>
