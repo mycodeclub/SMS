@@ -48,18 +48,18 @@
         <!-- Table -->
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblFeeTypeList">
-                <thead class="table-light text-center">
+                <thead class="table-light text-left">
                     <tr>
                         <th>Name</th>
                         <th>Recurring?</th>
                         <th>Frequency <i>(in year)</i></th>
                         <th>Due Date</th>
                         <th>Type</th>
-                        <th>Applicable From Month</th>
+                        <th class="text-center">Applicable From Month</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="text-left">
                     @foreach (var item in Model)
                     {
                         <tr id="row-@item.FeeTypeId">
@@ -68,8 +68,8 @@
                             <td>@GetFrequencyLabel(item.Frequency)</td>
                             <td>@item.DueDate</td>
                             <td>@GetOptionalLabel(item.IsOptional)</td>
-                            <td>@item.ApplicableFromMonth</td>
-                            <td>
+                            <td class="text-center">@item.ApplicableFromMonth</td>
+                            <td class="text-right">
                                 <div class="btn-group" role="group">
                                     <a asp-action="Create" asp-route-id="@item.FeeTypeId" title="Edit">
                                         <i class="fa fa-edit text-primary"></i> |
