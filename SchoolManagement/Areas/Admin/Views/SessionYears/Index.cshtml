@@ -15,7 +15,7 @@
 
 <style>
     .checkbox-container.active-row {
-        background-color: #d4edda !important;
+    background-color: #d4edda !important;
     }
 </style>
 
@@ -34,9 +34,16 @@
                 <select id="selectedSessionDDL" onchange="onDropdownChange()" class="form-control w-50">
                     @foreach (var item in Model)
                     {
-                        <option value="@item.UniqueId" selected="@(selectedSession?.UniqueId == item.UniqueId)">
-                            @item.SessionName
-                        </option>
+                        if(selectedSession.UniqueId==item.UniqueId)
+                        {
+                            <option selected="selected" value="@item.UniqueId">@item.SessionName</option>
+
+                        }
+                        else
+                        {
+                            <option value="@item.UniqueId">@item.SessionName</option>
+
+                        }
                     }
                 </select>
 
@@ -66,7 +73,7 @@
                                 <input type="radio"
                                        class="session-checkbox"
                                        data-id="@item.UniqueId"
-                                       @(selectedSession?.UniqueId == item.UniqueId ? "checked" : "")
+                                       @(item.IsAcitve? "checked" : "")
                                        onclick="onCheckboxClick(this)" />
                             </td>
                             <td>

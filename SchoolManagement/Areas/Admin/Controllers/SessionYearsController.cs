@@ -23,16 +23,27 @@ namespace SchoolManagement.Areas.Admin.Controllers
             _standardService = standardService;
         }
         [HttpPost]
-        public IActionResult SetActiveSession(int id)
+        public async Task<IActionResult> SetActiveSession(int id)
         {
-            var session = _context.SessionYears.FirstOrDefault(s => s.UniqueId == id);
-            if (session != null)
+
+            var isUpdated = false;
+            try
             {
-                TempData["SelectedSession"] = JsonConvert.SerializeObject(session);
-                return Json(true);
+                var session = await _context.SessionYears.ToListAsync();
+                session.ForEach(s =>
+                {
+                    s.IsAcitve = s.UniqueId == id;
+                    if (s.IsAcitve) s.UpdatedDate = DateTime.UtcNow;
+
+                });
+                await _context.SaveChangesAsync();
+                isUpdated = true;
             }
-            return Json(false);
+            catch { }
+            return Ok(isUpdated);
         }
+
+           
 
 
         // GET: Staff/SessionYears
