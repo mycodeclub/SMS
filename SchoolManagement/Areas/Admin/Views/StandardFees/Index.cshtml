@@ -26,20 +26,22 @@
         <!-- Table -->
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblStandardFeeList">
-                <thead class="table-light text-center">
+                <thead class="table-light text-right">
                     <tr>
-                        <th>Standard</th>
+                       
                         <th>Fee Type</th>
+                        <th>Standard</th>
                         <th>Amount</th>
-                        <th>Actions</th>
+                        <th class="text-end">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="text-right">
                     @foreach (var item in Model)
                     {
                         <tr id="row-@item.UniqueId">
-                            <td>@item.Standard.StandardName</td>
                             <td>@item.FeeType.Name</td>
+                            <td>@item.Standard.StandardName</td>
+                         
                             <td>@item.Amount.ToString("C")</td>
                             <td>
                                 <a asp-action="Create" asp-route-id="@item.UniqueId">
@@ -123,5 +125,28 @@
                 }
             });
         });
+
     </script>
 }
+@section Style {
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+        /* Column alignments */
+        #tblStandardFeeList th:nth-child(1),
+        #tblStandardFeeList td:nth-child(1),
+        #tblStandardFeeList th:nth-child(2),
+        #tblStandardFeeList td:nth-child(2) {
+            text-align: left;
+        }
+
+        #tblStandardFeeList th:nth-child(3),
+        #tblStandardFeeList td:nth-child(3),
+        #tblStandardFeeList th:nth-child(4),
+        #tblStandardFeeList td:nth-child(4) {
+            text-align: right;
+        }
+    </style>
+}
+

@@ -5,7 +5,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "SessionYear";
-    var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
+
+    SchoolManagement.Models.SessionYear selectedSession = null;
+    if (TempData.Peek("SelectedSession") is string json)
+    {
+        selectedSession = JsonConvert.DeserializeObject<SchoolManagement.Models.SessionYear>(json);
+    }
 }
 
 <!-- Styles -->
@@ -15,7 +20,7 @@
 
 <style>
     .checkbox-container.active-row {
-    background-color: #d4edda !important;
+        background-color: #d4edda !important;
     }
 </style>
 
@@ -23,21 +28,24 @@
     <div class="card shadow rounded-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
             <h4 class="mb-0">Session of Standard - <span class="text-warning"></span></h4>
-            <a asp-action="Create" class="btn btn-light btn-sm shadow-sm">
-                <i class="fa fa-plus me-1"></i> Add New Session
-            </a>
+          
         </div>
 
+        <!-- Add Staff Button Below Header -->
+        <div class="px-3 py-2 bg-light border-bottom d-flex justify-content-end">
+            <a asp-action="Create" class="btn btn-primary btn-sm shadow">
+                <i class="fa fa-plus me-1"></i> New Session
+            </a>
+        </div>
         <div class="d-flex justify-content-center my-2">
             <div class="d-flex align-items-center p-4 rounded w-50 justify-content-center">
                 <label for="selectedSessionDDL" class="me-3 mb-0 fw-bold text-dark">Change Session Year:</label>
-                <select id="selectedSessionDDL" onchange="onDropdownChange()" class="form-control w-50">
+                <select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control w-50" asp-items="ViewBag.StandardId" > 
                     @foreach (var item in Model)
                     {
-                        if(selectedSession.UniqueId==item.UniqueId)
+                        if (selectedSession.UniqueId == item.UniqueId)
                         {
                             <option selected="selected" value="@item.UniqueId">@item.SessionName</option>
-
                         }
                         else
                         {
@@ -45,8 +53,8 @@
 
                         }
                     }
+                
                 </select>
-
             </div>
         </div>
 
@@ -73,7 +81,7 @@
                                 <input type="radio"
                                        class="session-checkbox"
                                        data-id="@item.UniqueId"
-                                       @(item.IsAcitve? "checked" : "")
+                                       @(item.IsAcitve ? "checked" : "")
                                        onclick="onCheckboxClick(this)" />
                             </td>
                             <td>
@@ -170,10 +178,8 @@
                 $(this).prop('checked', isMatch);
             });
 
-            $('.checkbox-container').each(function () {
-                const isMatch = $(this).data('id') == selectedId;
-                $(this).toggleClass('active-row', isMatch);
-            });
+            $('.checkbox-container').removeClass('active-row');
+            $('#row-' + selectedId).addClass('active-row');
 
             updateSession(selectedId);
         }
@@ -185,7 +191,6 @@
                 data: { id: sessionId },
                 success: function (result) {
                     if (result === true) {
-                        // Optionally reload page to reflect updated topbar text
                         location.reload();
                     }
                 },

@@ -31,7 +31,7 @@
         <!-- Table -->
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblStaffList">
-                <thead class="table-light text-center">
+                <thead class="table-light text-right-end">
                     <tr>
                         <th>Job Role</th>
                         <th>Full Name</th>
@@ -42,7 +42,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="text-right-end">
                     @foreach (var item in Model)
                     {
                         <tr id="row-@item.UniqueId">
@@ -136,3 +136,20 @@
         });
     </script>
 }
+<style>
+    /* Align Contact Number and Actions to the right */
+    #tblStaffList th:nth-child(6),
+    #tblStaffList td:nth-child(6),
+    #tblStaffList th:nth-child(7),
+    #tblStaffList td:nth-child(7) {
+        text-align: right;
+    }
+
+    /* Optional: Align Job Role and Full Name to the left */
+    #tblStaffList th:nth-child(1),
+    #tblStaffList td:nth-child(1),
+    #tblStaffList th:nth-child(2),
+    #tblStaffList td:nth-child(2) {
+        text-align: left;
+    }
+</style>
