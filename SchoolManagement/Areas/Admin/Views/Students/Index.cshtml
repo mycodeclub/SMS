@@ -38,17 +38,17 @@
         <!-- Table -->
         <div class="card-body">
             <table class="table table-hover table-striped border shadow-sm rounded" id="tblStudents">
-                <thead class="table-light text-center">
+                <thead class="table-light ">
                     <tr>
                         <th>@Html.DisplayNameFor(m => m.FullName)</th>
                         <th>@Html.DisplayNameFor(m => m.DOB)</th>
                         <th>@Html.DisplayNameFor(m => m.Gender)</th>
                         <th>@Html.DisplayNameFor(m => m.AdmitionDate)</th>
                         <th>Parent(s)</th>
-                        <th>Actions</th>
+                        <th class="text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody >
                     @foreach (var item in Model)
                     {
                         <tr id="row-@item.UniqueId">
@@ -57,7 +57,7 @@
                             <td>@Html.DisplayFor(modelItem => item.Gender)</td>
                             <td>@item.AdmitionDate.ToString("dd-MM-yyyy")</td>
                             <td>@(item.ParentOrGuardians?.Count() ?? 0)</td>
-                            <td>
+                            <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Actions">
                                     <a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit">
                                         <i class="fa fa-edit text-primary"></i> |

@@ -26,18 +26,18 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-bordered table-striped" id="tblStandards">
-                <thead>
+            <table class="table table-bordered table-striped"  id="tblStandards">
+                <thead >
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.FirstOrDefault().StandardName)</th>
-                        <th>Actions</th>
+                        <th class="text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-right">
                     @foreach (var item in Model)
                     {
-                        <tr id="row-@item.UniqueId">
-                            <td>@Html.DisplayFor(modelItem => item.StandardName)</td>
+                        <tr id="row-@item.UniqueId" >
+                            <td class="text-left">@Html.DisplayFor(modelItem => item.StandardName)</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit">
