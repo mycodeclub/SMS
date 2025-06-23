@@ -1,45 +1,48 @@
 ﻿@using Newtonsoft.Json
-
 @model IEnumerable<SchoolManagement.Models.SessionYear>
 
 @{
 	ViewData["Title"] = "Index";
 	Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
 	ViewBag.ActiveTabName = "SessionYear";
-	var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
+
+	var selectedSession = new SchoolManagement.Models.SessionYear();
+	if (TempData.Peek("SelectedSession") != null)
+	{
+		selectedSession = JsonConvert.DeserializeObject<SchoolManagement.Models.SessionYear>((string)TempData.Peek("SelectedSession"));
+	}
 }
+
 
 <!-- Styles -->
 <link href="~/uitemplate/admintemp/dist/plugins/datatables/css/datatables.bootstrap.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
 <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-<style>
 
+<style>
 	.checkbox-container.active-row {
 		background-color: #d4edda !important; /* light green */
 	}
 </style>
+
 <div class="content px-3">
 	<div class="card shadow rounded-4">
 		<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
 			<h4 class="mb-0">Session of Standard</h4>
 		</div>
-		<!-- Add Staff Button Below Header -->
+
+		<!-- Add Session Button -->
 		<div class="px-3 py-2 bg-light border-bottom d-flex justify-content-end">
 			<a asp-action="Create" class="btn btn-primary btn-sm shadow">
 				<i class="fa fa-plus me-1"></i> Add New Session
 			</a>
 		</div>
-		<br />
-		<div class="d-flex justify-content-center my-2">
-			<div class="d-flex align-items-center  p-4 rounded w-50 justify-content-center">
-				<label for="selectedSessionDDL" class="me-3 mb-0 fw-bold  text-dark">Change Session Year:</label>
-				<select id="selectedSessionDDL" onchange="ReloadIndex()" class="form-control w-50" asp-items="ViewBag.StandardId">
 
+		<!-- Dropdown -->
+		<div class="d-flex justify-content-center my-2">
+			<div class="d-flex align-items-center p-4 rounded w-50 justify-content-center">
+				<label for="selectedSessionDDL" class="me-3 mb-0 fw-bold text-dark">Change Session Year:</label>
+				<select id="selectedSessionDDL" onchange="onDropdownChange()" class="form-control w-50">
 					@foreach (var item in Model)
 					{
 						if (selectedSession.UniqueId == item.UniqueId)
@@ -58,40 +61,33 @@
 		<!-- Table -->
 		<div class="card-body">
 			<table class="table table-hover table-striped border shadow-sm rounded" id="tblGuestLists">
-				<thead class="table-light ">
+				<thead class="table-light">
 					<tr>
-						<th>@Html.DisplayNameFor(model => model.SessionName)</th>
-						<th>@Html.DisplayNameFor(model => model.StartDate)</th>
-						<th>@Html.DisplayNameFor(model => model.EndDate)</th>
-						<th>@Html.DisplayNameFor(model => model.IsAcitve)</th>
-						<th class="text-right">Actions</th>
+						<th>@Html.DisplayNameFor(model => model.First().SessionName)</th>
+						<th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
+						<th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
+						<th>@Html.DisplayNameFor(model => model.First().IsAcitve)</th>
+						<th class="text-end">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-
 					@foreach (var item in Model)
-
 					{
-
 						var rowClass = item.IsAcitve ? "active-row" : "";
 						<tr class="checkbox-container @rowClass" data-id="@item.UniqueId">
-							<td>@Html.DisplayFor(modelItem => item.SessionName)</td>
-							<td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-							<td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+							<td>@item.SessionName</td>
+							<td>@item.StartDate.ToString("dd-MM-yyyy")</td>
+							<td>@item.EndDate.ToString("dd-MM-yyyy")</td>
 							<td>
-								<input type="radio"
-									   class="session-checkbox"
-									   data-id="@item.UniqueId"
-								@(item.IsAcitve ? "checked" : "")
-									   onclick="onCheckboxClick(this)" />
+								<input type="checkbox" class="session-checkbox" data-id="@item.UniqueId"
+									   @(item.IsAcitve ? "checked" : "") onclick="onCheckboxClick(this)" />
 							</td>
-							<td class="">
-								<a asp-action="Create" asp-route-id="@item.UniqueId"><i class="fa fa-edit"></i></a> |
-								<a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-								<a asp-action="Delete" asp-route-id="@item.UniqueId"><i class="fa fa-trash text-danger"></i></a>
+							<td class="text-end">
+								<a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit"><i class="fa fa-edit"></i></a> |
+								<a asp-action="Details" asp-route-id="@item.UniqueId" title="Details"><i class="fa fa-eye"></i></a> |
+								<a asp-action="Delete" asp-route-id="@item.UniqueId" title="Delete"><i class="fa fa-trash text-danger"></i></a>
 							</td>
 						</tr>
-
 					}
 				</tbody>
 			</table>
@@ -100,104 +96,62 @@
 </div>
 
 @section Scripts {
-	<script src="~/admintemp/dist/plugins/datatables/jquery.datatables.min.js"></script>
-	<script src="~/admintemp/dist/plugins/datatables/datatables.bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
 	<script>
-
 		$(document).ready(function () {
-
 			$('#tblGuestLists').DataTable({
-
-				"pageLength": 10,
-
-				"ordering": true,
-
-				"searching": true,
-
-				"order": [[0, "desc"]]
-
+				pageLength: 10,
+				ordering: true,
+				searching: true,
+				order: [[0, "desc"]]
 			});
-
 		});
 
 		function onCheckboxClick(checkbox) {
-
 			const selectedId = $(checkbox).data('id');
 
-			// Uncheck all checkboxes
-
+			// Uncheck all except this
 			$('.session-checkbox').not(checkbox).prop('checked', false);
 
-			// Sync dropdown
-
+			// Update dropdown
 			$('#selectedSessionDDL').val(selectedId);
 
-			// Send to server
-
 			updateSession(selectedId);
-
 		}
 
 		function onDropdownChange() {
-
 			const selectedId = $('#selectedSessionDDL').val();
 
-			// Check matching checkbox
-
+			// Check the matching checkbox
 			$('.session-checkbox').each(function () {
-
-				const isCurrent = $(this).data('id') == selectedId;
-
-				$(this).prop('checked', isCurrent);
-
+				const isMatch = $(this).data('id') == selectedId;
+				$(this).prop('checked', isMatch);
 			});
 
 			updateSession(selectedId);
-
 		}
-
 		function updateSession(sessionId) {
-
 			$.ajax({
-
 				url: '/Admin/SessionYears/SetActiveSession',
-
 				type: 'POST',
-
 				data: { id: sessionId },
-
 				success: function (result) {
-
-					if(result==true)
-
-					{
-
+					if (result === true) {
 						$('.checkbox-container').each(function () {
-
 							const isMatch = $(this).data('id') == sessionId;
-
 							$(this).toggleClass('active-row', isMatch);
-
 						});
-
 					}
-
-				 },
-
+				},
 				error: function () {
-
 					alert('Failed to update session.');
-
 				}
-
 			});
-
 		}
+	
+
 	</script>
-
 }
-

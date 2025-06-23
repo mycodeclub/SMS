@@ -1,20 +1,28 @@
 ﻿@using Newtonsoft.Json
-@inject SignInManager<AppUser> signInManager;
-@using Newtonsoft.Json
-@{
-    var ActiveTabId = 0;
-    var ActiveClass = String.Empty;
-    if (ViewBag.ActiveTabId == null) { ActiveTabId = 1; }
-    else { ActiveTabId = ViewBag.ActiveTabId; }
+@inject SignInManager<AppUser> signInManager
 
-    // -- New active tab
+@{
+    int ActiveTabId = 1;
+    string ActiveClass = string.Empty;
     string activeTab = string.Empty;
     string ActiveTabName = "something...";
-    if (!string.IsNullOrEmpty(ViewBag.activeTabName))
+    string activeSession = string.Empty;
+
+    // Fix: Use correct case - ViewBag.ActiveTabName (case-sensitive)
+    if (ViewBag.ActiveTabId != null)
+    {
+        ActiveTabId = ViewBag.ActiveTabId;
+    }
+
+    if (!string.IsNullOrEmpty(ViewBag.ActiveTabName as string))
     {
         ActiveTabName = ViewBag.ActiveTabName;
     }
-    var selectedSession = JsonConvert.DeserializeObject<SessionYear>((string)TempData.Peek("SelectedSession"));
+    var selectedSession = new SchoolManagement.Models.SessionYear();
+    if (TempData.Peek("SelectedSession") != null)
+    {
+        selectedSession = JsonConvert.DeserializeObject<SchoolManagement.Models.SessionYear>((string)TempData.Peek("SelectedSession"));
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -68,16 +76,20 @@
                                     <li class="user-header">
                                         <div class="pull-left user-img"><img src="~/AdminTemp/dist/img/img1.jpg" class="img-responsive img-circle" alt="User"></div>
                                         <p class="text-left">  <small> @User.Identity.Name</small> </p>
-                                        <p class="text-left">  <small> @selectedSession.SessionName </small> </p>
-                                    </li>
+                                        <p class="text-left">
+                                            <small id="activeSessionDisplay">@selectedSession.SessionName</small>
+                                        </p>
+
+
                                     <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                                 </ul>
                           </li>
                         }
                     </ul>
-                </div> <div class="text-white align-content-center" style="padding-top:1.5em;padding-left:15em">
-                    @selectedSession.SessionName
+                </div><div class="text-white align-content-center" style="padding-top:1.5em;padding-left:15em">
+                    <span id="activeSessionDisplay">@selectedSession.SessionName</span>
                 </div>
+
             </nav>
         </header>
         <aside class="main-sidebar">
@@ -155,6 +167,12 @@
             Copyright © 2018 Yourdomian. All rights reserved.
         </footer>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables -->
+    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <!-- ./wrapper -->
     <!-- jQuery 3 -->
    @*  <link rel="stylesheet" href="~/AdminTemp/dist/css/font-awesome/css/font-awesome.min.css"> *@
@@ -176,7 +194,6 @@
     <script src="~/AdminTemp/dist/plugins/datatables/dataTables.bootstrap.min.js"></script>
     <script src="~/AdminTemp/dist/plugins/datatables/jquery.dataTables.min.js"></script>
     @RenderSection("Scripts", required: false)
-
 </body>
 </html>
 
