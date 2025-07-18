@@ -1,4 +1,4 @@
-﻿using BpstEducation.Data;
+﻿using SchoolManagement.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
@@ -36,10 +36,6 @@ namespace SchoolManagement.Data
             modelBuilder.SeedFeeType();
 
 
-
-
-
-
             modelBuilder.SeedStandard();
             modelBuilder.SeedStandardFee();
             modelBuilder.SeedCountry();
@@ -57,6 +53,10 @@ namespace SchoolManagement.Data
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+
+
+        public DbSet<SchoolManagement.Models.Fee.StudentFee> Studentfee { get; set; }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
         public DbSet<FeeType> FeeTypes { get; set; }
         public DbSet<Standard> Standards { get; set; }      //class/standards
@@ -65,7 +65,7 @@ namespace SchoolManagement.Data
         public DbSet<Student> Students { get; set; }       // student
         public DbSet<ParentOrGuardians> Parents { get; set; }     // parent
         public DbSet<Relation> Relations { get; set; }
-     
+      
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Country> Countrys { get; set; }
@@ -75,5 +75,10 @@ namespace SchoolManagement.Data
 
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
         public DbSet<SessionFee> SessionFee { get; set; }
+
+       public DbSet <StudentFeeItem> StudentFeeItems { get; set; }
+
+
+
     }
 }

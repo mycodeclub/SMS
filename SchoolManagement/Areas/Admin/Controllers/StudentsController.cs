@@ -88,11 +88,12 @@ namespace SchoolManagement.Areas.Admin.Controllers
             //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
             //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
             //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", student.HomeAddress.CityId);
-   
-        ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-        ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-        ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
-          
+            ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
+            ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
+            ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId == student.HomeAddress.StateId), "UniqueId", "Name", student.HomeAddress.CityId);
+            ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+            ViewBag.StandardId = new SelectList(_context.Standards, "UniqueId", "StandardName");
+
             ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
             ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
             return View(student);
@@ -104,6 +105,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Create(Student student)
         {
             ValidateFileUploads(student);
+          
             if (ModelState.IsValid)
             {
                 if (student.UniqueId == 0)
@@ -129,9 +131,16 @@ namespace SchoolManagement.Areas.Admin.Controllers
                     student.PhotosFileUrl = await Common.CommonFuntions.UploadFile(student.Photos, "Student", student.UniqueId, "Photos");
                     await _context.SaveChangesAsync();
                 }
-                ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
-                ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
-                ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+                //ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", 1);
+                //ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", 32);
+                //ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId.Equals(32)), "UniqueId", "Name", 1056);
+
+                ViewData["CountryId"] = new SelectList(_context.Countrys, "UniqueId", "Name", student.HomeAddress.CountryId);
+                ViewData["StateId"] = new SelectList(_context.States, "UniqueId", "Name", student.HomeAddress.StateId);
+                ViewData["CityId"] = new SelectList(_context.Cities.Where(c => c.StateId == student.HomeAddress.StateId), "UniqueId", "Name", student.HomeAddress.CityId);
+                ViewData["StandardId"] = new SelectList(_context.Standards, "UniqueId", "StandardName", student.StandardId);
+                ViewBag.Standards = _context.Standards.ToList();
+
 
                 ViewData["RelationId"] = new SelectList(_context.Relations, "UniqueId", "UniqueId", "StudentUniqueId");
                 //return RedirectToAction("Edit", student.UniqueId);

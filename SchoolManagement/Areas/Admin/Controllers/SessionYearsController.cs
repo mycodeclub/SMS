@@ -61,19 +61,36 @@ namespace SchoolManagement.Areas.Admin.Controllers
         }
 
 
-      public async Task<IActionResult> Index()
-      {
-    var sessionyear = await _context.SessionYears.ToListAsync();
-    var activeSession = sessionyear.FirstOrDefault(s => s.IsAcitve);
-    
-    if (activeSession != null)
-    {
-        TempData["SelectedSession"] = JsonConvert.SerializeObject(activeSession);
-    }
+        public async Task<IActionResult> Index()
+        {
+            var sessionyear = await _context.SessionYears.ToListAsync();
+            var activeSession = sessionyear.FirstOrDefault(s => s.IsAcitve);
 
-    ViewBag.ActiveSession = activeSession;
-    return View(sessionyear);
-     }
+            if (activeSession != null)
+            {
+                TempData["SelectedSession"] = JsonConvert.SerializeObject(activeSession);
+            }
+
+            ViewBag.ActiveSession = activeSession;
+            return View(sessionyear);
+        }
+
+        //        public async Task<IActionResult> Index(int id)
+        //        {
+        //            if (id > 0)
+        //            {
+        //                await _sessionService.SetSelectedSessionById(id);
+        //        SetSelectedSessionTempData();
+        //            }
+
+
+        //        var sessionYearsTask = _sessionService.GetAllSessionsFromDb();
+        //        var activeSessionTask = GetActiveSession();
+        //        await Task.WhenAll(sessionYearsTask, activeSessionTask);
+        //            ViewBag.ActiveSession = activeSessionTask.Result;
+        //            return View(sessionYearsTask.Result);
+        //}
+
 
 
         // GET: Staff/SessionYears/Details/5

@@ -1,0 +1,386 @@
+﻿@model Tuple<IEnumerable<SchoolManagement.Models.User.Student>, SchoolManagement.Models.User.Student>
+
+@{
+    ViewData["Title"] = "Student Wizard";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
+    var studentList = Model.Item1;
+    var selectedStudent = Model.Item2;
+
+    var frequencyMap = new Dictionary<string, string>
+    {
+        { "12", "Annually" },
+        { "2", "Half-Yearly" },
+        { "3", "Quarterly" },
+        { "1", "Monthly" }
+    };
+
+    var savedGrouped = selectedStudent.FeeItems
+        .Where(f => f.IsPaid)
+        .GroupBy(f => new { f.Frequency, f.DueDate?.Month })
+        .ToList();
+
+    var activeTab = Context.Request.Query["activeTab"].ToString() ?? "students";
+    var activeFreqTab = Context.Request.Query["activeFreq"].ToString() ?? "12";
+
+    var uniqueFeeItems = (ViewBag.FeeItemsForForm as List<SchoolManagement.Models.Fee.StudentFeeItem>) ?? new List<SchoolManagement.Models.Fee.StudentFeeItem>();
+}
+
+<div class="container mt-1">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+            <h4 class="mb-0">Student Fee Management Wizard</h4>
+        </div>
+
+        <div class="card-body px-4">
+            <ul class="nav nav-tabs mb-4" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "students" ? "active text-white bg-primary" : "")"
+                       href="?studentId=@selectedStudent.UniqueId&activeTab=students">
+                        <i class="fa fa-users me-1"></i> Student List
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "fee" ? "active text-white bg-primary" : "")"
+                       href="?studentId=@selectedStudent.UniqueId&activeTab=fee">
+                        <i class="fa fa-rupee-sign me-1"></i> Manage Fee
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(activeTab == "saved" ? "active text-white bg-primary" : "")"
+                       href="?studentId=@selectedStudent.UniqueId&activeTab=saved">
+                        <i class="fa fa-save me-1"></i> Saved Installments
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Student List Tab -->
+                <div class="tab-pane fade @(activeTab == "students" ? "show active" : "")" id="tab-students" role="tabpanel">
+                   
+                    <table class="table table-bordered" id="tblStudents">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Full Name</th>
+                                <th>DOB</th>
+                                <th>Gender</th>
+                                <th>Admission</th>
+                                <th>Parents</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in studentList)
+                            {
+                                <tr class="@(student.UniqueId == selectedStudent.UniqueId ? "table-primary" : "")">
+                                    <td>@student.FullName</td>
+                                    <td>@student.DOB.ToString("dd-MM-yyyy")</td>
+                                    <td>@student.Gender</td>
+                                    <td>@student.AdmitionDate.ToString("dd-MM-yyyy")</td>
+                                    <td>@(student.ParentOrGuardians?.Count() ?? 0)</td>
+                                    <td>
+                                        <a asp-action="ManageFees" asp-route-studentId="@student.UniqueId" class="btn btn-outline-dark btn-sm">
+                                            <i class="fa fa-rupee-sign"></i> Fee
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Manage Fee Tab -->
+                <div class="tab-pane fade @(activeTab == "fee" ? "show active" : "")" id="tab-fee" role="tabpanel">
+                    <form asp-action="ManageFees" method="post" novalidate>
+                        <input type="hidden" name="UniqueId" value="@selectedStudent.UniqueId" />
+                        <input type="hidden" name="StandardId" value="@selectedStudent.StandardId" />
+
+                        @* Student Info *@
+                        <div class="card border-0 shadow-sm p-3 mb-3 bg-light rounded-3">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <strong>Name:</strong><br />
+                                    @selectedStudent.FullName
+                                </div>
+
+                                <div class="col-md-2">
+                                    <strong>DOB:</strong><br />
+                                    @selectedStudent.DOB.ToString("dd-MM-yyyy")<br />
+                                    <small class="text-muted">
+                                        Age: @(DateTime.Today.Year - selectedStudent.DOB.Year -
+                                        (DateTime.Today.DayOfYear < selectedStudent.DOB.DayOfYear ? 1 : 0)) yrs
+                                    </small>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <strong>Gender:</strong><br />
+                                    @selectedStudent.Gender
+                                </div>
+
+                                <div class="col-md-2">
+                                    <strong>Standard:</strong><br />
+                                    @selectedStudent.Standard?.StandardName
+                                </div>
+
+                                <div class="col-md-3">
+                                    <strong>Admission Date:</strong><br />
+                                    @selectedStudent.AdmitionDate.ToString("dd-MM-yyyy")
+                                </div>
+
+                                <div class="col-md-3">
+                                    <strong>Guardian Count:</strong><br />
+                                    @selectedStudent.ParentOrGuardians?.Count()
+                                </div>
+
+                                <div class="col-md-6">
+                                    <strong>Address:</strong><br />
+                                    @selectedStudent.FullAddress
+                                </div>
+
+                                @* Photo *@
+                                @if (!string.IsNullOrEmpty(selectedStudent.PhotosFileUrl))
+                                {
+                                    <div class="col-md-3 text-center">
+                                        <img src="~/UserFiles/students/@selectedStudent.PhotosFileUrl"
+                                             class="img-thumbnail" style="max-height: 140px;" alt="Student Photo" />
+                                        <div class="mt-2">
+                                            <a href="~/UserFiles/Students/@selectedStudent.PhotosFileUrl"
+                                               target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
+                                        </div>
+                                    </div>
+                                }
+
+                                @* Aadhaar *@
+                                @if (!string.IsNullOrEmpty(selectedStudent.AadharFileUrl))
+                                {
+                                    <div class="col-md-3 text-center">
+                                        <img src="~/userfiles/students/@selectedStudent.AadharFileUrl"
+                                             class="img-thumbnail" style="max-height: 140px;" alt="Aadhaar" />
+                                        <div class="mt-2">
+                                            <a href="~/userfiles/students/@selectedStudent.AadharFileUrl"
+                                               target="_blank" class="btn btn-sm btn-outline-primary">View Aadhaar</a>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+                        @* Frequency Tabs *@
+                        <ul class="nav nav-tabs mb-3">
+                            @foreach (var freq in frequencyMap)
+                            {
+                                var isActive = freq.Key == activeFreqTab;
+                                <li class="nav-item">
+                                    <a class="nav-link @(isActive ? "active text-white bg-primary" : "")"
+                                       href="?studentId=@selectedStudent.UniqueId&activeTab=fee&activeFreq=@freq.Key">
+                                        @freq.Value
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+
+                        @* Frequency Fee Table *@
+                        <div class="tab-content border p-3 rounded-3">
+                            @foreach (var freq in frequencyMap)
+                            {
+                                var isActive = freq.Key == activeFreqTab;
+                                var feeItemsByFrequency = uniqueFeeItems.Where(f => f.Frequency == freq.Key).ToList();
+
+                                <div class="tab-pane fade @(isActive ? "show active" : "")" id="tab-@freq.Key" role="tabpanel">
+                                    @if (!feeItemsByFrequency.Any())
+                                    {
+                                        <div class="alert alert-warning">No fee items for @freq.Value.</div>
+                                    }
+                                    else
+                                    {
+                                        <table class="table table-bordered table-striped">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Fee Type</th>
+                                                    <th>Installments Left</th>
+                                                    <th>Select Month</th>
+                                                    <th>Amount</th>
+                                                    <th>Discount Amount</th>
+                                                    <th>Payment Mode</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < feeItemsByFrequency.Count; i++)
+                                                {
+                                                    var fee = feeItemsByFrequency[i];
+                                                    var index = uniqueFeeItems.IndexOf(fee);
+                                                    var paidCount = selectedStudent.FeeItems.Count(f => f.FeeTypeId == fee.FeeTypeId && f.IsPaid);
+                                                    var totalCount = fee.Frequency switch
+                                                    {
+                                                        "12" => 1,
+                                                        "2" => 2,
+                                                        "3" => 3,
+                                                        "1" => 12,
+                                                        _ => 1
+                                                    };
+                                                    var remaining = totalCount - paidCount;
+
+                                                    <tr>
+                                                        <td>
+                                                            @fee.FeeTypeName
+                                                            <input type="hidden" name="FeeItems[@index].FeeTypeId" value="@fee.FeeTypeId" />
+                                                            <input type="hidden" name="FeeItems[@index].FeeTypeName" value="@fee.FeeTypeName" />
+                                                            <input type="hidden" name="FeeItems[@index].Frequency" value="@fee.Frequency" />
+                                                        </td>
+                                                        <td>@remaining</td>
+                                                        <td>
+                                                            <select name="FeeItems[@index].DueDate" class="form-select" required>
+                                                                <option value="">-- Select Month --</option>
+                                                                @{
+                                                                    var currentYear = DateTime.Today.Year;
+                                                                    List<int> allowedMonths = fee.Frequency switch
+                                                                    {
+                                                                        "1" => Enumerable.Range(1, 12).ToList(),
+                                                                        "3" => new List<int> { 4, 7, 10, 1 },
+                                                                        "2" => new List<int> { 4, 10 },
+                                                                        "12" => new List<int> { 4 },
+                                                                        _ => new List<int>()
+                                                                    };
+                                                                }
+
+                                                                @foreach (var m in allowedMonths)
+                                                                {
+                                                                    var year = (m < DateTime.Today.Month && m == 1) ? currentYear + 1 : currentYear;
+                                                                    var monthDate = new DateTime(year, m, 1);
+                                                                    var optionValue = monthDate.ToString("yyyy-MM-dd");
+                                                                    var optionText = monthDate.ToString("MMMM yyyy");
+
+                                                                    bool isPaid = selectedStudent.FeeItems.Any(f =>
+                                                                    f.FeeTypeId == fee.FeeTypeId &&
+                                                                    f.IsPaid &&
+                                                                    f.DueDate?.Month == m &&
+                                                                    f.DueDate?.Year == year);
+
+                                                                    if (isPaid)
+                                                                    {
+                                                                        <option value="@optionValue" disabled style="color:gray;">@optionText (Paid)</option>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <option value="@optionValue">@optionText</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </td>
+                                                        <td><input class="form-control" name="FeeItems[@index].Amount" value="@fee.Amount" /></td>
+                                                        <td><input class="form-control" name="FeeItems[@index].DiscountAmount" value="@fee.DiscountAmount" /></td>
+                                                        <td>
+                                                            <select name="FeeItems[@index].PaymentMode" class="form-select">
+                                                                <option value="Cash">Cash</option>
+                                                                <option value="Online">Online</option>
+                                                                <option value="Bank">Bank</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <button type="submit" class="btn btn-success btn-sm">Save</button>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Saved Installments Tab -->
+                <!-- Saved Installments Tab -->
+                <div class="tab-pane fade @(activeTab == "saved" ? "show active" : "")" id="tab-saved" role="tabpanel">
+                    @if (ViewBag.SavedInstallmentsGrouped != null)
+                    {
+                        var frequencyLabels = new Dictionary<string, string> {
+                    { "1", "Monthly" },
+                    { "2", "Half-Yearly" },
+                    { "3", "Quarterly" },
+                    { "12", "Annually" }
+                    };
+
+                        foreach (var freq in ViewBag.SavedInstallmentsGrouped as Dictionary<string, List<SchoolManagement.Models.Fee.StudentFeeItem>>)
+                        {
+                            <div class="mb-4">
+                                <h5 class="text-success">@frequencyLabels[freq.Key] Paid Installments</h5>
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Fee Type</th>
+                                            <th>Amount</th>
+                                            <th>Discount </th>
+                                            <th>Month</th>
+                                            <th>Due Date</th>
+                                            <th>Payment Mode</th>
+                                            <th>Status</th>
+                                            <th>Action</th> <!-- New Column -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in freq.Value.OrderBy(f => f.DueDate))
+                                        {
+                                            <tr>
+                                                <td>@item.FeeTypeName</td>
+                                                <td>@item.Amount.ToString("C")</td>
+                                                <td>@item.DiscountAmount.ToString("C")</td>
+                                                <td>@item.Month</td>
+                                                <td>@(item.DueDate?.ToString("dd-MM-yyyy") ?? "—")</td>
+                                                <td>@(item.PaymentMode ?? "—")</td>
+                                                <td><span class="badge bg-success">Paid</span></td>
+                                                <td>
+                                                    <form asp-action="DeleteFeeItem" method="post"
+                                                          asp-route-studentId="@item.StudentId"
+                                                          asp-route-feeTypeId="@item.FeeTypeId"
+                                                          asp-route-dueDate="@item.DueDate?.ToString("yyyy-MM-dd")"
+                                                          onsubmit="return confirm('Are you sure to delete this installment?');">
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash"></i> 
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">No paid installments found.</div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@if (TempData["InstallmentDeleted"] != null)
+{
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    ✅ Paid installment deleted successfully!
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+}
+    
+
+@section Scripts {
+    <script>
+        if ($.fn.DataTable.isDataTable('#tblStudents')) {
+            $('#tblStudents').DataTable().destroy();
+        }
+        $('#tblStudents').DataTable();
+    </script>
+}

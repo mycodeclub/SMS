@@ -18,9 +18,11 @@
                                 <div class="col-12">
                                     <div class="d-flex justify-content-center my-8">
                                         <div class="w-50">
-                                            <select id="StandardIdDDL" name="StandardId" class="form-control" asp-items="ViewBag.StandardId">
-                                                <option value="0">-- All --</option>
+                                            <select asp-for="StandardId" class="form-control" asp-items="ViewBag.StandardId">
+                                                <option value="">-- Select Standard --</option>
                                             </select>
+                                            <span asp-validation-for="StandardId" class="text-danger"></span>
+
                                         </div>
                                     </div>
                                 </div>

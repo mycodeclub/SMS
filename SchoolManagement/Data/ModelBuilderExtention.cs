@@ -5,7 +5,7 @@ using SchoolManagement.Models.Address;
 using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 
-namespace BpstEducation.Data
+namespace SchoolManagement.Data
 {
     public static class ModelBuilderExtention
     {

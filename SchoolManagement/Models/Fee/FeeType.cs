@@ -12,6 +12,9 @@ namespace SchoolManagement.Models.Fee
         public int DueDate { get; set; }    // Due date for the fee payment
         public bool IsOptional { get; set; } = false;   // Optional for selected students
         public int ApplicableFromMonth { get; set; }    // Due date for the fee payment
+
+        // Optional: navigation properties
+        public ICollection<StandardFee> StandardFees { get; set; }
     }
 
 }
