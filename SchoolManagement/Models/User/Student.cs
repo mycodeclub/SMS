@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SchoolManagement.Models.Fee;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -96,5 +97,8 @@ namespace SchoolManagement.Models.User
         public SessionYear? Session { get; set; } = default!;
         public DateTime CreatedDate { get; internal set; }
         public DateTime LastUpdatedDate { get; internal set; }
+
+        public virtual ICollection<StudentFeeItem> FeeItems { get; set; } = new List<StudentFeeItem>();
+
     }
 }
