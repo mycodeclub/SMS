@@ -1,103 +1,135 @@
 ﻿@model SchoolManagement.Models.User.Student
+
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
 }
 
-<div class="card mt-1 mb-2">
+<div class="card mt-1 mb-2 shadow rounded-4">
     <div class="card-body" style="border:1px solid blue">
-        <h6 class="card-header bg-primary text-light mb-3">Student Personal Info</h6>
-        <div class="row">
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
-                <div><strong class="text-muted">Standard</strong></div>
-                <div class="fs-6">@Model.Standard.StandardName</div>
-            </div>
-            <br />
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2">
-                <div><strong class="text-muted">Full Name</strong></div>
-                <div class="fs-6">@Model.FullName</div>
-            </div>
-            <br />
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
-                <div><strong class="text-muted">Date Of Birth</strong></div>
-                <div class="fs-6">@Model.DOB.ToString("dd-MM-yyyyy")</div>
-            </div>
-            <br />
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
-                <div><strong class="text-muted">Gender</strong></div>
-                <div class="fs-6">@Model.Gender</div>
-            </div>
-            <br />
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2 ">
-                <div><strong class="text-muted">Admission Date</strong></div>
-                <div class="fs-6">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
-            </div>
-           
-            <div class="form-group col-md-4 col-sm-6 col-lg-3  col-xl-2-md-4 col-sm-6">
-                <div><strong class="text-muted">Aadhaar Number</strong></div>
-                <div class="fs-6">@Model.AadhaarNumber</div>
+        <h6 class="card-header bg-primary text-light mb-4 rounded-top-3">Student Personal Info</h6>
+
+        <div class="row g-3 align-items-start mb-4">
+
+            <!-- Student Photo -->
+            <div class="col-md-2 text-center">
+                <h6 class="text-success mb-1">Photo</h6>
+                @if (!string.IsNullOrEmpty(Model.PhotosFileUrl))
+                {
+                    var photoPath = Url.Content("~/" + Model.PhotosFileUrl.TrimStart('/'));
+                    <img src="@photoPath" class="img-thumbnail rounded-circle shadow-sm mb-2" style="width: 90px; height: 90px; object-fit: cover;" alt="Student Photo" />
+                    <div>
+                        <a href="@photoPath" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small">No Photo</p>
+                }
             </div>
 
-            <div class="form-group col-md-12">
-                <label class="text-bold"> Full Address </label>
-                <p class="">@Model.FullAddress  </p>
+            <!-- Aadhaar Photo -->
+            <div class="col-md-2 text-center">
+                <h6 class="text-warning mb-1">Aadhaar</h6>
+                @if (!string.IsNullOrEmpty(Model.AadharFileUrl))
+                {
+                    var aadhaarPath = Url.Content("~/" + Model.AadharFileUrl.TrimStart('/'));
+                    <img src="@aadhaarPath" class="img-thumbnail shadow-sm mb-2" style="height: 90px; width: auto;" alt="Aadhaar Photo" />
+                    <div>
+                        <a href="@aadhaarPath" target="_blank" class="btn btn-sm btn-outline-primary">View</a>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small">No Aadhaar</p>
+                }
             </div>
 
+            <!-- Student Info -->
+            <div class="col-md-8">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Standard</strong></label>
+                        <div class="fw-semibold">@Model.Standard?.StandardName</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Full Name</strong></label>
+                        <div class="fw-semibold">@Model.FullName</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Date Of Birth</strong></label>
+                        <div class="fw-semibold">@Model.DOB.ToString("dd-MM-yyyy")</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Gender</strong></label>
+                        <div class="fw-semibold">@Model.Gender</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Admission Date</strong></label>
+                        <div class="fw-semibold">@Model.AdmitionDate.ToString("yyyy-MM-dd")</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="text-muted mb-0"><strong>Aadhaar Number</strong></label>
+                        <div class="fw-semibold">@Model.AadhaarNumber</div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="text-muted mb-0"><strong>Full Address</strong></label>
+                        <div class="fw-semibold">@Model.FullAddress</div>
+                    </div>
+                </div>
+            </div>
         </div>
-</div>
-@if (Model.ParentOrGuardians != null)
-{
-    <div class="card">
-        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
-            <label class="text-white" style="font-size:1.6em;">Parents Details</label>
-            <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
-        </div>
-        <div class="card-body" style="border:1px solid blue">
-            <table class="table table-bordered table-striped">
-                <thead style="background-color:lightgrey">
-                    <tr>
-                        <th>Relation</th>
-                        <th>Name</th>
-                        <th>DOB | Age</th>
-                        <th>Primary Phone</th>
-                        <th>CTC</th>
-                        <th>Occupation</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var p in Model.ParentOrGuardians)
-                    {
+
+
+    @if (Model.ParentOrGuardians != null)
+    {
+        <div class="card mt-4">
+            <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                <label class="text-white" style="font-size:1.6em;">Parents Details</label>
+                <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId" class="btn btn-success">Add Parents</a>
+            </div>
+            <div class="card-body" style="border:1px solid blue">
+                <table class="table table-bordered table-striped">
+                    <thead style="background-color:lightgrey">
                         <tr>
-                            <td>@p.Relation.RelationName</td>
-                            <td>@p.FullName</td>
-                            <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
-                            <td>@p.PrimaryPhoneNumber</td>
-                            <td>@p.CTC</td>
-                            <td>@p.Occupation</td>
-                            <td>
-                                  <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
-                                    <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId">
-                                    <i class="fa fa-eye"></i>
-                                </a> 
-                                <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a> |
-                            </td>
+                            <th>Relation</th>
+                            <th>Name</th>
+                            <th>DOB | Age</th>
+                            <th>Primary Phone</th>
+                            <th>CTC</th>
+                            <th>Occupation</th>
+                            <th>Actions</th>
                         </tr>
-                           }
-                       </tbody>
-                    </table>
-                 </div>
-             </div>
-         }
-   
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.ParentOrGuardians)
+                        {
+                            <tr>
+                                <td>@p.Relation.RelationName</td>
+                                <td>@p.FullName</td>
+                                <td>@p.DOB.ToShortDateString() | Age: @p.Age</td>
+                                <td>@p.PrimaryPhoneNumber</td>
+                                <td>@p.CTC</td>
+                                <td>@p.Occupation</td>
+                                <td>
+                                    <a href="/Admin/Students/AddParents?studentId=@Model.UniqueId&parentId=@p.UniqueId"><i class="fa fa-edit"></i></a> |
+                                    <a asp-controller="Students" asp-action="ParentDetail" asp-route-id="@p.UniqueId"><i class="fa fa-eye"></i></a> |
+                                    <a asp-action="DeleteParents" asp-route-id="@p.UniqueId"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa fa-arrow-left me-1"></i> Back to List</a>
+    </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+

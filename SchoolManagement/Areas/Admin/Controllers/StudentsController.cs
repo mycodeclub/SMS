@@ -9,12 +9,20 @@ using SchoolManagement.Services;
 namespace SchoolManagement.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class StudentsController(AppDbContext context, ISessionYearService sessionYearService, IStudentService studentService) : BaseController(sessionYearService)
+    public class StudentsController : BaseController
     {
-        private readonly AppDbContext _context = context;
-        private readonly ISessionYearService _sessionYearService = sessionYearService;
-        private readonly IStudentService _studentService = studentService;
-        // GET: Staff/Students
+        private readonly AppDbContext _context;
+        private readonly ISessionYearService _sessionYearService;
+        private readonly IStudentService _studentService;
+
+        public StudentsController(AppDbContext context, ISessionYearService sessionYearService, IStudentService studentService)
+            : base(sessionYearService)
+        {
+            _context = context;
+            _sessionYearService = sessionYearService;
+            _studentService = studentService;
+        }
+
         public async Task<IActionResult> Index(int id = 1)
         {
             var selectedSession = _sessionYearService.GetSelectedSession();
@@ -319,36 +327,44 @@ namespace SchoolManagement.Areas.Admin.Controllers
             string? aadhaarImagePath = null;
             string? photoImagePath = null;
 
+            // Set the upload folder path
+            string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
 
+            // Create the folder if it doesn't exist
+            if (!Directory.Exists(uploadFolder))
+                Directory.CreateDirectory(uploadFolder);
+
+            // Aadhaar Image Upload
             if (aadhaarFile != null && aadhaarFile.Length > 0)
-
             {
                 var aadhaarFileName = Path.GetFileName(aadhaarFile.FileName);
-                var aadhaarFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
-                if (!Directory.Exists(aadhaarFilePath))
-                    Directory.CreateDirectory(aadhaarFilePath);
+                var aadhaarFilePath = Path.Combine(uploadFolder, aadhaarFileName);
 
-                using (var stream = new FileStream(aadhaarFilePath + aadhaarFileName, FileMode.Create))
+                using (var stream = new FileStream(aadhaarFilePath, FileMode.Create))
+                {
                     await aadhaarFile.CopyToAsync(stream);
+                }
 
                 aadhaarImagePath = "/images/" + aadhaarFileName;
             }
 
+            // Photo Image Upload
             if (photoFile != null && photoFile.Length > 0)
             {
                 var photoFileName = Path.GetFileName(photoFile.FileName);
-                var photoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", photoFileName);
+                var photoFilePath = Path.Combine(uploadFolder, photoFileName);
 
                 using (var stream = new FileStream(photoFilePath, FileMode.Create))
                 {
                     await photoFile.CopyToAsync(stream);
                 }
 
-                photoImagePath = "/images/" + photoFile;
+                photoImagePath = "/images/" + photoFileName;
             }
 
             return (aadhaarImagePath, photoImagePath);
         }
+
 
         private void ValidateFileUploads(ParentOrGuardians parent)
         {

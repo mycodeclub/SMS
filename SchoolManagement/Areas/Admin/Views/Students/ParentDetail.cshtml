@@ -1,53 +1,94 @@
 ﻿@model SchoolManagement.Models.User.ParentOrGuardians
+
 @{
     ViewData["Title"] = "Parent Detail";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
 }
 
-<form action="ParentDetail" enctype="multipart/form-data">
-    <h1 class="mb-4">Parent Detail</h1>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <h4>Parent Information</h4>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Relation)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Relation.RelationName)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AadhaarNumber)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.AadhaarNumber)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Occupation)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Occupation)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CTC)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.CTC)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FullName)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FullName)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DOB)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.DOB)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PrimaryPhoneNumber)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.PrimaryPhoneNumber)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.SecondryPhoneNumber)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.SecondryPhoneNumber)</dd>
-
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.FullAddress)</dt>
-                    <dd class="col-sm-8">@Html.DisplayFor(model => model.FullAddress)</dd>
-
-                </dl>
-            </div> 
+<div class="container py-4">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white text-center rounded-top-4">
+            <h4 class="mb-0"><i class="bi bi-person-vcard-fill me-2"></i> Parent Profile</h4>
         </div>
 
-        <div class="mt-4">
-            <a asp-action="Edit" asp-route-id="@Model?.UniqueId" class="btn btn-primary me-2">Edit</a>
-            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="card-body px-4">
+            <div class="row g-4">
+
+                <!-- Profile Image -->
+                <div class="col-md-3 text-center">
+                    <h6 class="text-success">Parent Photo</h6>
+                    @if (!string.IsNullOrEmpty(Model.PhotosFileUrl))
+                    {
+                        var photoPath = Url.Content("~/" + Model.PhotosFileUrl.TrimStart('/'));
+                        <img src="@photoPath" class="img-thumbnail rounded-circle mt-2" style="width: 100px; height: 100px; object-fit: cover;" />
+                        <div class="mt-2">
+                            <a href="@photoPath" target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mt-2">No photo available.</p>
+                    }
+                </div>
+
+                <!-- Aadhaar Image -->
+                <div class="col-md-3 text-center">
+                    <h6 class="text-warning">Aadhaar</h6>
+                    @if (!string.IsNullOrEmpty(Model.AadharFileUrl))
+                    {
+                        var aadhaarPath = Url.Content("~/" + Model.AadharFileUrl.TrimStart('/'));
+                        <img src="@aadhaarPath" class="img-thumbnail mt-2" style="max-height: 100px;" />
+                        <div class="mt-2">
+                            <a href="@aadhaarPath" target="_blank" class="btn btn-sm btn-outline-primary">View Aadhaar</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mt-2">No Aadhaar uploaded.</p>
+                    }
+                </div>
+
+                <!-- Parent Info -->
+                <div class="col-md-6">
+                    <h5 class="text-primary mb-3"><i class="bi bi-info-circle me-1"></i> Parent Information</h5>
+                    <dl class="row fs-6">
+                        <dt class="col-sm-5">Relation</dt>
+                        <dd class="col-sm-7">@Model.Relation?.RelationName</dd>
+
+                        <dt class="col-sm-5">Full Name</dt>
+                        <dd class="col-sm-7">@Model.FullName</dd>
+
+                        <dt class="col-sm-5">DOB</dt>
+                        <dd class="col-sm-7">@Model.DOB.ToString("dd-MM-yyyy")</dd>
+
+                        <dt class="col-sm-5">Primary Phone</dt>
+                        <dd class="col-sm-7">@Model.PrimaryPhoneNumber</dd>
+
+                        <dt class="col-sm-5">Secondary Phone</dt>
+                        <dd class="col-sm-7">@Model.SecondryPhoneNumber</dd>
+
+                        <dt class="col-sm-5">Aadhaar Number</dt>
+                        <dd class="col-sm-7">@Model.AadhaarNumber</dd>
+
+                        <dt class="col-sm-5">Occupation</dt>
+                        <dd class="col-sm-7">@Model.Occupation</dd>
+
+                        <dt class="col-sm-5">CTC</dt>
+                        <dd class="col-sm-7">@Model.CTC</dd>
+
+                        <dt class="col-sm-5">Full Address</dt>
+                        <dd class="col-sm-7">@Model.FullAddress</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+               
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
         </div>
     </div>
-</form>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

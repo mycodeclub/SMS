@@ -60,7 +60,10 @@
                         @* Student Info *@
                         <div class="card border-0 shadow-sm p-3 mb-3 bg-light rounded-3">
                             <div class="row g-3">
+
+                                
                                 <div class="col-md-3">
+
                                     <strong>Name:</strong><br />
                                     @selectedStudent.FullName
                                 </div>
@@ -88,40 +91,45 @@
                                     <strong>Admission Date:</strong><br />
                                     @selectedStudent.AdmitionDate.ToString("dd-MM-yyyy")
                                 </div>
-
+                                <br />
                                 <div class="col-md-3">
                                     <strong>Guardian Count:</strong><br />
                                     @selectedStudent.ParentOrGuardians?.Count()
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <strong>Address:</strong><br />
                                     @selectedStudent.FullAddress
                                 </div>
 
-                                @if (!string.IsNullOrEmpty(selectedStudent.PhotosFileUrl))
-                                {
-                                    var photoPath = Url.Content("~/UserFiles/Students/" + selectedStudent.PhotosFileUrl);
-                                    <div class="col-md-3 text-center">
-                                        <img src="@photoPath" class="img-thumbnail" style="max-height: 140px;" alt="Student Photo" />
-                                        <div class="mt-2">
-                                            <a href="@photoPath" target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
-                                        </div>
-                                    </div>
-                                }
 
-                                @if (!string.IsNullOrEmpty(selectedStudent.AadharFileUrl))
-                                {
-                                    var aadhaarPath = Url.Content("~/UserFiles/Students/" + selectedStudent.AadharFileUrl);
-                                    <div class="col-md-3 text-center">
-                                        <img src="@aadhaarPath" class="img-thumbnail" style="max-height: 140px;" alt="Aadhaar" />
-                                        <div class="mt-2">
-                                            <a href="@aadhaarPath" target="_blank" class="btn btn-sm btn-outline-primary">View Aadhaar</a>
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(selectedStudent.PhotosFileUrl))
+                                    {
+                                        var photoPath = Url.Content("~/" + selectedStudent.PhotosFileUrl.TrimStart('/'));
+                                        <div class="col-md-3 text-center">
+                                            <img src="@photoPath" class="img-thumbnail" style="max-height: 80px; max-width: 80px;" alt="Student Photo" />
+                                            <div class="mt-2">
+                                                <a href="@photoPath" target="_blank" class="btn btn-sm btn-outline-primary">View Photo</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(selectedStudent.AadharFileUrl))
+                                    {
+                                        var aadhaarPath = Url.Content("~/" + selectedStudent.AadharFileUrl.TrimStart('/'));
+                                        <div class="col-md-3 text-center">
+                                            <img src="@aadhaarPath" class="img-thumbnail" style="max-height: 80px; max-width: 80px;" alt="Aadhaar" />
+                                            <div class="mt-2">
+                                                <a href="@aadhaarPath" target="_blank" class="btn btn-sm btn-outline-primary">View Aadhaar</a>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                </div>
+                                </div>
 
                         @* Frequency Tabs *@
                         <ul class="nav nav-tabs mb-3">
