@@ -18,13 +18,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
         public async Task<IActionResult> ManageFees(int studentId)
         {
-            var allStudents = await _context.Students
-                .Include(s => s.Standard)
-                .Include(s => s.ParentOrGuardians)
-                .ToListAsync();
-
             var student = await _context.Students
                 .Include(s => s.Standard)
+                .Include(s => s.ParentOrGuardians)
                 .Include(s => s.HomeAddress)
                 .Include(s => s.FeeItems)
                 .FirstOrDefaultAsync(s => s.UniqueId == studentId);
@@ -66,12 +62,12 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
             ViewBag.SavedInstallmentsGrouped = savedInstallmentsGrouped;
 
-            return View("ManageFees", Tuple.Create<IEnumerable<Student>, Student>(allStudents, student));
+            return View("ManageFees", student);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ManageFees(int uniqueId, int standardId, List<StudentFeeItem> feeItems)
+        public async Task<IActionResult> ManageFees(int uniqueId, List<StudentFeeItem> feeItems)
         {
             if (!ModelState.IsValid)
             {
