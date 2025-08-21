@@ -1,5 +1,4 @@
 ﻿@model SchoolManagement.Models.User.Student
-
 @{
     ViewData["Title"] = "Student Wizard";
     Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
@@ -23,6 +22,7 @@
 
     var uniqueFeeItems = (ViewBag.FeeItemsForForm as List<SchoolManagement.Models.Fee.StudentFeeItem>)
                          ?? new List<SchoolManagement.Models.Fee.StudentFeeItem>();
+
 }
 
 <div class="container ">
@@ -60,14 +60,7 @@
                         @* Student Info *@
                         <div class="card border-0 shadow-sm p-3 mb-3 bg-light rounded-3">
                             <div class="row g-3">
-
-                                
-                                <div class="col-md-3">
-
-                                    <strong>Name:</strong><br />
-                                    @selectedStudent.FullName
-                                </div>
-
+                                <div class="col-md-3"><strong>Name:</strong><br />@selectedStudent.FullName</div>
                                 <div class="col-md-2">
                                     <strong>DOB:</strong><br />
                                     @selectedStudent.DOB.ToString("dd-MM-yyyy")<br />
@@ -76,32 +69,11 @@
                                         (DateTime.Today.DayOfYear < selectedStudent.DOB.DayOfYear ? 1 : 0)) yrs
                                     </small>
                                 </div>
-
-                                <div class="col-md-2">
-                                    <strong>Gender:</strong><br />
-                                    @selectedStudent.Gender
-                                </div>
-
-                                <div class="col-md-2">
-                                    <strong>Standard:</strong><br />
-                                    @selectedStudent.Standard?.StandardName
-                                </div>
-
-                                <div class="col-md-3">
-                                    <strong>Admission Date:</strong><br />
-                                    @selectedStudent.AdmitionDate.ToString("dd-MM-yyyy")
-                                </div>
-                                <br />
-                                <div class="col-md-3">
-                                    <strong>Guardian Count:</strong><br />
-                                    @selectedStudent.ParentOrGuardians?.Count()
-                                </div>
-
-                                <div class="col-md-4">
-                                    <strong>Address:</strong><br />
-                                    @selectedStudent.FullAddress
-                                </div>
-
+                                <div class="col-md-2"><strong>Gender:</strong><br />@selectedStudent.Gender</div>
+                                <div class="col-md-2"><strong>Standard:</strong><br />@selectedStudent.Standard?.StandardName</div>
+                                <div class="col-md-3"><strong>Admission Date:</strong><br />@selectedStudent.AdmitionDate.ToString("dd-MM-yyyy")</div>
+                                <div class="col-md-3"><strong>Guardian Count:</strong><br />@selectedStudent.ParentOrGuardians?.Count()</div>
+                                <div class="col-md-4"><strong>Address:</strong><br />@selectedStudent.FullAddress</div>
 
                                 <div class="col-md-2">
                                     @if (!string.IsNullOrEmpty(selectedStudent.PhotosFileUrl))
@@ -127,9 +99,8 @@
                                         </div>
                                     }
                                 </div>
-
-                                </div>
-                                </div>
+                            </div>
+                        </div>
 
                         @* Frequency Tabs *@
                         <ul class="nav nav-tabs mb-3">
@@ -168,7 +139,8 @@
                                                         <th>Fee Type</th>
                                                         <th>Installments Left</th>
                                                         <th>Select Month</th>
-                                                        <th>Amount</th>
+                                                        <th>Standard Amount</th>
+                                                        <th>Paid Amount</th>
                                                         <th>Discount Amount</th>
                                                         <th>Payment Mode</th>
                                                         <th>Action</th>
@@ -212,21 +184,17 @@
                                                                             _ => new List<int>()
                                                                         };
                                                                     }
-
                                                                     @foreach (var m in allowedMonths)
                                                                     {
-                                                                        // Determine appropriate year: if month already passed in current year and it's January special case logic kept similar
                                                                         var year = (m < DateTime.Today.Month && m == 1) ? currentYear + 1 : currentYear;
                                                                         var monthDate = new DateTime(year, m, 1);
                                                                         var optionValue = monthDate.ToString("yyyy-MM-dd");
                                                                         var optionText = monthDate.ToString("MMMM yyyy");
-
                                                                         bool isPaid = selectedStudent.FeeItems.Any(f =>
                                                                         f.FeeTypeId == fee.FeeTypeId &&
                                                                         f.IsPaid &&
                                                                         f.DueDate?.Month == m &&
                                                                         f.DueDate?.Year == year);
-
                                                                         if (isPaid)
                                                                         {
                                                                             <option value="@optionValue" disabled style="color:gray;">@optionText (Paid)</option>
@@ -239,6 +207,7 @@
                                                                 </select>
                                                             </td>
                                                             <td><input class="form-control" name="FeeItems[@index].Amount" value="@fee.Amount" /></td>
+                                                            <td><input class="form-control" name="FeeItems[@index].PaidAmount" value="@fee.PaidAmount" /></td>
                                                             <td><input class="form-control" name="FeeItems[@index].DiscountAmount" value="@fee.DiscountAmount" /></td>
                                                             <td>
                                                                 <select name="FeeItems[@index].PaymentMode" class="form-select">
@@ -254,6 +223,16 @@
                                                     }
                                                 </tbody>
                                             </table>
+                                        </div>
+
+                                        <!-- Half / Full Payment Buttons -->
+                                        <div class="mt-3 text-center">
+                                            <button type="button" class="btn btn-warning me-2" onclick="submitBulkFee('half')">
+                                                <i class="fa fa-adjust"></i> Pay Half Fee
+                                            </button>
+                                            <button type="button" class="btn btn-success" onclick="submitBulkFee('full')">
+                                                <i class="fa fa-check-circle"></i> Pay Full Fee
+                                            </button>
                                         </div>
                                     }
                                 </div>
@@ -273,6 +252,8 @@
                     { "12", "Annually" }
                     };
 
+                        decimal totalAmount = 0, totalDiscount = 0, totalPaid = 0, totalDue = 0;
+
                         foreach (var freq in ViewBag.SavedInstallmentsGrouped as Dictionary<string, List<SchoolManagement.Models.Fee.StudentFeeItem>>)
                         {
                             <div class="mb-4">
@@ -281,36 +262,54 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Fee Type</th>
-                                            <th>Amount</th>
-                                            <th>Discount </th>
+                                            <th>Total Amount</th>
+                                            <th>Discount</th>
                                             <th>Month</th>
-                                            <th>Due Date</th>
+                                            <th>Final Amount</th>
+                                            <th>Paid Amount</th>
+                                            <th>Due Amount</th>
                                             <th>Payment Mode</th>
+                                            <th>Due Date</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in freq.Value.OrderBy(f => f.DueDate))
                                         {
+                                            totalAmount += item.Amount;
+                                            totalDiscount += item.DiscountAmount;
+                                            totalPaid += item.PaidAmount;
+                                            totalDue += item.DueAmount;
+
                                             <tr>
                                                 <td>@item.FeeTypeName</td>
                                                 <td>@item.Amount.ToString("C")</td>
                                                 <td>@item.DiscountAmount.ToString("C")</td>
                                                 <td>@item.Month</td>
-                                                <td>@(item.DueDate?.ToString("dd-MM-yyyy") ?? "—")</td>
+                                                <td><strong>@item.FinalAmount</strong></td>
+                                                <td class="text-primary">@item.PaidAmount</td>
+                                                <td class="@(item.DueAmount > 0 ? "text-danger" : "text-success")">@item.DueAmount</td>
                                                 <td>@(item.PaymentMode ?? "—")</td>
+                                                <td>@(item.DueDate?.ToString("dd-MM-yyyy") ?? "—")</td>
                                                 <td><span class="badge bg-success">Paid</span></td>
-                                                <td>
-                                                    <form asp-action="DeleteFeeItem" method="post"
-                                                          asp-route-studentId="@item.StudentId"
-                                                          asp-route-feeTypeId="@item.FeeTypeId"
-                                                          asp-route-dueDate="@item.DueDate?.ToString("yyyy-MM-dd")"
-                                                          onsubmit="return confirm('Are you sure to delete this installment?');">
-                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                <td class="text-center">
+                                                    <div class="btn-group">
+                                                      @*   <a asp-action="ManageFees" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a> *@
+                                                       
+                                                        <form asp-action="DeleteFeeItem" method="post"
+                                                              asp-route-studentId="@item.StudentId"
+                                                              asp-route-feeTypeId="@item.FeeTypeId"
+                                                              asp-route-dueDate="@item.DueDate?.ToString("yyyy-MM-dd")"
+                                                              onsubmit="return confirm('Are you sure to delete this installment?');"
+                                                              style="display:inline;">
+                                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         }
@@ -318,6 +317,31 @@
                                 </table>
                             </div>
                         }
+
+                        <!-- Summary -->
+                        <div class="card mt-3 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="text-center text-primary">💰 Installment Summary</h5>
+                                <table class="table table-bordered text-center">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Total Fee</th>
+                                            <th>Total Discount</th>
+                                            <th>Total Paid</th>
+                                            <th>Total Due</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>@totalAmount.ToString("C")</td>
+                                            <td class="text-warning">@totalDiscount.ToString("C")</td>
+                                            <td class="text-success fw-bold">@totalPaid.ToString("C")</td>
+                                            <td class="@(totalDue > 0 ? "text-danger fw-bold" : "text-success")">@totalDue.ToString("C")</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     }
                     else
                     {
@@ -335,9 +359,7 @@
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
         <div class="toast align-items-center text-white bg-success border-0 show" role="alert">
             <div class="d-flex">
-                <div class="toast-body">
-                    ✅ Paid installment deleted successfully!
-                </div>
+                <div class="toast-body">✅ Paid installment deleted successfully!</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
@@ -346,9 +368,21 @@
 
 @section Scripts {
     <script>
-        if ($.fn.DataTable.isDataTable('#tblStudents')) {
-            $('#tblStudents').DataTable().destroy();
+        function submitBulkFee(type) {
+            let rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                let amountInput = row.querySelector("input[name*='Amount']");
+                let paidInput = row.querySelector("input[name*='PaidAmount']");
+                if (amountInput && paidInput) {
+                    let amount = parseFloat(amountInput.value) || 0;
+                    if (type === "half") {
+                        paidInput.value = (amount / 2).toFixed(2);
+                    } else if (type === "full") {
+                        paidInput.value = amount.toFixed(2);
+                    }
+                }
+            });
+            document.querySelector("form").submit();
         }
-        $('#tblStudents').DataTable();
     </script>
 }

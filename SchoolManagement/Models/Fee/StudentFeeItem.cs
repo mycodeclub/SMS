@@ -23,11 +23,15 @@ namespace SchoolManagement.Models.Fee
         public bool IsPaid { get; set; }
 
         public string Frequency { get; set; }
-      
-        public decimal DiscountAmount { get; set; } = 0;
 
-   
-        public decimal FinalAmount => Amount - DiscountAmount;
+
+        public decimal DiscountAmount { get; set; } = 0;
+        public decimal FineAmount { get; set; } = 0;
+        public decimal PaidAmount { get; set; } = 0;
+        public decimal FinalAmount => (Amount + FineAmount) - DiscountAmount;
+
+        [NotMapped]
+        public decimal DueAmount => FinalAmount - PaidAmount;
 
         [ValidateNever]
         public string Month { get; set; }  // Optional if needed for display

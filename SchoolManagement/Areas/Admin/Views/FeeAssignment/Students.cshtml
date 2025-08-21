@@ -1,0 +1,276 @@
+﻿@model IEnumerable<SchoolManagement.Models.User.Student>
+@{
+    ViewData["Title"] = "All Students";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "FeeCollection";
+}
+
+<style>
+    /* Modal Styling */
+    #studentModal .modal-dialog-scrollable .modal-body {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    #studentModal .modal-content {
+        background: #ffffff;
+        border-radius: 15px;
+        border: none;
+    }
+
+    #studentModal .modal-header {
+        background: linear-gradient(90deg, #007bff, #00c6ff);
+    }
+
+    #studentModal .table thead {
+        background: linear-gradient(90deg, #17a2b8, #0dcaf0);
+        color: #fff;
+    }
+
+    #studentModal .table tbody tr:hover {
+        background-color: #f8faff;
+        transition: 0.3s;
+    }
+
+    /* Summary cards style */
+    .summary-row {
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 6px;
+    }
+
+    .bg-soft-danger {
+        background: #ffe6e6;
+    }
+
+    .bg-soft-success {
+        background: #e6ffed;
+    }
+
+    .bg-soft-primary {
+        background: #e6f0ff;
+    }
+
+    .bg-soft-warning {
+        background: #fff6e6;
+    }
+</style>
+
+
+
+<div class="container mt-4">
+
+    <!-- Title & Back Button in one row -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">All Students</h2>
+        <a href="/FeeAssignment/DashBoard" class="btn btn-outline-primary btn-sm shadow-sm">
+            <i class="bi bi-speedometer2"></i> Go to Dashboard
+        </a>
+    </div>
+
+    <!-- Students Table -->
+    <div class="table-responsive shadow rounded">
+        <table class="table table-bordered table-striped table-hover align-middle mb-0">
+            <thead class="table-primary text-dark">
+                <tr>
+                    <th>S.No</th>
+                    <th>Photo</th> <!-- ✅ New -->
+                    <th>Full Name</th>
+                    <th>Standard</th>
+                    <th>Father</th>   <!-- ✅ New -->
+                    <th>Phone</th>
+                    <th>Total Fees</th>
+                    <th>Paid</th>
+                    <th>Due</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var serial = 1; // ✅ Serial number counter
+                }
+                @foreach (var s in Model)
+                {
+                    var totalFees = s.FeeItems?.Sum(f => f.Amount) ?? 0;
+                    var paidFees = s.FeeItems?.Sum(f => f.PaidAmount) ?? 0;
+                    var dueFees = totalFees - paidFees;
+                    var father = s.ParentOrGuardians?.FirstOrDefault(p => p.Relation?.RelationName == "Father");
+                    <tr>
+                        <td>@serial</td><!-- ✅ Serial No -->  <!-- ✅ Serial Number -->
+                        <td class="text-center">
+                            @if (!string.IsNullOrEmpty(s.PhotosFileUrl))
+                            {
+                                <img src="@Url.Content(s.PhotosFileUrl)" alt="Student Photo"
+                                
+                                     class="rounded shadow-sm"
+                                     style="width:60px; height:50px; object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">No Photo</span>
+                            }
+                        </td>
+                        <td>@s.FullName</td>
+                        <td>@s.Standard?.StandardName</td>
+                        <td>
+                            @if (s.ParentOrGuardians != null && s.ParentOrGuardians.Any())
+                            {
+                                foreach (var p in s.ParentOrGuardians)
+                                {
+                                    <div>
+                                        <b>@p.FullName</b>
+                                        (@p.Relation?.RelationName) <br />
+                                      
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">No Parent Info</span>
+                            }
+                        </td>
+
+                        <td>@(father != null ? father.PrimaryPhoneNumber : "—")</td> <!-- ✅ Father Phone -->
+                      
+
+                        <td class="fw-bold text-dark">₹@totalFees</td>
+                        <td class="text-success fw-bold">₹@paidFees</td>
+                        <td class="text-danger fw-bold">₹@dueFees</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-info view-detail shadow-sm" data-id="@s.UniqueId">
+                                <i class="bi bi-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                    serial++; // ✅ Increment after each row
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Details + Receipt -->
+<div class="modal fade" id="studentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content rounded-4 shadow-lg border-0">
+
+            <!-- Header -->
+            <div class="modal-header text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-cash-coin"></i> Student Fee Receipt
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body" id="receiptContent">
+
+                <h5 class="mb-3 text-danger fw-bold">
+                    <i class="bi bi-receipt-cutoff"></i> Generated fees for this student
+                </h5>
+
+                <!-- Fee Items Table -->
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Fee Type</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mFeeItems" class="table-light">
+                            <tr><td colspan="2" class="text-center text-muted">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary Section -->
+                <div>
+                    <div class="d-flex justify-content-between border-bottom summary-row bg-soft-primary">
+                        <span><b>Total Amount</b></span>
+                        <span class="fw-bold">₹<span id="mTotal"></span>/-</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom summary-row bg-soft-danger">
+                        <span><b>Discount</b></span>
+                        <span>₹<span id="mDiscount"></span>/-</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom summary-row bg-soft-success">
+                        <span><b>Total Payable Amount</b></span>
+                        <span>₹<span id="mAfter"></span>/-</span>
+                    </div>
+                    <div class="d-flex justify-content-between border-bottom summary-row bg-soft-primary">
+                        <span><b>Total Paid Amount</b></span>
+                        <span>₹<span id="mPaid"></span>/-</span>
+                    </div>
+                    <div class="d-flex justify-content-between summary-row bg-soft-warning">
+                        <span><b>Remaining Amount</b></span>
+                        <span>₹<span id="mDue"></span>/-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary" id="btnPrint">
+                    <i class="bi bi-printer"></i> Print
+                </button>
+                <button type="button" class="btn btn-success" id="btnDownload">
+                    <i class="bi bi-file-earmark-pdf"></i> Download PDF
+                </button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let studentModal;
+        document.addEventListener('DOMContentLoaded', function () {
+            studentModal = new bootstrap.Modal(document.getElementById('studentModal'));
+        });
+
+        $(document).on("click", ".view-detail", function () {
+            const id = $(this).data("id");
+
+            $.ajax({
+                url: '/Admin/FeeAssignment/GetStudentDetails',
+                type: 'GET',
+                data: { id: id },
+                success: function (data) {
+                    if (!data) return;
+
+                    // Summary values
+                    $("#mTotal").text(data.totalFees);
+                    $("#mDiscount").text(data.totalDiscount);
+                    $("#mAfter").text(data.afterDiscount);
+                    $("#mPaid").text(data.paid);
+                    $("#mDue").text(data.due);
+
+                    // Fee items
+                    let rows = "";
+                    if (data.feeItems && data.feeItems.length) {
+                        data.feeItems.forEach(f => {
+                            rows += `<tr>
+                                <td>${f.feeTypeName}</td>
+                                <td class="text-end">₹${f.amount}/-</td>
+                            </tr>`;
+                        });
+                    } else {
+                        rows = `<tr><td colspan="2" class="text-center text-muted">No fee items available</td></tr>`;
+                    }
+                    $("#mFeeItems").html(rows);
+
+                    studentModal.show();
+                },
+                error: function () {
+                    alert("Failed to load student details.");
+                }
+            });
+        });
+    </script>
+}

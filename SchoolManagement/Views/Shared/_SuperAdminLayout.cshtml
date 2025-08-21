@@ -103,12 +103,25 @@
                             <i class="fa fa-calendar"></i> Session Year
                         </a>
                     </li>
+
+
+                    @if (ActiveTabName.Equals("FeeCollection")) { activeTab = "active"; } else { activeTab = string.Empty; }
+                    <li class="@activeTab">
+                        <a href="/Admin/FeeAssignment/DashBoard">
+                            <i class="fa fa-money"></i> Fee Collection
+                        </a>
+                    </li>
+
+
                     @if (ActiveTabName.Equals("FeeTypes")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/FeeTypes/Index">
                             <i class="fa fa-money"></i> Fee Types
                         </a>
                     </li>
+
+                 
+
                     @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/Standards/Index">

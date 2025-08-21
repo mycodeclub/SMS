@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Data;
+using SchoolManagement.Models;
 using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 
@@ -105,6 +106,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
                         Frequency = item.Frequency,
                         DueDate = item.DueDate,
                         Month = item.Month,
+                        PaidAmount = item.PaidAmount,
                         Amount = item.Amount,
                         DiscountAmount = item.DiscountAmount,
                         PaymentMode = item.PaymentMode,
@@ -116,7 +118,9 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 {
                     existing.Amount = item.Amount;
                     existing.DiscountAmount = item.DiscountAmount;
+
                     existing.PaymentMode = item.PaymentMode;
+                    existing.PaidAmount = item.PaidAmount;
                     existing.IsPaid = true;
                     existing.Month = item.Month;
                 }
@@ -155,5 +159,95 @@ namespace SchoolManagement.Areas.Admin.Controllers
                 ? new DateTime(2025, month, 1).ToString("MMMM")
                 : "Invalid";
         }
+
+
+
+
+
+        public IActionResult DashBoard()
+        {
+            var vm = new DashboardVM
+            {
+                TotalStudents = _context.Students.Count(),
+
+                TotalCollected = _context.StudentFeeItems.Sum(f => f.PaidAmount),
+                TotalDiscount = _context.StudentFeeItems.Sum(f => f.DiscountAmount),
+
+                // SQL me direct formula likh diya
+                TotalDue = _context.StudentFeeItems.Sum(f => (f.Amount + f.FineAmount) - f.DiscountAmount - f.PaidAmount)
+
+            };
+
+
+            return View(vm);
+        }
+
+        // 🔹 All Students page (row/column = table)
+        [HttpGet]
+
+
+        public IActionResult Students()
+        {
+            var students = _context.Students
+                .Include(s => s.Standard)
+                .Include(s => s.FeeItems)
+                .Include(s => s.ParentOrGuardians)
+                    .ThenInclude(p => p.Relation) // Father, Mother, Guardian
+                .AsEnumerable()
+                .OrderBy(s => s.FullName)
+                .ToList();
+
+            return View(students);
+        }
+
+
+        // Model: IEnumerable<Student>
+
+
+        // 🔹 Student details for modal (AJAX → JSON)
+
+        [HttpGet]
+        public IActionResult GetStudentDetails(int id)
+        {
+            var student = _context.Students
+                .Include(s => s.FeeItems)
+                .Include(s => s.ParentOrGuardians)
+                    .ThenInclude(p => p.Relation)
+                .FirstOrDefault(s => s.UniqueId == id);
+
+            if (student == null) return NotFound();
+
+            var result = new
+            {
+                totalFees = student.FeeItems?.Sum(f => f.Amount) ?? 0,
+                totalDiscount = student.FeeItems?.Sum(f => f.DiscountAmount) ?? 0,
+                afterDiscount = (student.FeeItems?.Sum(f => f.Amount) ?? 0) - (student.FeeItems?.Sum(f => f.DiscountAmount) ?? 0),
+                paid = student.FeeItems?.Sum(f => f.PaidAmount) ?? 0,
+                due = (student.FeeItems?.Sum(f => f.Amount) ?? 0) - (student.FeeItems?.Sum(f => f.PaidAmount) ?? 0),
+                feeItems = student.FeeItems?.Select(f => new {
+                    f.FeeTypeName,
+                    f.Amount
+                }),
+                parents = student.ParentOrGuardians?.Select(p => new {
+                    fullName = p.FullName,
+                    aadhaarNumber = p.AadhaarNumber,
+                    photosFileUrl = p.PhotosFileUrl,
+                    phoneNumber = p.PrimaryPhoneNumber,
+                    occupation = p.Occupation,
+                    ctc = p.CTC,
+                    fullAddress = p.FullAddress,
+                    relationName = p.Relation?.RelationName
+                })
+            };
+
+            return Json(result);
+        }
+
     }
+
 }
+
+
+
+
+
