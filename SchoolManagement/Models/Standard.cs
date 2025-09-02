@@ -13,8 +13,9 @@ namespace SchoolManagement.Models
         public string StandardName { get; set; } = string.Empty; 
         public int? SessionYearId { get; set; }
         [ForeignKey(nameof(SessionYearId))]
-        public SessionYear ?SessionYear { get; set; } 
+        public SessionYear ?SessionYear { get; set; }
 
-
+        public ICollection<Subject> Subjects { get; set; }
+       
     }
 }

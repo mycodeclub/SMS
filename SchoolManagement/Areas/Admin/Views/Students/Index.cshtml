@@ -83,9 +83,12 @@
 
 <div class="container-fluid my-3">
     <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white rounded-top-4">
-            <div class="d-flex align-items-center">
-                <h5 class="mb-0">Students</h5>
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <h6 class="mb-0"><i class="fa fa-book mr-2"></i>All Students</h6>
+            <div class="ml-auto">
+                <a asp-action="Create" class="btn btn-sm btn-success">
+                    <i class="fa fa-plus-circle mr-1"></i> New Student
+                </a>
             </div>
         </div>
 
@@ -97,11 +100,7 @@
                         <option value="0">-- All Standards --</option>
                     </select>
                 </div>
-                <div class="new-admission-wrapper">
-                    <a asp-action="Create" class="btn btn-sm btn-outline-primary">
-                        <i class="fa fa-user-plus me-1"></i> New Admission
-                    </a>
-                </div>
+              
             </div>
 
             <div class="table-responsive">
@@ -113,7 +112,7 @@
                             <th>@Html.DisplayNameFor(m => m.FirstOrDefault().Gender)</th>
                             <th>@Html.DisplayNameFor(m => m.FirstOrDefault().AdmitionDate)</th>
                             <th>Parent(s)</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,7 +124,7 @@
                                 <td>@Html.DisplayFor(_ => item.Gender)</td>
                                 <td>@item.AdmitionDate.ToString("dd-MM-yyyy")</td>
                                 <td>@(item.ParentOrGuardians?.Count() ?? 0)</td>
-                                <td class="text-end">
+                                <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Actions">
                                         <a asp-action="Create" asp-route-id="@item.UniqueId" class="btn btn-sm" title="Edit">
                                             <i class="fa fa-edit text-primary"></i>

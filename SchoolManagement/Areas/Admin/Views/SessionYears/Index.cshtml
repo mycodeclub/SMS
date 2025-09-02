@@ -23,8 +23,8 @@
 
     .top-controls {
         position: relative;
-        padding: 0.5rem 0;
-        margin-bottom: 1.5rem;
+        padding: 0.25rem 0;
+        margin-bottom: 0.75rem; /* reduced */
         display: flex;
         align-items: center;
     }
@@ -38,59 +38,69 @@
         font-size: .75rem;
     }
 
-    table#tblGuestLists tbody tr td {
+    /* Compact table styles */
+    .compact-table th,
+    .compact-table td {
+        padding: 6px 10px !important; /* tighter */
+        font-size: 0.9rem;
         vertical-align: middle;
     }
 
+    /* Reduce card padding */
+    .card-body {
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* DataTables adjustments */
     .dataTables_wrapper .dataTables_filter {
-        margin-top: 0.75rem;
+        margin-top: 0.25rem !important;
+        margin-bottom: 0.25rem !important;
     }
 
         .dataTables_wrapper .dataTables_filter input {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0 !important;
+            height: calc(1.5em + 0.5rem) !important;
+            padding: .25rem .5rem !important;
+            font-size: 0.85rem !important;
         }
 
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 0.25rem !important;
+    }
+
     @@media (max-width: 768px) {
-        .top-controls
+        .top-controls {
+            flex-direction: column;
+            align-items: stretch;
+            gap: .5rem;
+        }
 
-    {
-        flex-direction: column;
-        align-items: stretch;
-        gap: .5rem;
-    }
-
-    .new-session-wrapper {
-        margin-left: 0;
-        text-align: right;
-    }
-
+        .new-session-wrapper {
+            margin-left: 0;
+            text-align: right;
+        }
     }
 </style>
 
-<div class="content my-3">
-    <div class="card shadow-sm rounded-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
-            <h5 class="mb-0">Session of Standard</h5>
+<div class="container-fluid my-3">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <h6 class="mb-0"><i class="fa fa-book mr-2"></i> Session Years</h6>
+            <div class="ml-auto">
+                <a asp-action="Create" class="btn btn-sm btn-success">
+                    <i class="fa fa-plus-circle mr-1"></i> Add SessionYear
+                </a>
+            </div>
         </div>
 
-        <div class="card-body">
-            <!-- top controls: add new session right -->
-            <div class="top-controls">
-                <div class="new-session-wrapper">
-                    <a asp-action="Create" class="btn btn-sm btn-outline-primary">
-                        <i class="fa fa-plus me-1"></i> Add New Session
-                    </a>
-                </div>
-            </div>
-
             <div class="table-responsive">
-                <table class="table table-hover table-striped table-bordered align-middle" id="tblGuestLists" style="width:100%;">
+                <table class="table table-hover table-striped table-bordered compact-table" id="tblGuestLists" style="width:100%;">
                     <thead class="table-light">
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.First().SessionName)</th>
                             <th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
                             <th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
-                            <th class="text-end">Actions</th>
+                            <th class="text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,7 +110,7 @@
                                 <td>@item.SessionName</td>
                                 <td>@item.StartDate.ToString("dd-MM-yyyy")</td>
                                 <td>@item.EndDate.ToString("dd-MM-yyyy")</td>
-                                <td class="text-end">
+                                <td class="text-right">
                                     <div class="btn-group" role="group" aria-label="Actions">
                                         <a asp-action="Create" asp-route-id="@item.UniqueId" class="btn btn-sm" title="Edit">
                                             <i class="fa fa-edit text-primary"></i>

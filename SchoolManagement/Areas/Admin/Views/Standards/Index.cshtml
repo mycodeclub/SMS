@@ -6,75 +6,156 @@
     ViewBag.ActiveTabName = "Standard";
 }
 
-@section Style {
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-}
+<!-- externals -->
+<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
-<div class="content px-3">
-    <div class="card shadow rounded-4">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
-            <h4 class="mb-0">Standards</h4>
-            
-        </div>
-        <!-- Add Staff Button Below Header -->
-        <div class="px-3 py-2 bg-light border-bottom d-flex justify-content-end">
-            <a asp-action="Create" class="btn btn-primary btn-sm shadow">
-                <i class="fa fa-plus me-1"></i>  Add Standard
-            </a>
-        </div>
+<!-- internal CSS -->
+<style>
+    /* Page spacing */
+    .content, .container-fluid {
+        padding: 0.5rem !important;
+    }
 
+    .card {
+        border-radius: .5rem;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .card-body {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    .card-header {
+        padding: 0.4rem 0.75rem !important;
+    }
+
+    /* Top controls */
+    .top-controls {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .add-standard-wrapper {
+        margin-left: auto;
+    }
+
+    .btn-sm {
+        padding: 0.2rem 0.4rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    /* Table compactness */
+    #tblStandards th,
+    #tblStandards td {
+        padding: 4px 8px !important;
+        font-size: 0.85rem !important;
+        vertical-align: middle !important;
+        white-space: nowrap;
+    }
+
+    /* DataTables compact */
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_paginate,
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_length {
+        margin: 0.25rem 0 !important;
+        font-size: 0.8rem !important;
+    }
+
+        .dataTables_wrapper .dataTables_filter input {
+            height: 1.8rem !important;
+            font-size: 0.8rem !important;
+            padding: 0.2rem 0.4rem !important;
+        }
+
+    /* Action buttons */
+    .btn-group a, .btn-group button {
+        font-size: 0.85rem !important;
+    }
+
+    @@media (max-width: 768px) {
+        .top-controls
+
+    {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.4rem;
+    }
+
+    .add-standard-wrapper {
+        margin-left: 0;
+        text-align: right;
+    }
+
+    }
+</style>
+
+<div class="container-fluid my-3">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+            <h6 class="mb-0"><i class="fa fa-book mr-2"></i> Standards</h6>
+            <div class="ml-auto">
+                <a asp-action="Create" class="btn btn-sm btn-success">
+                    <i class="fa fa-plus-circle mr-1"></i> Add Standard
+                </a>
+            </div>
+        </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped"  id="tblStandards">
-                <thead >
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => model.FirstOrDefault().StandardName)</th>
-                        <th class="text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="text-right">
-                    @foreach (var item in Model)
-                    {
-                        <tr id="row-@item.UniqueId" >
-                            <td class="text-left">@Html.DisplayFor(modelItem => item.StandardName)</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <a asp-action="Create" asp-route-id="@item.UniqueId" title="Edit">
-                                        <i class="fa fa-edit text-primary"></i> |
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.UniqueId"><i class="fa fa-eye"></i></a> |
-                                 
-                                    <a href="#" class="delete-standard" data-id="@item.UniqueId" title="Delete">
-                                        <i class="fa fa-trash text-danger"></i> |
-                                    </a>
-                                    <a asp-action="ManageFees" asp-route-id="@item.UniqueId" title="Manage Fees">
-                                        <i class="fa fa-rupee-sign text-success"></i>
-                                    </a>
-                                </div>
-                            </td>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped table-bordered" id="tblStandards" style="width:100%;">
+                    <thead class="table-light">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().StandardName)</th>
+                            <th class="text-right">Actions</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row-@item.UniqueId">
+                                <td>@Html.DisplayFor(modelItem => item.StandardName)</td>
+                                <td class="text-right">
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Create" asp-route-id="@item.UniqueId" class="btn btn-sm" title="Edit">
+                                            <i class="fa fa-edit text-primary"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.UniqueId" class="btn btn-sm" title="Details">
+                                            <i class="fa fa-eye text-success"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm delete-standard" data-id="@item.UniqueId" title="Delete">
+                                            <i class="fa fa-trash text-danger"></i>
+                                        </button>
+                                        <a asp-action="ManageFees" asp-route-id="@item.UniqueId" class="btn btn-sm" title="Manage Fees">
+                                            <i class="fa fa-rupee-sign text-success"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
     </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content border border-primary">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <h6 class="modal-title" id="deleteModalLabel">Confirm Delete</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Are you sure you want to delete this Standard?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmDeleteBtn">Yes, Delete</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger btn-sm" id="confirmDeleteBtn">Yes, Delete</button>
             </div>
         </div>
     </div>
@@ -86,40 +167,48 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
+        let deleteId = null;
+
         $(document).ready(function () {
             $('#tblStandards').DataTable({
                 pageLength: 10,
                 ordering: true,
-                searching: true
+                searching: true,
+                order: [[0, "asc"]],
+                responsive: true,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search standards..."
+                },
+                columnDefs: [
+                    { orderable: false, targets: -1 }
+                ]
             });
 
-            let deleteId = null;
-
-            $('.delete-standard').on('click', function (e) {
+            $('#tblStandards').on('click', '.delete-standard', function (e) {
                 e.preventDefault();
                 deleteId = $(this).data('id');
                 $('#deleteModal').modal('show');
             });
 
             $('#confirmDeleteBtn').on('click', function () {
-                if (deleteId) {
-                    $.ajax({
-                        url: '/Admin/Standards/Delete',
-                        type: 'POST',
-                        data: { id: deleteId },
-                        success: function (result) {
-                            if (result.success) {
-                                $('#deleteModal').modal('hide');
-                                $('#row-' + deleteId).fadeOut(500, function () { $(this).remove(); });
-                            } else {
-                                alert('Delete failed: ' + (result.error || 'Unknown error'));
-                            }
-                        },
-                        error: function () {
-                            alert('Delete failed due to server error.');
+                if (!deleteId) return;
+                $.ajax({
+                    url: '/Admin/Standards/Delete',
+                    type: 'POST',
+                    data: { id: deleteId },
+                    success: function (result) {
+                        if (result?.success) {
+                            $('#deleteModal').modal('hide');
+                            $('#row-' + deleteId).fadeOut(300, function () { $(this).remove(); });
+                        } else {
+                            alert('Delete failed: ' + (result?.error || 'Unknown error'));
                         }
-                    });
-                }
+                    },
+                    error: function () {
+                        alert('Delete failed due to server error.');
+                    }
+                });
             });
         });
     </script>

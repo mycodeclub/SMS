@@ -1,0 +1,80 @@
+﻿@model SchoolManagement.Models.Subject
+
+@{
+    ViewData["Title"] = Model.SubjectId == 0 ? "Create Subject" : "Edit Subject";
+    Layout = "~/Views/Shared/_SuperAdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Subjects";
+}
+
+<div class="container mt-2">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-book me-2"></i>@ViewData["Title"]
+                    </h4>
+                    <a asp-action="Index" class="btn btn-light btn-sm">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="SubjectCreate" method="post">
+                        <input type="hidden" asp-for="SubjectId" />
+
+                        <!-- Standard Dropdown -->
+                        <div class="mb-3">
+                            <label asp-for="StandardId" class="form-label fw-bold">
+                                <i class="bi bi-layers me-1"></i> Standard
+                            </label>
+                            <select asp-for="StandardId" class="form-select shadow-sm"
+                                    asp-items="ViewBag.StandardList">
+                                <option value="">-- Select Standard --</option>
+                            </select>
+                            <span asp-validation-for="StandardId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Subject Name -->
+                        <div class="mb-3">
+                            <label asp-for="SubjectName" class="form-label fw-bold">
+                                <i class="bi bi-journal-text me-1"></i> Subject Name
+                            </label>
+                            <input asp-for="SubjectName" class="form-control shadow-sm" placeholder="Enter subject name" />
+                            <span asp-validation-for="SubjectName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-success me-2 px-4">
+                                <i class="bi bi-check-circle me-1"></i> Save
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-x-circle me-1"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional custom styles -->
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+    }
+
+    .btn {
+        border-radius: 0.5rem;
+    }
+</style>

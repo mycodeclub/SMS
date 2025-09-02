@@ -5,6 +5,7 @@ using SchoolManagement.Controllers;
 using SchoolManagement.Data;
 using SchoolManagement.Models;
 using SchoolManagement.Models.Fee;
+using SchoolManagement.Models.User;
 using SchoolManagement.Services;
 
 namespace SchoolManagement.Areas.Admin.Controllers
@@ -250,9 +251,115 @@ namespace SchoolManagement.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-        private bool StandardExists(int id)
+
+      public async Task<IActionResult> Subject()
+            {
+                var subjects = _context.Subjects.Include(s => s.Standards).ToList();
+                return View(subjects);
+            }
+
+            // GET: Create or Edit
+            public IActionResult SubjectCreate(int? id)
+            {
+                ViewBag.StandardList = new SelectList(_context.Standards, "UniqueId", "StandardName");
+
+                if (id == null)   // Create Mode
+                {
+                    return View(new Subject());
+                }
+
+                // Edit Mode
+                var subject = _context.Subjects.Find(id);
+                if (subject == null) return NotFound();
+
+                return View(subject);
+            }
+
+        //delete subject ke liye 
+
+            // DELETE (AJAX se call hoga)
+            [HttpPost]
+            public async Task<IActionResult> DeleteConfirmed(int id)
+            {
+                var subject = await _context.Subjects.FindAsync(id);
+                if (subject == null)
+                {
+                    return Json(new { success = false, message = "Subject not found!" });
+                }
+
+                try
+                {
+                    _context.Subjects.Remove(subject);
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true, message = "Subject deleted successfully!" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "Error: " + ex.Message });
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // POST: Create or Edit
+    [HttpPost]
+            [ValidateAntiForgeryToken]
+            public IActionResult SubjectCreate(Subject subject)
+            {
+                if (ModelState.IsValid)
+                {
+                    if (subject.SubjectId == 0)
+                    {
+                        // New Record
+                        _context.Subjects.Add(subject);
+                    }
+                    else
+                    {
+                        // Update Record
+                        _context.Subjects.Update(subject);
+                    }
+
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                ViewBag.StandardList = new SelectList(_context.Standards, "UniqueId", "StandardName", subject.StandardId);
+                return View(subject);
+            }
+
+            // GET: Delete
+           
+
+    private bool StandardExists(int id)
         {
             return _context.Standards.Any(e => e.UniqueId == id);
         }
+
+
+            // GET: Subjects
+           
     }
+
 }
+
+    
+
+
+    
+    
+
+
+

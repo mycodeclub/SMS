@@ -87,8 +87,9 @@
 
             </nav>
         </header>
-        <aside class="main-sidebar">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <div class="sidebar">
+                <!-- User Info -->
                 <div class="user-panel">
                     <div class="image text-center"><img src="~/AdminTemp/dist/img/img1.jpg" class="img-circle" alt="User Image"> </div>
                     <div class="info">
@@ -96,76 +97,92 @@
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
+
+                <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
+
+                    @* Session Year *@
                     @if (ActiveTabName.Equals("SessionYear")) { activeTab = "active"; } else { activeTab = string.Empty; }
                     <li class="@activeTab">
                         <a href="/Admin/SessionYears/Index">
-                            <i class="fa fa-calendar"></i> Session Year
+                            <i class="fa fa-calendar"></i> <span>Session Year</span>
                         </a>
                     </li>
 
-
-                    @if (ActiveTabName.Equals("FeeCollection")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
-                        <a href="/Admin/FeeAssignment/DashBoard">
-                            <i class="fa fa-money"></i> Fee Collection
+                    @* Fee Collection Collapse *@
+                    <li class="treeview @(ActiveTabName.Equals("FeeCollection") || ActiveTabName.Equals("FeeTypes") ? "active menu-open" : "")">
+                        <a href="#">
+                            <i class="fa fa-money"></i> <span>Fee Collection</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
+                        <ul class="treeview-menu" style="@(ActiveTabName.Equals("FeeCollection") || ActiveTabName.Equals("FeeTypes") ? "display:block;" : "display:none;")">
+                            <li class="@(ActiveTabName.Equals("FeeCollection") ? "active" : "")">
+                                <a href="/Admin/FeeAssignment/DashBoard"><i class="fa fa-circle-o"></i> Dashboard</a>
+                            </li>
+                            <li class="@(ActiveTabName.Equals("FeeTypes") ? "active" : "")">
+                                <a href="/Admin/FeeTypes/Index"><i class="fa fa-circle-o"></i> Fee Types</a>
+                            </li>
+                        </ul>
                     </li>
 
-
-                    @if (ActiveTabName.Equals("FeeTypes")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
-                        <a href="/Admin/FeeTypes/Index">
-                            <i class="fa fa-money"></i> Fee Types
+                    @* Standard Collapse *@
+                    <li class="treeview @(ActiveTabName.Equals("Standard") || ActiveTabName.Equals("StandardFees") || ActiveTabName.Equals("Subjects") ? "active menu-open" : "")">
+                        <a href="#">
+                            <i class="fa fa-book"></i> <span>Standard</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
+                        <ul class="treeview-menu" style="@(ActiveTabName.Equals("Standard") || ActiveTabName.Equals("StandardFees") || ActiveTabName.Equals("Subjects") ? "display:block;" : "display:none;")">
+                            <li class="@(ActiveTabName.Equals("Standard") ? "active" : "")">
+                                <a href="/Admin/Standards/Index"><i class="fa fa-circle-o"></i>  Standard</a>
+                            </li>
+                            <li class="@(ActiveTabName.Equals("StandardFees") ? "active" : "")">
+                                <a href="/Admin/StandardFees/Index"><i class="fa fa-circle-o"></i> Standard Fees</a>
+                            </li>
+                            <li class="@(ActiveTabName.Equals("Subjects") ? "active" : "")">
+                                <a href="/Admin/Standards/Subject"><i class="fa fa-circle-o"></i> Subject</a>
+                            </li>
+                        </ul>
                     </li>
 
-                 
-
-                    @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
-                        <a href="/Admin/Standards/Index">
-                            <i class="fa fa-book"></i> Standard
-                        </a>
-                    </li>
-                    @if (ActiveTabName.Equals("StandardFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
-                        <a href="/Admin/StandardFees/Index">
-                            <i class="fa fa-money"></i> Standard Fees
-                        </a>
-                    </li>
-                    @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
+                    @* Students *@
+                    <li class="@(ActiveTabName.Equals("Students") ? "active" : "")">
                         <a href="/Admin/Students/Index">
-                            <i class="fa fa-user"></i> Students
+                            <i class="fa fa-user"></i> <span>Students</span>
                         </a>
                     </li>
-                    @if (ActiveTabName.Equals("Staff")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
+
+                    @* Staff *@
+                    <li class="@(ActiveTabName.Equals("Staff") ? "active" : "")">
                         <a href="/Admin/Staff/Index">
-                            <i class=" fa fa-users"></i>Staff
+                            <i class="fa fa-users"></i> <span>Staff</span>
                         </a>
                     </li>
-                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
+
+                    @* Account *@
+                    <li class="@(ActiveTabName.Equals("ChangeEmail") ? "active" : "")">
                         <a href="/Account/ChangeEmail">
-                            <i class="fa fa-envelope"></i> Change Email
+                            <i class="fa fa-envelope"></i> <span>Change Email</span>
                         </a>
                     </li>
-                    @if (ActiveTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab">
+                    <li class="@(ActiveTabName.Equals("ChangePassword") ? "active" : "")">
                         <a href="/Account/ChangePassword">
-                            <i class="fa fa-key"></i> Change Password
+                            <i class="fa fa-key"></i> <span>Change Password</span>
                         </a>
                     </li>
                     <li>
                         <a href="/Account/LogOut">
-                            <i class="fa fa-power-off"></i> Logout
+                            <i class="fa fa-power-off"></i> <span>Logout</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </aside>
+
+
         <div class="content-wrapper">
             @RenderBody()
         </div>

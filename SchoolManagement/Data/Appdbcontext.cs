@@ -6,6 +6,7 @@ using SchoolManagement.Models.Address;
 using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 using SchoolManagement.ProcModels;
+using SchoolManagement.Models.User.SchoolManagement.Models;
 
 namespace SchoolManagement.Data
 {
@@ -55,11 +56,13 @@ namespace SchoolManagement.Data
         }
 
 
-
-        public DbSet<SchoolManagement.Models.Fee.StudentFee> Studentfee { get; set; }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
         public DbSet<FeeType> FeeTypes { get; set; }
         public DbSet<Standard> Standards { get; set; }      //class/standards
+
+        public DbSet<Subject> Subjects { get; set; }
+
+
         public DbSet<StandardFee> StandardFees { get; set; }
 
         public DbSet<Student> Students { get; set; }       // student
@@ -73,9 +76,10 @@ namespace SchoolManagement.Data
         public DbSet<City> Cities { get; set; }
         //---------------------------------------------------------------------
 
+        public DbSet<StudentAttendance> StudentAttendances { get; set; }
+
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
         public DbSet<SessionFee> SessionFee { get; set; }
-
        public DbSet <StudentFeeItem> StudentFeeItems { get; set; }
 
 
