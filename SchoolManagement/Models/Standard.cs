@@ -15,7 +15,7 @@ namespace SchoolManagement.Models
         [ForeignKey(nameof(SessionYearId))]
         public SessionYear ?SessionYear { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; }
-       
+        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
+
     }
 }

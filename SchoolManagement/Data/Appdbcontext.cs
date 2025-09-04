@@ -6,7 +6,7 @@ using SchoolManagement.Models.Address;
 using SchoolManagement.Models.Fee;
 using SchoolManagement.Models.User;
 using SchoolManagement.ProcModels;
-using SchoolManagement.Models.User.SchoolManagement.Models;
+
 
 namespace SchoolManagement.Data
 {
@@ -31,6 +31,18 @@ namespace SchoolManagement.Data
             {
                 throw new FileNotFoundException($"SQL script file not found: {sqlFilePath}");
             }
+            modelBuilder.Entity<StudentAttendance>()
+        .HasOne(sa => sa.Student)
+        .WithMany()
+        .HasForeignKey(sa => sa.StudentId)
+        .OnDelete(DeleteBehavior.Cascade);   // ✅ Student delete → Attendance भी delete
+
+            modelBuilder.Entity<StudentAttendance>()
+                .HasOne(sa => sa.Subject)
+                .WithMany()
+                .HasForeignKey(sa => sa.SubjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
 
             modelBuilder.SeedRoles();
             modelBuilder.SeedSession();
@@ -55,7 +67,7 @@ namespace SchoolManagement.Data
             base.OnConfiguring(optionsBuilder);
         }
 
-
+        public DbSet<StudentAttendance> StudentAttendances { get; set; }
         public DbSet<SessionYear> SessionYears { get; set; }  //session 
         public DbSet<FeeType> FeeTypes { get; set; }
         public DbSet<Standard> Standards { get; set; }      //class/standards
@@ -76,8 +88,7 @@ namespace SchoolManagement.Data
         public DbSet<City> Cities { get; set; }
         //---------------------------------------------------------------------
 
-        public DbSet<StudentAttendance> StudentAttendances { get; set; }
-
+        
         public DbSet<SessionDetailsDto> SessionDetailsDtoRaw { get; set; }
         public DbSet<SessionFee> SessionFee { get; set; }
        public DbSet <StudentFeeItem> StudentFeeItems { get; set; }
