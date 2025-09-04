@@ -1,0 +1,144 @@
+﻿@model IEnumerable<SchoolManagement.Models.Standard>
+@{
+    ViewData["Title"] = "Attendance Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Attendance";
+}
+
+<style>
+    body {
+        background-color: #f0f4f8;
+    }
+
+    /* Main Dashboard Card */
+    .dashboard-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 123, 255, 0.15);
+        margin-bottom: 2rem;
+    }
+
+    /* Header inside the card */
+    .dashboard-header {
+        background: #007bff;
+        color: #fff;
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        text-align: center;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 123, 255, 0.2);
+        margin-bottom: 2rem;
+    }
+
+        .dashboard-header h2 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+    /* Card Hover Effects for standards */
+    .hover-card {
+        transition: all 0.3s ease;
+        border-radius: 1rem;
+        background: #e6f0ff;
+        padding: 1.5rem 1rem;
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1rem 2rem rgba(0, 123, 255, 0.2);
+            background: #cce0ff;
+        }
+
+    .card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-subtitle {
+        font-size: 0.9rem;
+        color: #495057;
+        margin-bottom: 1rem;
+    }
+
+    .btn-custom {
+        background: #007bff;
+        color: #fff;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            background: #0056b3;
+            color: #fff;
+        }
+
+    .icon-circle {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #fff;
+        color: #007bff;
+        font-size: 2.2rem;
+        margin: 0 auto 15px auto;
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+    }
+
+    /* Cards Row */
+    .cards-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+    }
+
+        .cards-row .card-wrapper {
+            flex: 0 0 220px;
+        }
+</style>
+
+<div class="container mt-4">
+    <!-- Main Dashboard Card -->
+    <div class="dashboard-card">
+        <!-- Header inside main card -->
+        <div class="dashboard-header">
+            <h2>
+                <i class="bi bi-clipboard-check-fill me-2"></i> Attendance Dashboard
+            </h2>
+        </div>
+
+        <!-- Standards Cards -->
+        <div class="cards-row">
+            @foreach (var std in Model)
+            {
+                <div class="card-wrapper">
+                    <div class="hover-card">
+                        <!-- Standard Icon -->
+                        <div class="icon-circle mb-3">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+
+                        <!-- Standard Info -->
+                        <h5 class="card-title">@std.StandardName</h5>
+                        <p class="card-subtitle">
+                            <i class="bi bi-calendar3 me-1"></i> @std.SessionYear?.SessionName
+                        </p>
+
+                        <!-- Action Button -->
+                        <a asp-action="AttendanceSubject" asp-route-standardId="@std.UniqueId"
+                           class="btn btn-custom w-100">
+                            <i class="bi bi-journal-check me-1"></i> View Subjects
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

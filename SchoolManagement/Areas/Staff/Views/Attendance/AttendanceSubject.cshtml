@@ -1,0 +1,123 @@
+﻿@model IEnumerable<SchoolManagement.Models.Subject>
+
+@{
+    ViewData["Title"] = "Subjects for Attendance";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Attendance";
+}
+
+<style>
+    body {
+        background-color: #f0f4f8;
+    }
+
+    .page-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 123, 255, 0.15);
+        margin-bottom: 2rem;
+    }
+
+    .page-header {
+        text-align: center;
+        background: #007bff;
+        color: #fff;
+        padding: 1rem 1.5rem;
+        border-radius: 0.70rem;
+        box-shadow: 0 0.20rem 0.70rem rgba(0, 123, 255, 0.2);
+        margin-bottom: 4rem;
+    }
+
+        .page-header h1 {
+            margin: 0;
+            font-weight: 400;
+        }
+
+    .subject-card {
+        background: #e6f0ff;
+        border-radius: 1rem;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+    }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1rem 2rem rgba(0, 123, 255, 0.2);
+            background: #cce0ff;
+        }
+
+    .subject-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #fff;
+        color: #007bff;
+        font-size: 1.8rem;
+        margin: 0 auto 15px auto;
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-custom {
+        background: #007bff;
+        color: #fff;
+        border-radius: 50px;
+        font-weight: 500;
+        transition: 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            background: #0056b3;
+            color: #fff;
+        }
+</style>
+
+<div class="container mt-2">
+    <div class="page-card">
+        <!-- Header -->
+        <div class="page-header">
+            <h4>📖 Subjects for Attendance</h4>
+            <p class="text-light mt-2">
+                Standard: <b>@ViewBag.StandardName</b> |
+                Session: <b>@ViewBag.SessionName</b>
+            </p>
+        </div>
+
+        <!-- Subjects Grid -->
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var sub in Model)
+                {
+                    <div class="col-md-3 mb-3">
+                        <div class="subject-card h-100">
+                            <div class="subject-icon">
+                                <i class="bi bi-book-fill"></i>
+                            </div>
+                            <h6 class="card-title">@sub.SubjectName</h6>
+                            <a asp-action="Mark"
+                               asp-controller="Attendance"
+                               asp-area="Staff"
+                               asp-route-standardId="@sub.StandardId"
+                               asp-route-subjectId="@sub.SubjectId"
+                               class="btn btn-sm btn-custom w-100">
+                                Mark Attendance
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning">No subjects available for this standard.</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

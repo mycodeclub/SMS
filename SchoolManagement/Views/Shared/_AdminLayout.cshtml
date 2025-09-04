@@ -30,7 +30,16 @@
     <link rel="stylesheet" href="~/AdminTemp/dist/css/et-line-font/et-line-font.css">
     <link rel="stylesheet" href="~/AdminTemp/dist/css/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="~/AdminTemp/dist/css/simple-lineicon/simple-line-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .sidebar-menu li a {
+            font-weight: 500; /* light */
+        }
 
+        .sidebar-menu li.active a {
+            font-weight: 600; /* bold for active */
+        }
+    </style>
     @RenderSection("Style", required: false)
 </head>
 <body class="skin-blue sidebar-mini">
@@ -76,7 +85,6 @@
                                     <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                                 </ul>
                             </li>
-
                         }
                     </ul>
                 </div> <div class="text-white align-content-center" style="padding-top:1.5em;padding-left:15em">
@@ -95,35 +103,61 @@
                     </div>
                 </div>
 
-                <!-- sidebar menu -->
-                <ul class="sidebar-menu" data-widget="tree">
+               
+                    <!-- sidebar menu -->
+                    <ul class="sidebar-menu" data-widget="tree">
+                       
+
+                        <li class="@(ActiveTabName == "SessionYear" ? "active" : "")">
+                            <a class="@(ActiveTabName == "SessionYear" ? "fw-bold" : "fw-light")" href="/Staff/SessionYears/Index">
+                                <i class="bi bi-calendar-event"></i> Session Year
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "Attendance" ? "active" : "")">
+                            <a class="@(ActiveTabName == "Attendance" ? "fw-bold" : "fw-bold")" href="/Staff/Attendance/Dashboard">
+                                <i class="bi bi-journal-check"></i> Attendance
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "Standard" ? "active" : "")">
+                            <a class="@(ActiveTabName == "Standard" ? "fw-bold" : "fw-light")" href="/Staff/Standards/Index">
+                                <i class="bi bi-book"></i> Standard
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "FeeMaster" ? "active" : "")">
+                            <a class="@(ActiveTabName == "FeeMaster" ? "fw-bold" : "fw-light")" href="/Staff/FeeTypeMasters/Index">
+                                <i class="bi bi-wallet2"></i> Fee Master
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "Students" ? "active" : "")">
+                            <a class="@(ActiveTabName == "Students" ? "fw-bold" : "fw-light")" href="/Staff/Students/Index">
+                                <i class="bi bi-people"></i> Students
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "ChangeEmail" ? "active" : "")">
+                            <a class="@(ActiveTabName == "ChangeEmail" ? "fw-bold" : "fw-light")" href="/Account/ChangeEmail">
+                                <i class="bi bi-envelope"></i> Change Email
+                            </a>
+                        </li>
+
+                        <li class="@(ActiveTabName == "ChangePassword" ? "active" : "")">
+                            <a class="@(ActiveTabName == "ChangePassword" ? "fw-bold" : "fw-light")" href="/Account/ChangePassword">
+                                <i class="bi bi-shield-lock"></i> Change Password
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="fw-light" href="/Account/LogOut">
+                                <i class="bi bi-power"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
 
 
-
-                    @if (ActiveTabName.Equals("SessionYear")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Staff/SessionYears/Index"><i class="fa fa-calendar"></i> Session Year  </a></li>
-
-                    @if (ActiveTabName.Equals("Standard")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Staff/Standards/Index"><i class="fa fa-book"></i> Standard  </a></li>
-
-                    @if (ActiveTabName.Equals("FeeMaster")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Staff/FeeTypeMasters/Index"><i class="fa fa-book"></i> Fee Master  </a></li>
-
-                    @if (ActiveTabName.Equals("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li class="@activeTab"><a href="/Staff/Students/Index"><i class="fa fa-user"></i> Students  </a></li>
-
-
-
-                    @if (ActiveTabName.Equals("ChangeEmail")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li><a href="/Account/ChangeEmail"><i class="fa fa-user"></i>Change Email</a></li>
-
-                    @if (ActiveTabName.Equals("ChangePassword")) { activeTab = "active"; } else { activeTab = string.Empty; }
-                    <li><a href="/Account/ChangePassword"><i class="fa fa-user"></i>Change Password</a></li>
-
-
-                    <li><a href="/Account/LogOut"><i class="fa fa-power-off"></i> Logout</a></li>
-
-                </ul>
             </div>
         </aside>
 
