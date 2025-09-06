@@ -1,0 +1,45 @@
+<div class="auth-container">
+    <mat-card>
+        <h2>Welcome Back</h2>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" />
+                @if(loginForm.get('email')?.hasError('required')) {
+                <mat-error>
+                    Email is required
+                </mat-error>
+                }
+                @if(loginForm.get('email')?.hasError('email')) {
+                <mat-error>
+                    Enter a valid email
+                </mat-error>}
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" />
+                @if(loginForm.get('password')?.hasError('required')) {
+                <mat-error>
+                    Password is required
+                </mat-error>
+                }
+                @if(loginForm.get('password')?.hasError('minlength')) {
+                <mat-error>
+                    Minimum 6 characters
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="full-width">
+                Login
+            </button>
+        </form>
+
+        <p class="switch-link">
+            Don’t have an account?
+            <a routerLink="/register">Register</a>
+        </p>
+    </mat-card>
+</div>
