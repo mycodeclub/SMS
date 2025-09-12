@@ -254,7 +254,7 @@ namespace SchoolManagement.Areas.Admin.Controllers
 
       public async Task<IActionResult> Subject()
             {
-                var subjects = _context.Subjects.Include(s => s.Standards).ToList();
+                var subjects = _context.Subjects.Include(s => s.Standard).ToList();
                 return View(subjects);
             }
 
